@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>eth_wallet</title>
+</head>
+
+<body>
+  <div id="app">
+  </div>
+  <!-- built files will be auto injected -->
+  <script type="text/javascript" src="cordova.js"></script>
+  <script src="./static/js/viewport-units-buggyfill.min.js"></script>
+  <script>
+    window.onload = function () {
+
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        StatusBar.overlaysWebView(true);
+      }
+
+      window.viewportUnitsBuggyfill.init({
+        hacks: window.viewportUnitsBuggyfillHacks
+      });
+      var winDPI = window.devicePixelRatio;
+      var uAgent = window.navigator.userAgent;
+      var screenHeight = window.screen.height;
+      var screenWidth = window.screen.width;
+      var winWidth = window.innerWidth;
+      var winHeight = window.innerHeight;
+      console.log("Windows DPI:" + winDPI + ";\ruAgent:" + uAgent + ";\rScreen Width:" + screenWidth +
+        ";\rScreen Height:" +
+        screenHeight + ";\rWindow Width:" + winWidth + ";\rWindow Height:" + winHeight)
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+.home {
+    background-color: #eee;
+    height: 100vh;
+    padding-bottom: 98px;
+    .wavesBox {
+        position: relative;
+        align-items: center;
+        height: 464px;
+        overflow: hidden;
+        background-color: rgb(172, 217, 253);
+        -webkit-animation-duration: 0.4s;
+        animation-duration: 0.4s;
+        &:before {
+            content: "" !important;
+            position: absolute;
+            left: 50%;
+            width: 300vw;
+            height: 300vw;
+            background-color: #75b7ff;
+            animation-name: rotate;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+        &:before {
+            bottom: 5vh;
+            border-radius: 47%;
+            animation-duration: 10s;
+        }
+        .box-bg {
+            height: 100%;
+            align-items: center;
+            overflow: hidden;
+            background-color: rgba(172, 217, 253, 1);
+            opacity: 0.4;
+            &:before {
+                content: "" !important;
+                position: absolute;
+                left: 50%;
+                width: 400vw;
+                height: 400vw;
+                background-color: #75b7ff;
+                animation-name: rotate;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+            }
+            &:before {
+                bottom: 5vh;
+                border-radius: 46%;
+                animation-duration: 8s;
+            }
+        }
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, 0) rotateZ(0deg);
+            }
+            50% {
+                transform: translate(-50%, -2%) rotateZ(180deg);
+            }
+            100% {
+                transform: translate(-50%, 0%) rotateZ(360deg);
+            }
+        }
+        @-webkit-keyframes rotate {
+            0% {
+                transform: translate(-50%, 0) rotateZ(0deg);
+            }
+            50% {
+                transform: translate(-50%, -2%) rotateZ(180deg);
+            }
+            100% {
+                transform: translate(-50%, 0%) rotateZ(360deg);
+            }
+        }
+        .view{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            text-align: center;
+            color: #fff;
+            p{
+                margin-bottom: 0;
+            }
+            .logo{
+                margin-top: 100px;
+                width: 110px;
+                border-radius: 50%;
+            }
+            .name{
+                margin-top: 30px;
+                font-size: 30px;
+            }
+            .code{
+                margin-top: 5px;
+                font-size: 22px;
+            }
+            .qc{
+                width: 40px;
+                margin: 20px 0 0 0;
+            }
+            .money{
+                span:nth-child(1){
+                    font-size: 22px;
+                    margin-right: 100px;
+                }
+                span:nth-child(2){
+                    font-size: 22px;
+                }
+                span:nth-child(3){
+                    font-size: 32px;
+                }
+            }
+        }
+    }
+    .bitList {
+        height: calc(~'100% - 464px');
+        // padding-bottom: 200px;
+        animation-duration: 0.5s;
+        overflow: auto;
+        .list-item {
+            position: relative;
+            height: 160px;
+            background-color: #fff;
+            .name {
+                position: absolute;
+                font-size: 28px;
+                color: #000;
+                left: 150px;
+                line-height: 160px;
+            }
+            .logo {
+                position: absolute;
+                left: 50px;
+                width: 60px;
+                height: 60px;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                overflow: hidden;
+            }
+            .money {
+                position: absolute;
+                font-size: 32px;
+                color: #000;
+                top: 50%;
+                transform: translate3d(0, -50%, 0);
+                right: 50px;
+                p:nth-child(2){
+                    margin-top: 8px;
+                    text-align: right;
+                }
+                p{
+                    margin-bottom: 0;
+                }
+            }
+        }
+        .list-item:nth-child(1) {
+            img {
+                width: 60px;
+                transform: translate3d(0, -1260px, 0);
+            }
+        }
+        .list-item:nth-child(2) {
+            img {
+                width: 60px;
+                transform: translate3d(0, -60px, 0);
+            }
+        }
+        .list-item:nth-child(3) {
+            img {
+                width: 60px;
+                transform: translate3d(0, -1680px, 0);
+            }
+        }
+        .list-item:nth-child(4) {
+            img {
+                width: 60px;
+                transform: translate3d(0, -780px, 0);
+            }
+        }
+        .list-item+.list-item {
+            position: relative;
+            &::before {
+                content: "";
+                position: absolute;
+                height: 1px;
+                width: 100%;
+                top: 0;
+                background-color: #eee;
+                transform: scaleY(0.5);
+                transform-origin: 0 0;
+            }
+        }
+    }
+}

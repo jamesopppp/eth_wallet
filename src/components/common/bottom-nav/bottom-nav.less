@@ -1,0 +1,65 @@
+.bottom-nav {
+    position: absolute;
+    z-index: 5;
+    bottom: 0;
+    height: 98px;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    color: #353535;
+    &>div {
+        position: relative;
+        height: 100%;
+        flex: 1;
+        text-align: center;
+        &>div {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: 16px;
+            img {
+                position: relative;
+                z-index: 2;
+                margin: 0 auto;
+            }
+            .point {
+                position: absolute;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                top: 0;
+                left: 0;
+                right: -10px;
+                margin: auto;
+                background-color: #53a2f8;
+                opacity: 0.8;
+            }
+        }
+        p {
+            position: absolute;
+            font-size: 22px;
+            width: 100%;
+            bottom: 4px;
+            margin-bottom: 0;
+        }
+    }
+    &>div:nth-child(1) {
+        img {
+            width: 44px;
+        }
+    }
+    &>div:nth-child(2) {
+        img {
+            width: 44px;
+        }
+    }
+    &>div:nth-child(3) {
+        img {
+            width: 34px;
+        }
+    }
+}
