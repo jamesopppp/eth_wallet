@@ -1,6 +1,6 @@
 # eth_wallet
 
-> geewer wallet
+> geewer wallet demo 试着制作一个eth钱包
 
 ## Build Setup
 
@@ -18,4 +18,11 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Cordova
+```
+# cordova 
+cordova build android
+可打包成cordova应用手机预览
+```
+
+
