@@ -1,4 +1,92 @@
 .my {
-    height: 100%;
+    height: 100vh;
     padding-bottom: 98px;
+    background-color: #eee;
+    .head-block {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 380px;
+        overflow: hidden;
+        background-color: #75b7ff;
+        background: -webkit-linear-gradient(#75b7ff, #469af5);
+        background: -o-linear-gradient(#75b7ff, #469af5);
+        background: -moz-linear-gradient(#75b7ff, #469af5);
+        background: linear-gradient(#75b7ff, #469af5);
+        text-align: center;
+        &>div {
+            position: relative;
+            float: left;
+            height: 100%;
+            width: 50%;
+            .content{
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            img {
+                width: 70px;
+            }
+            div {
+                margin-top: 10px;
+                font-size: 24px;
+                color: #fff;
+            }
+        }
+        div:nth-child(2) {
+            img {
+                width: 64px;
+            }
+        }
+    }
+    .option-list {
+        animation-duration: 0.5s;
+        .option-item {
+            position: relative;
+            overflow: hidden;
+            height: 90px;
+            line-height: 90px;
+            background-color: #fff;
+            .option-icon {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                left: 30px;
+                width: 34px;
+            }
+            span {
+                font-size: 26px;
+                position: absolute;
+                left: 100px;
+            }
+            i {
+                position: absolute;
+                right: 30px;
+                font-size: 30px;
+                color: #999;
+                transform: rotate(180deg);
+            }
+        }
+        .option-item+.option-item {
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                margin: auto;
+                background: #eee;
+                width: 100%;
+                height: 1px;
+                -webkit-transform: scaleY(0.5);
+                transform: scaleY(0.5);
+                -webkit-transform-origin: 0 0;
+                transform-origin: 0 0;
+            }
+        }
+        .option-item:nth-child(4){
+            margin: 10px 0;
+        }
+    }
 }

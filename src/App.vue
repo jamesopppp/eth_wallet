@@ -15,6 +15,13 @@ export default {
       bottomNav: "recent"
     };
   },
+  watch: {
+    $route(to, from) {
+      if (to.name != "home" && to.name != "transaction" && to.name != "my") {
+        this.$store.commit("SET_TAB", 3);
+      }
+    }
+  },
   created() {
     let words = this.bip39.generateMnemonic(
       128,
@@ -44,6 +51,7 @@ body {
   overflow: hidden;
 }
 #app {
+  color: #353535;
   font-family: normal, "Microsoft YaHei", Arial, Helvetica, sans-serif, "宋体";
 }
 </style>

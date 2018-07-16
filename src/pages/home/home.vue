@@ -63,7 +63,7 @@ export default {
   data() {
     return {};
   },
-  created() {
+  mounted() {
     this.$store.commit("SET_TAB", 0);
   },
   methods: {

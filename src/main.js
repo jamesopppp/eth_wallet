@@ -9,6 +9,7 @@ import VueQrcode from '@xkeshi/vue-qrcode'
 import bip39 from 'bip39'
 import ethers from 'ethers'
 import VueClipboard from 'vue-clipboard2'
+import '../static/fontclass/iconfont.css'
 // import Vconsole from 'vconsole'
 
 // const vConsole = new Vconsole();

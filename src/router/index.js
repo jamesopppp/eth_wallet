@@ -34,5 +34,14 @@ export default new Router({
     meta: {
       keepAlive: true
     }
+  }, {
+    path: '/about',
+    name: 'about',
+    component: function (resolve) {
+      require(['@/pages/about/about.vue'], resolve)
+    },
+    meta: {
+      keepAlive: true
+    }
   }]
 })

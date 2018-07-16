@@ -26,7 +26,7 @@ export default {
       showTip: false
     };
   },
-  created() {
+  mounted() {
     this.$store.commit("SET_TAB", 1);
   },
   methods: {

@@ -1,0 +1,64 @@
+.about {
+    height: 100vh;
+    background-color: #75b7ff;
+    background: -webkit-linear-gradient(#75b7ff, #469af5);
+    background: -o-linear-gradient(#75b7ff, #469af5);
+    background: -moz-linear-gradient(#75b7ff, #469af5);
+    background: linear-gradient(#75b7ff, #469af5);
+    padding-top: 136px;
+    .about-view {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        background-color: #fff;
+        .about-head {
+            padding: 50px 0;
+            text-align: center;
+            img {
+                width: 150px;
+            }
+            p {
+                margin-top: 10px;
+                font-size: 26px;
+                color: #999;
+            }
+        }
+        .about-list {
+            margin-top: 20px;
+            .about-item {
+                position: relative;
+                font-size: 26px;
+                color: #666;
+                height: 100px;
+                line-height: 100px;
+                padding-left: 40px;
+            }
+            .about-item+.about-item {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    margin: auto;
+                    background: #eee;
+                    width: 100%;
+                    margin-left: 40px;
+                    height: 1px;
+                    right: 0;
+                    left: 0;
+                    -webkit-transform: scaleY(0.5);
+                    transform: scaleY(0.5);
+                    -webkit-transform-origin: 0 0;
+                    transform-origin: 0 0;
+                }
+            }
+        }
+        .about-company{
+            position: absolute;
+            width: 100%;
+            bottom: 50px;
+            font-size: 24px;
+            color: #ddd;
+            text-align: center;
+        }
+    }
+}
