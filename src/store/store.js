@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     tab: 0,
-    address: ""
+    balance: 0.0
   },
   mutations: mutations
 })

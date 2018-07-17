@@ -2,6 +2,9 @@
     background-color: #eee;
     height: 100vh;
     padding-bottom: 98px;
+    .vux-slider {
+        height: 100% !important;
+    }
     .wavesBox {
         position: relative;
         align-items: center;
@@ -71,50 +74,50 @@
                 transform: translate(-50%, 0%) rotateZ(360deg);
             }
         }
-        .view{
+        .view {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             text-align: center;
             color: #fff;
-            p{
+            p {
                 margin-bottom: 0;
             }
-            .logo{
+            .logo {
                 margin-top: 100px;
                 width: 110px;
                 border-radius: 50%;
             }
-            .name{
+            .name {
                 margin-top: 30px;
                 font-size: 30px;
             }
-            .code{
+            .code {
                 margin-top: 5px;
                 font-size: 22px;
             }
-            .qc{
+            .qc {
                 width: 40px;
                 margin: 20px 0 0 0;
             }
-            .money{
-                span:nth-child(1){
+            .money {
+                span:nth-child(1) {
                     font-size: 22px;
-                    margin-right: 100px;
+                    margin-right: 20px;
                 }
-                span:nth-child(2){
+                span:nth-child(2) {
                     font-size: 22px;
                 }
-                span:nth-child(3){
+                span:nth-child(3) {
+                    margin-left: 20px;
                     font-size: 32px;
                 }
             }
         }
     }
     .bitList {
-        height: calc(~'100% - 464px');
-        // padding-bottom: 200px;
+        height: calc(~'100% - 464px'); // padding-bottom: 200px;
         animation-duration: 0.5s;
         overflow: auto;
         .list-item {
@@ -145,11 +148,11 @@
                 top: 50%;
                 transform: translate3d(0, -50%, 0);
                 right: 50px;
-                p:nth-child(2){
+                p:nth-child(2) {
                     margin-top: 8px;
                     text-align: right;
                 }
-                p{
+                p {
                     margin-bottom: 0;
                 }
             }

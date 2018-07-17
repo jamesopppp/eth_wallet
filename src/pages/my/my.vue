@@ -1,13 +1,13 @@
 <template>
   <div class="my">
       <div class="head-block">
-        <div class="animated bounceInDown" v-ripple>
+        <div v-ripple>
           <div class="content">
             <img src="../../assets/images/my-wallet.svg">
             <div>管理钱包</div>
           </div>
         </div>
-        <div class="animated bounceInDown" v-ripple> 
+        <div v-ripple> 
           <div class="content">
             <img src="../../assets/images/my-record.svg">
             <div>交易记录</div>

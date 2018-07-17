@@ -18,13 +18,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { getStore } from "@/config/utils";
 export default {
   name: "transaction",
   data() {
     return {
-      showTip: false
+      showTip: false,
+      address: ""
     };
+  },
+  created() {
+    let wallet = JSON.parse(getStore("wallet"));
+    this.address = wallet.address;
   },
   mounted() {
     this.$store.commit("SET_TAB", 1);
@@ -42,9 +47,7 @@ export default {
       alert("failed");
     }
   },
-  computed: {
-    ...mapState(["address"])
-  }
+  computed: {}
 };
 </script>
 

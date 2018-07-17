@@ -3,8 +3,8 @@ const mutations = {
   [types.SET_TAB](state, tab) {
     state.tab = tab
   },
-  [types.SET_ADDRESS](state, address) {
-    state.address = address
+  [types.SET_BALANCE](state, balance) {
+    state.balance = balance
   }
 }
 export default mutations

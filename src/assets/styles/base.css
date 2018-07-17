@@ -1,0 +1,147 @@
+.vux-swiper {
+  height: 100% !important;
+}
+
+/* 转入弹框 */
+
+.copy-view {
+  background-color: #fff;
+  text-align: center;
+  padding: 50px 0;
+}
+
+.copy-view img {
+  width: 100px;
+  margin: 0 auto;
+}
+
+.copy-view p {
+  font-size: 24px;
+  color: #353535;
+  margin-bottom: 0;
+}
+
+/* 助记词备份处弹出框 */
+
+.backup-mnemonic-pop {
+  background-color: #fff;
+  text-align: center;
+  padding: 50px 0 0 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.backup-mnemonic-pop img {
+  width: 120px;
+  margin: 0 auto;
+}
+
+.backup-mnemonic-title {
+  font-size: 28px;
+  color: #353535;
+  margin: 30px auto 24px auto;
+}
+
+.backup-mnemonic-content {
+  padding: 0 20px;
+  font-size: 22px;
+  color: #999;
+}
+
+.backup-mnemonic-know {
+  width: 100%;
+  height: 80px;
+  font-size: 24px;
+  color: #fff !important;
+  margin: 50px 0 0 0;
+  background-color: #469af5 !important;
+}
+
+/* 助记词备份失败弹框 */
+
+.backup-fail-pop {
+  background-color: #fff;
+  text-align: center;
+  padding: 50px 0 0 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.backup-fail-pop img {
+  width: 90px;
+  margin: 0 auto;
+}
+
+.backup-fail-title {
+  font-size: 28px;
+  color: #353535;
+  margin: 30px auto 24px auto;
+}
+
+.backup-fail-content {
+  padding: 0 20px;
+  font-size: 22px;
+  color: #999;
+}
+
+.backup-fail-know {
+  width: 100%;
+  height: 80px;
+  font-size: 24px;
+  color: #fff !important;
+  margin: 40px 0 0 0;
+  background-color: #469af5 !important;
+}
+
+/* 助记词备份成功弹框  */
+
+.backup-success-pop {
+  background-color: #fff;
+  text-align: center;
+  padding: 50px 0 0 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.backup-success-pop img {
+  width: 90px;
+  margin: 0 auto;
+}
+
+.backup-success-title {
+  font-size: 28px;
+  color: #353535;
+  margin: 30px auto 24px auto;
+}
+
+.backup-success-content {
+  padding: 0 20px;
+  font-size: 22px;
+  color: #999;
+}
+
+.backup-success-confirm {
+  box-shadow: none;
+  float: left;
+  width: 50%;
+  height: 80px;
+  font-size: 24px;
+  color: #fff !important;
+  margin: 40px 0 0 0;
+  background-color: #469af5 !important;
+}
+
+.backup-success-cancel {
+  box-shadow: none;
+  float: left;
+  width: 50%;
+  height: 80px;
+  font-size: 24px;
+  color: #fff !important;
+  margin: 40px 0 0 0;
+  background-color: rgba(70, 154, 245, 0.4) !important;
+}
+
+/* .v-overlay {
+  background-color: rgba(0, 0, 0, 0.2);
+} */

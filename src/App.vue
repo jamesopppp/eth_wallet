@@ -1,11 +1,14 @@
 <template>
+<v-app>
   <div id="app">
       <router-view />
       <v-bottom-nav v-show="tab===0||tab===1||tab===2"/>
   </div>
+  </v-app>
 </template>
 
 <script>
+import { getStore, setStore, objIsNull, createWallet } from "@/config/utils";
 import { mapState } from "vuex";
 import vBottomNav from "./components/common/bottom-nav/bottom-nav";
 export default {
@@ -23,18 +26,15 @@ export default {
     }
   },
   created() {
-    let words = this.bip39.generateMnemonic(
-      128,
-      null,
-      this.bip39.wordlists.chinese_simplified
-    );
-    let seed = this.bip39.mnemonicToSeed(words);
-    let root = this.ethers.HDNode.fromSeed(seed);
-    var key1 = root.derivePath("m/44'/60'/0'/0/0");
-    let privateKey = key1.privateKey;
-    let wallet = new this.ethers.Wallet(privateKey);
-    this.$store.commit("SET_ADDRESS", wallet.address);
+    let password = "james";
+    let wallet = getStore("wallet");
+    if (objIsNull(wallet)) {
+      createWallet(password);
+    } else {
+      console.log(JSON.parse(wallet));
+    }
   },
+  methods: {},
   computed: {
     ...mapState(["tab"])
   },
