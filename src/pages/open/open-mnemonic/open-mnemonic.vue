@@ -41,7 +41,12 @@ export default {
   },
   methods: {
     goNext() {
-      this.$router.push({ name: "open-confirm" });
+      this.$router.push({
+        path: "open-confirm",
+        query: {
+          ...this.$route.query
+        }
+      });
     },
     know() {
       this.showTip = false;

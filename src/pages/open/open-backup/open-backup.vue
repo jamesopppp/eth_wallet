@@ -19,11 +19,17 @@ export default {
       checkbox: true
     };
   },
-  created() {},
+  created() {
+  },
   mounted() {},
   methods: {
     goNext() {
-      this.$router.push({ name: "open-mnemonic" });
+      this.$router.push({
+        path: "open-mnemonic",
+        query: {
+          ...this.$route.query
+        }
+      });
     }
   },
   components: {

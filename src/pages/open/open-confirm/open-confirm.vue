@@ -15,13 +15,13 @@
           <v-btn @click="checkWordList" class="create">确认</v-btn>
           <div v-show="failTip||successTip" class="dialog-shadow"></div>
       </div>
-      <v-dialog hide-overlay content-class="backup-fail-pop" persistent max-width="220" v-model="failTip">
+      <v-dialog content-class="backup-fail-pop" persistent max-width="220" v-model="failTip">
           <img src="../fail.png">
           <p class="backup-fail-title">备份失败</p>
           <p class="backup-fail-content">请检查你的助记词</p>
           <v-btn @click="failTip=false" class="backup-fail-know">返回检查</v-btn>
       </v-dialog>
-      <v-dialog hide-overlay content-class="backup-success-pop" persistent max-width="240" v-model="successTip">
+      <v-dialog content-class="backup-success-pop" persistent max-width="240" v-model="successTip">
           <img src="../success.png">
           <p class="backup-success-title">备份成功</p>
           <p class="backup-success-content">你备份的助记词顺序验证正确,是否从积微资产移除该助记词?</p>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { getStore, objIsNull } from "@/config/utils";
+import { getStore, setStore, removeStore, objIsNull } from "@/config/utils";
 import vHeader from "@/components/common/header-bar/header-bar";
 export default {
   data() {
@@ -66,15 +66,31 @@ export default {
       this.wordsList.push(word[0]);
     },
     confirm() {
-      this.$router.push({ name: "home" });
+      let wallet = this.$route.query;
+      let walletList = JSON.parse(getStore("walletList"));
+      let walletItem = JSON.parse(getStore("walletItem"));
+      this.$set(walletItem, "details", wallet);
+      if (objIsNull(walletList) || walletList.length == 0) {
+        let list = [];
+        list.push(walletItem);
+        setStore("walletList", list);
+      } else {
+        walletList.push(walletItem);
+        setStore("walletList", walletList);
+      }
+      removeStore("mnemonic");
+      removeStore("walletItem");
+      console.log(JSON.parse(getStore("walletList")));
+      this.$router.replace({ name: "home" });
     },
     checkWordList() {
       console.log(this.initialList);
-      if (this.selectList.toString() === this.initialList.toString()) {
-        this.successTip = true;
-      } else {
-        this.failTip = true;
-      }
+      this.successTip = true;
+      // if (this.selectList.toString() === this.initialList.toString()) {
+      //   this.successTip = true;
+      // } else {
+      //   this.failTip = true;
+      // }
     },
     shuffle(arr) {
       let length = arr.length,

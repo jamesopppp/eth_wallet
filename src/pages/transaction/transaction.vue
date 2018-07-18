@@ -28,8 +28,8 @@ export default {
     };
   },
   created() {
-    let wallet = JSON.parse(getStore("wallet"));
-    this.address = wallet.address;
+    let walletList = JSON.parse(getStore("walletList"));
+    this.address = walletList[0].wallet.address;
   },
   mounted() {
     this.$store.commit("SET_TAB", 1);

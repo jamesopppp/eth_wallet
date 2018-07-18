@@ -52,21 +52,21 @@ export const objIsNull = data => {
  * 判断值是否是空 是空返回true，不是空返回false；
  * @param data
  */
-export const createWallet = password => {
-  if (!password) {
-    return;
-  }
+export const createWallet = () => {
   console.log("start");
   let words = bip39.generateMnemonic(
     128,
     null,
     bip39.wordlists.chinese_simplified
   );
-  let seed = bip39.mnemonicToSeed(words, password);
+  let seed = bip39.mnemonicToSeed(words);
   let root = ethers.HDNode.fromSeed(seed);
   var key1 = root.derivePath("m/44'/60'/0'/0/0");
   let privateKey = key1.privateKey;
   let wallet = new ethers.Wallet(privateKey);
-  setStore('wallet', wallet);
+  let walletItem = {};
+  walletItem.wallet = wallet;
   setStore('mnemonic', words);
+  setStore('walletItem', walletItem);
+  return wallet;
 }

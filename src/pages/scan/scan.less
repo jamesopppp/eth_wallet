@@ -1,0 +1,38 @@
+#scan {
+    position: relative;
+    height: 100vh;
+    .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        // background-color: rgba(0, 0, 0, 0.4);
+        .box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -100px;
+            transform: translate3d(-50%, -50%, 0);
+            .borderBox {
+                width: 420px;
+            }
+            .shoud {
+                position: absolute;
+                bottom: 60px;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width: 30px;
+            }
+            .tip {
+                position: absolute;
+                bottom: 20px;
+                font-size: 22px;
+                color: #fff;
+                text-align: center;
+                width: 100%;
+            }
+        }
+    }
+}

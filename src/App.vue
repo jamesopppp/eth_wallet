@@ -25,15 +25,7 @@ export default {
       }
     }
   },
-  created() {
-    let password = "james";
-    let wallet = getStore("wallet");
-    if (objIsNull(wallet)) {
-      createWallet(password);
-    } else {
-      console.log(JSON.parse(wallet));
-    }
-  },
+  created() {},
   methods: {},
   computed: {
     ...mapState(["tab"])
@@ -49,6 +41,7 @@ html,
 body {
   height: 100vh;
   overflow: hidden;
+  background: transparent !important;
 }
 #app {
   color: #353535;

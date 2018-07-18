@@ -2,9 +2,6 @@
     background-color: #eee;
     height: 100vh;
     padding-bottom: 98px;
-    .vux-slider {
-        height: 100% !important;
-    }
     .wavesBox {
         position: relative;
         align-items: center;
@@ -120,10 +117,35 @@
         height: calc(~'100% - 464px'); // padding-bottom: 200px;
         animation-duration: 0.5s;
         overflow: auto;
-        .list-item {
+        .transaction {
+            overflow: hidden;
+            outline: none;
+            background-color: #81a8f6;
+            img {
+                width: 40px;
+            }
+            p {
+                font-size: 22px;
+                margin: 10px 0 0 0;
+            }
+        }
+        .receipt {
+            overflow: hidden;
+            outline: none;
+            background-color: #469af5;
+            img {
+                width: 40px;
+            }
+            p {
+                font-size: 22px;
+                margin: 10px 0 0 0;
+            }
+        }
+        .item {
             position: relative;
             height: 160px;
             background-color: #fff;
+            overflow: hidden;
             .name {
                 position: absolute;
                 font-size: 28px;
@@ -157,25 +179,25 @@
                 }
             }
         }
-        .list-item:nth-child(1) {
+        .list-item1 {
             img {
                 width: 60px;
                 transform: translate3d(0, -1260px, 0);
             }
         }
-        .list-item:nth-child(2) {
+        .list-item2 {
             img {
                 width: 60px;
                 transform: translate3d(0, -60px, 0);
             }
         }
-        .list-item:nth-child(3) {
+        .list-item3 {
             img {
                 width: 60px;
                 transform: translate3d(0, -1680px, 0);
             }
         }
-        .list-item:nth-child(4) {
+        .list-item4 {
             img {
                 width: 60px;
                 transform: translate3d(0, -780px, 0);
