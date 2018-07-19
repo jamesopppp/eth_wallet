@@ -78,6 +78,18 @@
             top: 0;
             text-align: center;
             color: #fff;
+            .menu {
+                position: absolute;
+                left: 30px;
+                top: 60px;
+                width: 34px;
+            }
+            .scan{
+                position: absolute;
+                right: 30px;
+                top: 60px;
+                width: 34px;
+            }
             p {
                 margin-bottom: 0;
             }
@@ -118,11 +130,11 @@
         animation-duration: 0.5s;
         overflow: auto;
         .transaction {
-            overflow: hidden;
             outline: none;
             background-color: #81a8f6;
             img {
-                width: 40px;
+                padding-top: 3px;
+                width: 32px;
             }
             p {
                 font-size: 22px;
@@ -130,11 +142,10 @@
             }
         }
         .receipt {
-            overflow: hidden;
             outline: none;
             background-color: #469af5;
             img {
-                width: 40px;
+                width: 32px;
             }
             p {
                 font-size: 22px;
@@ -215,6 +226,49 @@
                 transform: scaleY(0.5);
                 transform-origin: 0 0;
             }
+        }
+    }
+    .scanView {
+        position: relative;
+        height: 830px;
+        background-color: #fff;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+        .top {
+            position: relative;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            &>span:nth-child(1) {
+                font-size: 30px;
+                letter-spacing: 0.1em;
+                color: #353535;
+            }
+            &>span:nth-child(2) {
+                position: absolute;
+                font-size: 26px;
+                color: #469af5;
+                right: 0px;
+                padding: 0 40px;
+            }
+        }
+        .qrcode {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            width: 440px;
+            height: 440px;
+        }
+        .tip {
+            position: absolute;
+            bottom: 100px;
+            font-size: 24px;
+            color: #999;
+            width: 100%;
+            text-align: center;
         }
     }
 }

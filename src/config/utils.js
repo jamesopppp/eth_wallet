@@ -70,3 +70,15 @@ export const createWallet = () => {
   setStore('walletItem', walletItem);
   return wallet;
 }
+
+/**
+ * 生成二维码内容戳
+ * 地址,金额,币种
+ */
+export const generateQRtxt = (amount, token) => {
+  let walletList = JSON.parse(getStore("walletList"));
+  let initalAddress = walletList[0].wallet.address;
+  let icapAddress = ethers.utils.getAddress(initalAddress, true);
+  let scanTxt = `iban:${icapAddress}?amount=${amount}&token=${token}`;
+  return scanTxt;
+};

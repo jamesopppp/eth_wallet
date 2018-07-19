@@ -98,5 +98,14 @@ export default new Router({
     meta: {
       keepAlive: true
     }
+  }, {
+    path: '/transfer',
+    name: 'transfer',
+    component: function (resolve) {
+      require(['@/pages/transfer/transfer.vue'], resolve)
+    },
+    meta: {
+      keepAlive: true
+    }
   }]
 })

@@ -4,6 +4,8 @@
             <div class="box-bg">
             </div>
             <div class="view">
+              <img @click="openMenu" src="./more.png" class="menu">
+              <img @click="goScan" src="./scan.png" class="scan">
               <img class="logo" src="../../assets/images/default.png">
               <p class="name">{{name}}</p>
               <p class="code">{{address}}</p>
@@ -15,11 +17,11 @@
           <swipeout>
             <swipeout-item @on-close="handleEvents('on-close')" @on-open="handleEvents('on-open')" transition-mode="follow">
               <div slot="right-menu">
-                <swipeout-button class="transaction" @click.native="onButtonClick()">
+                <swipeout-button class="transaction" @click.native="transfer">
                   <img src="./transaction.png">
                   <p>转账</p>
                 </swipeout-button>
-                <swipeout-button class="receipt" @click.native="onButtonClick()">
+                <swipeout-button class="receipt" @click.native="showScan">
                   <img src="./shoukuan.png">
                   <p>收款</p>
                 </swipeout-button>
@@ -35,8 +37,43 @@
                 </div>
               </div>
             </swipeout-item>
+            <swipeout-item @on-close="handleEvents('on-close')" @on-open="handleEvents('on-open')" transition-mode="follow">
+              <div slot="right-menu">
+                <swipeout-button class="transaction" @click.native="transfer">
+                  <img src="./transaction.png">
+                  <p>转账</p>
+                </swipeout-button>
+                <swipeout-button class="receipt" @click.native="showScan(1)">
+                  <img src="./shoukuan.png">
+                  <p>收款</p>
+                </swipeout-button>
+              </div>
+              <div class="list-item3 item" v-ripple slot="content">
+                <p class="name">GTH</p>
+                <div class="logo">
+                  <img src="../../assets/images/logo.png">
+                </div>
+                <div class="money">
+                  <p>0.00</p>
+                  <p>-</p>
+                </div>
+              </div>
+            </swipeout-item>
           </swipeout>
         </div>
+        <popup hide-on-deactivated is-transparent v-model="scanShow" position="bottom">
+          <div class="scanView">
+            <div class="top">
+              <span>ETH转账</span>
+              <span @click="cancelShow">取消</span>
+            </div>
+            <qrcode class="qrcode" :value="QRval" tag="img" :options="{ size: 200 }"></qrcode>
+            <p class="tip">(正在使用ETH货币进行收款)</p>
+          </div>
+        </popup>
+        <v-navigation-drawer v-model="leftDrawer" fixed dark temporary>
+          1
+        </v-navigation-drawer>
   </div>
 </template>
 
@@ -46,16 +83,20 @@ import {
   SwiperItem,
   Swipeout,
   SwipeoutItem,
-  SwipeoutButton
+  SwipeoutButton,
+  Popup
 } from "vux";
 import { mapState } from "vuex";
-import { getStore } from "@/config/utils";
+import { getStore, generateQRtxt } from "@/config/utils";
 export default {
   name: "home",
   data() {
     return {
       address: "",
-      name: ""
+      name: "",
+      scanShow: false,
+      QRval: "GeeWer",
+      leftDrawer: false
     };
   },
   created() {
@@ -63,7 +104,6 @@ export default {
     let walletList = JSON.parse(getStore("walletList"));
     that.address = walletList[0].wallet.address;
     that.name = walletList[0].details.walletName;
-
     let provider = that.ethers.providers.getDefaultProvider("rinkeby");
     // let provider = that.ethers.providers.getDefaultProvider("homestead");
     provider.getBalance(that.address).then(function(balance) {
@@ -83,16 +123,35 @@ export default {
   },
   mounted() {
     this.$store.commit("SET_TAB", 0);
+    console.log(this.$router.options);
   },
   methods: {
     onButtonClick() {
-      this.$router.push({ name: "scan" });
+      this.scanShow = true;
     },
     handleEvents(type) {
       console.log("event: ", type);
     },
     goTab() {
       this.$router.push({ name: "transaction" });
+    },
+    cancelShow() {
+      this.scanShow = false;
+    },
+    goScan() {
+      this.$router.push({ name: "scan" });
+    },
+    openMenu() {
+      this.leftDrawer = true;
+    },
+    showScan(index) {
+      if (index === 1) {
+        this.QRval = generateQRtxt(100, "GTH");
+      }
+      this.scanShow = true;
+    },
+    transfer() {
+      this.$router.replace({ name: "transfer" });
     }
   },
   computed: {
@@ -103,7 +162,8 @@ export default {
     SwiperItem,
     Swipeout,
     SwipeoutItem,
-    SwipeoutButton
+    SwipeoutButton,
+    Popup
   }
 };
 </script>

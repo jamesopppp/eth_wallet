@@ -30,22 +30,24 @@ export default {
       }
       if (status.authorized) {
         alert("已授权");
+        QRScanner.show();
         QRScanner.scan(displayContents);
-        function displayContents(err, text) {
+        function displayContents(err, txt) {
           if (err) {
             console.error(err);
+            console.log("扫描报错");
           } else {
-            alert(text);
+            alert(txt);
+            that.setQRval(txt);
             QRScanner.disableLight();
             QRScanner.hide();
             QRScanner.cancelScan();
             QRScanner.destroy();
-            that.$router.go(-1);
+            that.$router.replace({ name: "transfer" });
           }
         }
-        QRScanner.show();
       } else if (status.denied) {
-        alert("被拒绝");
+        console.log("被拒绝");
       } else {
         console.log("下次再问");
       }
@@ -66,6 +68,28 @@ export default {
     close() {
       this.status = false;
       QRScanner.disableLight();
+    },
+    setQRval(txt) {
+      let amount, token;
+      let initalAddress = txt.split("?")[0].substr(5);
+      let address = this.ethers.utils.getAddress(initalAddress);
+      let valList = txt.split("?")[1].split("&");
+      for (let i = 0, len = valList.length; i < len; i++) {
+        let name = valList[i].split("=")[0];
+        let val = valList[i].split("=")[1];
+        if (name == "amount") {
+          amount = val;
+        }
+        if (name == "token") {
+          token = val;
+        }
+      }
+      let transfer = {
+        address: address,
+        amount: amount,
+        token: token
+      };
+      this.$store.commit("SET_TRANSFER", transfer);
     }
   },
   components: {

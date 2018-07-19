@@ -3,8 +3,8 @@
       <div class="qr-view fadeInUp animated">
         <img class="avatars bounceIn animated" src="../../assets/images/default.png">
         <qrcode class="qrcode" :value="address" tag="img" :options="{ size: 200 }"></qrcode>
-        <p class="ethCode">{{address}}</p>
-        <v-btn class="copy" v-clipboard:copy="address"
+        <p class="ethCode">{{showAddress}}</p>
+        <v-btn class="copy" v-clipboard:copy="showAddress"
       v-clipboard:success="onCopy"
       v-clipboard:error="onError">复制收款地址</v-btn>
       </div>
@@ -18,18 +18,23 @@
 </template>
 
 <script>
-import { getStore } from "@/config/utils";
+import { getStore, generateQRtxt } from "@/config/utils";
 export default {
   name: "transaction",
   data() {
     return {
       showTip: false,
-      address: ""
+      address: "",
+      showAddress: ""
     };
   },
   created() {
     let walletList = JSON.parse(getStore("walletList"));
-    this.address = walletList[0].wallet.address;
+    let address = walletList[0].wallet.address;
+    let scanTxt = generateQRtxt(0, "ETH");
+    this.address = scanTxt;
+    this.showAddress = address;
+    console.log(scanTxt);
   },
   mounted() {
     this.$store.commit("SET_TAB", 1);

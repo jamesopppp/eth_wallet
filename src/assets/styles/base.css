@@ -1,5 +1,5 @@
-.vux-swiper {
-  height: 100% !important;
+* {
+  user-select: none;
 }
 
 /* 转入弹框 */
