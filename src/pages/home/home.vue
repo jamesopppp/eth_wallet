@@ -87,7 +87,14 @@ import {
   Popup
 } from "vux";
 import { mapState } from "vuex";
-import { getStore, generateQRtxt } from "@/config/utils";
+import {
+  getStore,
+  generateQRtxt,
+  getErc20Balance,
+  transferEth,
+  generateData
+} from "@/config/utils";
+import abi from "@/config/abi";
 export default {
   name: "home",
   data() {
@@ -103,6 +110,7 @@ export default {
     let that = this;
     let walletList = JSON.parse(getStore("walletList"));
     that.address = walletList[0].wallet.address;
+    let privateKey = walletList[0].wallet.privateKey;
     that.name = walletList[0].details.walletName;
     let provider = that.ethers.providers.getDefaultProvider("rinkeby");
     // let provider = that.ethers.providers.getDefaultProvider("homestead");
@@ -120,10 +128,33 @@ export default {
 
       console.log("Current gas price: " + gasPriceString);
     });
+
+    let token = "0x78A413Dc24E7e8cb41f66D7f1e2CB400bE012dbc";
+    getErc20Balance(token, this.address).then(function(result) {
+      let balance = result.toNumber() / 100000000;
+      console.log(balance);
+    });
+
+    let address = "0x512d7759bc92018928149f082dfe9EF74FEB2EA4";
+    let money = "500";
+    let data = generateData(address, money);
+    console.log(data);
+    // let targetAddress = "0x512d7759bc92018928149f082dfe9EF74FEB2EA4";
+    // let amount = "0.1";
+    // transferEth(privateKey, "rinkeby", targetAddress, amount).then(function(
+    //   hx
+    // ) {
+    //   console.log("交易成功: ", hx);
+    // });
+
+    // let provider1 = new this.ethers.providers.EtherscanProvider();
+    // provider1.getEtherPrice().then(function(price) {
+    //   console.log("Ether price in USD: " + price);
+    // });
   },
   mounted() {
     this.$store.commit("SET_TAB", 0);
-    console.log(this.$router.options);
+    // console.log(this.$router.options);
   },
   methods: {
     onButtonClick() {
@@ -151,7 +182,7 @@ export default {
       this.scanShow = true;
     },
     transfer() {
-      this.$router.replace({ name: "transfer" });
+      this.$router.push({ name: "transfer" });
     }
   },
   computed: {

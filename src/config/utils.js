@@ -1,5 +1,6 @@
 import bip39 from 'bip39';
 import ethers from 'ethers';
+import abi from './abi';
 /**
  * 存储localStorage
  */
@@ -81,4 +82,76 @@ export const generateQRtxt = (amount, token) => {
   let icapAddress = ethers.utils.getAddress(initalAddress, true);
   let scanTxt = `iban:${icapAddress}?amount=${amount}&token=${token}`;
   return scanTxt;
+};
+
+
+/**
+ * 获取 Erc20 TOKEN 余额
+ * 传入 TOKEN地址, 钱包地址
+ * 返回余额
+ */
+export const getErc20Balance = (token, address) => {
+  let balance = 0;
+  let provider = ethers.providers.getDefaultProvider("rinkeby");
+  let contract = new ethers.Contract(token, abi, provider);
+  return contract.balanceOf(address);
+};
+
+/**
+ * 传入地址补0
+ * 
+ * 返回64位 补0地址
+ */
+export const addressPadZero = (address) => {
+  let data = address.substr(2);
+  let zeroAddress = data.padStart(64, '0');
+  return zeroAddress;
+};
+
+/**
+ * 传入金额补0
+ * 返回64位 补0金额戳
+ */
+export const moneyPadZero = (amount) => {
+  let data = String(amount * Math.pow(10, 8));
+  let zeroAmount = data.padStart(64, '0');
+  return zeroAmount;
+};
+
+/**
+ * 传入转账地址,转账金额
+ * 返回交易的data串
+ */
+export const generateData = (address, amount) => {
+  let dataAddress = address.substr(2);
+  let zeroAddress = dataAddress.padStart(64, '0');
+
+  let dataAmount = String(amount * Math.pow(10, 8));
+  let zeroAmount = dataAmount.padStart(64, '0');
+
+  let data = "0xa9059cbb" + zeroAddress + zeroAmount;
+  return data;
+};
+
+
+/**
+ * 交易eth以太坊币
+ * 传入 私钥,服务器地址昵称,收款地址,金额
+ * 回调返回交易哈希值
+ */
+export const transferEth = (privateKey, providerName, address, amount) => {
+  console.log(privateKey, providerName, address, amount);
+  let wallet = new ethers.Wallet(privateKey);
+  wallet.provider = ethers.providers.getDefaultProvider(providerName);
+
+  let transaction = {
+    gasLimit: 1000000,
+    to: address,
+    data: "0x",
+    value: ethers.utils.parseEther(amount)
+  };
+
+  let sendTransactionPromise = wallet.sendTransaction(transaction);
+
+  return sendTransactionPromise;
 };

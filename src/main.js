@@ -14,9 +14,9 @@ import './assets/styles/base.css'
 import {
   objIsNull
 } from './config/utils';
-import Vconsole from 'vconsole'
+// import Vconsole from 'vconsole'
 
-const vConsole = new Vconsole();
+// const vConsole = new Vconsole();
 
 router.beforeEach((to, from, next) => {
   let walletList = JSON.parse(localStorage.getItem("walletList"));
