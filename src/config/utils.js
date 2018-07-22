@@ -155,3 +155,20 @@ export const transferEth = (privateKey, providerName, address, amount) => {
 
   return sendTransactionPromise;
 };
+
+
+/**
+ * 判断方法
+ * 判断是否有钱包账户
+ * 有就返回 true 否就 false
+ */
+export const isOwnAccount = () => {
+  let walletList = JSON.parse(getStore('walletList'));
+  let flag = false;
+  if (!objIsNull(walletList)) {
+    if (walletList.length > 0) {
+      flag = true;
+    }
+  }
+  return flag;
+};

@@ -92,7 +92,8 @@ import {
   generateQRtxt,
   getErc20Balance,
   transferEth,
-  generateData
+  generateData,
+  isOwnAccount
 } from "@/config/utils";
 import abi from "@/config/abi";
 export default {
@@ -114,31 +115,38 @@ export default {
     that.name = walletList[0].details.walletName;
     let provider = that.ethers.providers.getDefaultProvider("rinkeby");
     // let provider = that.ethers.providers.getDefaultProvider("homestead");
-    provider.getBalance(that.address).then(function(balance) {
-      let etherString = that.ethers.utils.formatEther(balance);
-      that.$store.commit("SET_BALANCE", etherString);
-      console.log("Balance: " + etherString);
-    });
-    provider.getTransactionCount(that.address).then(function(transactionCount) {
-      console.log("Total Transactions Ever Send: " + transactionCount);
-    });
 
-    provider.getGasPrice().then(function(gasPrice) {
-      let gasPriceString = gasPrice.toString();
+    //获取eth余额
+    // provider.getBalance(that.address).then(function(balance) {
+    //   let etherString = that.ethers.utils.formatEther(balance);
+    //   that.$store.commit("SET_BALANCE", etherString);
+    //   console.log("Balance: " + etherString);
+    // });
+    // provider.getTransactionCount(that.address).then(function(transactionCount) {
+    //   console.log("Total Transactions Ever Send: " + transactionCount);
+    // });
 
-      console.log("Current gas price: " + gasPriceString);
-    });
+    // 获取燃油价格
+    // provider.getGasPrice().then(function(gasPrice) {
+    //   let gasPriceString = gasPrice.toString();
 
-    let token = "0x78A413Dc24E7e8cb41f66D7f1e2CB400bE012dbc";
-    getErc20Balance(token, this.address).then(function(result) {
-      let balance = result.toNumber() / 100000000;
-      console.log(balance);
-    });
+    //   console.log("Current gas price: " + gasPriceString);
+    // });
 
-    let address = "0x512d7759bc92018928149f082dfe9EF74FEB2EA4";
-    let money = "500";
-    let data = generateData(address, money);
-    console.log(data);
+    // 获取erc20 token 余额
+    // let token = "0x78A413Dc24E7e8cb41f66D7f1e2CB400bE012dbc";
+    // getErc20Balance(token, this.address).then(function(result) {
+    //   let balance = result.toNumber() / 100000000;
+    //   console.log(balance);
+    // });
+
+    // 生成交易 erc20 token 所需data
+    // let address = "0x512d7759bc92018928149f082dfe9EF74FEB2EA4";
+    // let money = "500";
+    // let data = generateData(address, money);
+    // console.log(data);
+
+    //交易 eth
     // let targetAddress = "0x512d7759bc92018928149f082dfe9EF74FEB2EA4";
     // let amount = "0.1";
     // transferEth(privateKey, "rinkeby", targetAddress, amount).then(function(
@@ -151,10 +159,10 @@ export default {
     // provider1.getEtherPrice().then(function(price) {
     //   console.log("Ether price in USD: " + price);
     // });
+
   },
   mounted() {
     this.$store.commit("SET_TAB", 0);
-    // console.log(this.$router.options);
   },
   methods: {
     onButtonClick() {

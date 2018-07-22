@@ -33,6 +33,12 @@
           </div>
           <v-btn class="next">提交</v-btn>
       </div>
+      <v-dialog content-class="transfer-success-pop" persistent max-width="220" v-model="submitPop">
+          <img src="./logo.png">
+          <p class="transfer-success-title">提交成功</p>
+          <p class="transfer-success-content">转账申请已提交,请留意账户变动</p>
+          <v-btn @click="submitPop=false" class="transfer-success-know">我知道了</v-btn>
+      </v-dialog>
   </div>
 </template>
 
@@ -48,7 +54,8 @@ export default {
       sliderVal: 10,
       address: "",
       amount: 0,
-      token: "ETH"
+      token: "ETH",
+      submitPop: false
     };
   },
   created() {

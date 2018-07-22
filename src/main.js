@@ -12,25 +12,30 @@ import VueClipboard from 'vue-clipboard2';
 import '../static/fontclass/iconfont.css';
 import './assets/styles/base.css'
 import {
-  objIsNull
+  isOwnAccount
 } from './config/utils';
 // import Vconsole from 'vconsole'
 
 // const vConsole = new Vconsole();
+const whiteList = ['/open-home', '/open-create', '/open-backup', '/open-mnemonic', '/open-confirm'];
 
 router.beforeEach((to, from, next) => {
-  let walletList = JSON.parse(localStorage.getItem("walletList"));
-  if (to.meta.requireWallet) { // 判断该路由是否有钱包
-    if (!objIsNull(walletList) && walletList.length > 0) { // 通过vuex state获取当前的token是否存在
-      next();
-    } else {
-      next({
-        path: '/open-home',
+  if (whiteList.indexOf(to.path) !== -1) {
+    if (from.path == '/home') {
+      router.push({
+        name: "home"
       })
     }
   } else {
-    next();
+    if (isOwnAccount()) {
+      next();
+    } else {
+      next({
+        path: "/open-home"
+      });
+    }
   }
+  next();
 })
 
 Vue.config.productionTip = false;
