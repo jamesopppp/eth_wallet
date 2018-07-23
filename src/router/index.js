@@ -107,6 +107,15 @@ const router = new Router({
     meta: {
       keepAlive: true
     }
+  }, {
+    path: '/addBit',
+    name: 'addBit',
+    component: function (resolve) {
+      require(['@/pages/addBit/addBit.vue'], resolve)
+    },
+    meta: {
+      keepAlive: true
+    }
   }]
 })
 

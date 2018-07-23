@@ -84,7 +84,7 @@
                 top: 60px;
                 width: 34px;
             }
-            .scan{
+            .scan {
                 position: absolute;
                 right: 30px;
                 top: 60px;
@@ -99,7 +99,7 @@
                 border-radius: 50%;
             }
             .name {
-                margin-top: 30px;
+                margin-top: 10px;
                 font-size: 30px;
             }
             .code {
@@ -108,7 +108,7 @@
             }
             .qc {
                 width: 40px;
-                margin: 20px 0 0 0;
+                margin: 5px 0 0 0;
             }
             .money {
                 span:nth-child(1) {
@@ -122,6 +122,16 @@
                     margin-left: 20px;
                     font-size: 32px;
                 }
+            }
+            .add{
+                margin: 15px auto 0 auto;
+                text-align: center;
+                line-height: 60px;
+                width: 128px;
+                height: 60px;
+                border: 1px solid #fff;
+                border-radius: 32px;
+                font-size: 26px;
             }
         }
     }
@@ -161,7 +171,7 @@
                 position: absolute;
                 font-size: 28px;
                 color: #000;
-                left: 150px;
+                left: 130px;
                 line-height: 160px;
             }
             .logo {
@@ -269,6 +279,74 @@
             color: #999;
             width: 100%;
             text-align: center;
+        }
+    }
+    .leftDrawer {
+        width: 520px !important;
+        padding: 0;
+        .leftView {
+            position: relative;
+            height: 100%;
+            background-color: #fff;
+            .head {
+                height: 420px;
+                background: url(./left-header.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                -moz-background-size: 100% 100%;
+                text-align: center;
+                padding: 0 40px;
+                .avatar {
+                    margin-top: 120px;
+                    width: 100px;
+                    border-radius: 50%;
+                }
+                p:nth-child(2) {
+                    margin-top: 20px;
+                    font-size: 34px;
+                    color: #fff;
+                }
+                p:nth-child(3) {
+                    font-size: 22px;
+                    color: #fff;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+            .view-list {
+                // margin-top: 50px;
+                .view-item {
+                    height: 120px;
+                    line-height: 120px;
+                    padding-left: 100px;
+                    span {
+                        margin-left: 50px;
+                        font-size: 28px;
+                        color: #666;
+                    }
+                }
+                .view-item:nth-child(1) {
+                    img {
+                        width: 26px;
+                    }
+                }
+                .view-item:nth-child(2) {
+                    img {
+                        width: 30px;
+                    }
+                }
+                .view-item:nth-child(3) {
+                    img {
+                        width: 28px;
+                    }
+                }
+                .view-item:nth-child(4) {
+                    img {
+                        width: 32px;
+                    }
+                }
+            }
         }
     }
 }

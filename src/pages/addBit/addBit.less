@@ -1,0 +1,59 @@
+.addBit {
+    height: 100vh;
+    background-color: #75b7ff;
+    background: -webkit-linear-gradient(#75b7ff, #469af5);
+    background: -o-linear-gradient(#75b7ff, #469af5);
+    background: -moz-linear-gradient(#75b7ff, #469af5);
+    background: linear-gradient(#75b7ff, #469af5);
+    padding-top: 136px;
+    .addBit-view {
+        position: relative;
+        height: 100%;
+        overflow: auto;
+        background-color: #fff;
+        .item {
+            position: relative;
+            height: 190px;
+            overflow: hidden;
+            padding-left: 150px;
+            padding-right: 150px;
+            img {
+                position: absolute;
+                left: 30px;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                border-radius: 50%;
+                width: 100px;
+            }
+            .content {
+                position: relative;
+                height: 100%;
+                span:nth-child(1) {
+                    position: absolute;
+                    top: 30px;
+                    font-size: 34px;
+                    color: #353535;
+                }
+                p {
+                    margin-bottom: 0;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 30px;
+                    font-size: 24px;
+                    color: #999;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+            .item-switch {
+                position: absolute;
+                margin: 0;
+                top: 50%;
+                transform: translateY(-30%);
+                right: 30px;
+            }
+        }
+    }
+}

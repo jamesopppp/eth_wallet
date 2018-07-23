@@ -29,7 +29,7 @@ export default {
         console.error(err);
       }
       if (status.authorized) {
-        alert("已授权");
+        // alert("已授权");
         QRScanner.show();
         QRScanner.scan(displayContents);
         function displayContents(err, txt) {
@@ -37,7 +37,7 @@ export default {
             console.error(err);
             console.log("扫描报错");
           } else {
-            alert(txt);
+            // alert(txt);
             that.setQRval(txt);
             QRScanner.disableLight();
             QRScanner.hide();
