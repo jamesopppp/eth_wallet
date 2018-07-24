@@ -27,7 +27,7 @@
               <v-slider :min="minVal" :max="maxVal" inverse-label v-model="sliderVal"></v-slider>
               <div class="slider-tip">
                   <span>慢</span>
-                  <span>{{sliderVal}} ether</span>
+                  <span>{{computSliderVal}} ether</span>
                   <span>快</span>
               </div>
           </div>
@@ -52,12 +52,14 @@
 import { objIsNull, transferEth, generateData, getStore } from "@/config/utils";
 import { mapState } from "vuex";
 import abi from "@/config/abi";
+import currencyList from "@/config/currencyList";
 import vHeader from "@/components/common/header-bar/header-bar";
+import { createECDH } from "crypto";
 export default {
   data() {
     return {
-      maxVal: 10,
-      minVal: 0,
+      maxVal: 100,
+      minVal: 1,
       sliderVal: 0,
       address: "",
       amount: 0,
@@ -66,7 +68,10 @@ export default {
       toast: false,
       text: "",
       loading: false,
-      balance_gtk: 0
+      ercBalance: 0,
+      contractAddress: "",
+      computSliderVal: 0,
+      costPrice: 0
     };
   },
   created() {
@@ -74,24 +79,60 @@ export default {
     if (Object.keys(that.transfer).length != 0) {
       that.address = that.transfer.address;
       that.amount = that.transfer.amount;
-      that.token = that.transfer.token;
+      that.token = that.transfer.token.toUpperCase();
     }
 
-    let walletList = JSON.parse(getStore("walletList"));
-    let address = walletList[0].wallet.address;
-    let provider = that.ethers.providers.getDefaultProvider("rinkeby");
-    let token = "0x78A413Dc24E7e8cb41f66D7f1e2CB400bE012dbc";
-    let contract = new that.ethers.Contract(token, abi, provider);
-    contract.balanceOf(address).then(function(balance) {
-      that.balance_gtk = balance.toNumber() / 100000000;
-      console.log(that.balance_gtk);
-    });
+    if (that.token != "ETH") {
+      that.getBalance();
+    }
+    that.getPrice();
   },
-  mounted() {},
   beforeDestroy() {
     this.$store.commit("SET_TRANSFER", {});
   },
+  watch: {
+    sliderVal(val) {
+      this.computSliderVal = (val / Math.pow(10, 9) * 25200).toFixed(8);
+      this.costPrice = this.ethers.utils.bigNumberify(val * Math.pow(10, 9));
+      console.log(val * Math.pow(10, 9));
+    }
+  },
   methods: {
+    getBalance() {
+      let that = this;
+      for (let i = 0, len = currencyList.length; i < len; i++) {
+        if (that.token == currencyList[i].token) {
+          that.contractAddress = currencyList[i].contract;
+          break;
+        }
+      }
+
+      let walletList = JSON.parse(getStore("walletList"));
+      let address = walletList[0].wallet.address;
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      let contract = new that.ethers.Contract(
+        that.contractAddress,
+        abi,
+        provider
+      );
+      contract.balanceOf(address).then(function(balance) {
+        that.ercBalance = balance.toNumber() / 100000000;
+        console.log(that.token + "余额: " + that.ercBalance);
+      });
+    },
+    getPrice() {
+      let that = this;
+      that.sliderVal = 5.68;
+      that.costPrice = that.ethers.utils.formatEther(5.68 * Math.pow(10, 9));
+
+      let provider = that.ethers.providers.getDefaultProvider();
+      provider.getGasPrice().then(function(gasPrice) {
+        // gasPrice is a BigNumber; convert it to a decimal string
+        let gasPriceString = gasPrice.toString();
+
+        console.log("Current gas price: " + gasPriceString);
+      });
+    },
     submit() {
       let that = this;
       if (objIsNull(that.address)) {
@@ -106,7 +147,6 @@ export default {
       }
       let walletList = JSON.parse(getStore("walletList"));
       let privateKey = walletList[0].wallet.privateKey;
-      let providerName = "rinkeby";
       let address = walletList[0].wallet.address;
       if (that.token == "ETH") {
         if (that.amount > that.balance) {
@@ -114,37 +154,49 @@ export default {
           that.toast = true;
           return;
         } else {
+          let wallet = new ethers.Wallet(privateKey);
+          wallet.provider = ethers.providers.getDefaultProvider(that.provider);
+          let transaction = {
+            gasLimit: 25200,
+            to: that.address,
+            data: "0x",
+            gasPrice: that.costPrice,
+            value: ethers.utils.parseEther(amount)
+          };
           that.loading = true;
-          transferEth(privateKey, providerName, that.address, that.amount).then(
-            function(res) {
-              that.loading = false;
-              that.submitPop = true;
-              console.log(res);
-            }
-          );
+          wallet.sendTransaction(transaction).then(function(transactionHash) {
+            console.log("交易成功");
+            console.log("交易gasLimit: " + transactionHash.gasLimit.toNumber());
+            console.log("交易gasPrice: " + transactionHash.gasPrice.toNumber());
+            that.loading = false;
+            that.submitPop = true;
+          });
         }
-      }
-      if (that.token == "GTK") {
-        if (that.amount > that.balance_gtk) {
-          that.text = "GTK余额不足";
+      } else {
+        if (that.amount > that.ercBalance) {
+          that.text = that.token + " 余额不足";
           that.toast = true;
           return;
         } else {
           var wallet = new that.ethers.Wallet(privateKey);
-          wallet.provider = that.ethers.providers.getDefaultProvider("rinkeby");
+          wallet.provider = that.ethers.providers.getDefaultProvider(
+            that.provider
+          );
           let trData = generateData(that.address, that.amount);
-          console.log(trData);
           var transaction = {
             data: trData,
-            to: "0x78A413Dc24E7e8cb41f66D7f1e2CB400bE012dbc"
+            to: that.contractAddress,
+            gasLimit: 25200,
+            gasPrice: that.costPrice
           };
-
-          var estimateGasPromise = wallet.estimateGas(transaction);
           that.loading = true;
+
           var sendTransactionPromise = wallet.sendTransaction(transaction);
 
           sendTransactionPromise.then(function(transactionHash) {
-            console.log(transactionHash);
+            console.log("交易成功");
+            console.log("交易gasLimit: " + transactionHash.gasLimit.toNumber());
+            console.log("交易gasPrice: " + transactionHash.gasPrice.toNumber());
             that.loading = false;
             that.submitPop = true;
           });

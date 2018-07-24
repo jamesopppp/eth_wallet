@@ -68,15 +68,7 @@ export const createWallet = () => {
   let wallet = new ethers.Wallet(privateKey);
   let walletItem = {};
   walletItem.wallet = wallet;
-  let bitList = [];
-  for (let i = 1, len = currencyList.length; i < len; i++) {
-    let bitItem = {};
-    bitItem.token = currencyList[i].token;
-    bitItem.isOpen = false;
-    bitList.push(bitItem);
-  }
-  walletItem.isFirstIn = false;
-  walletItem.bitList = bitList;
+  walletItem.isFirstIn = true;
   setStore('mnemonic', words);
   setStore('walletItem', walletItem);
   return wallet;
@@ -93,29 +85,6 @@ export const generateQRtxt = (amount, token) => {
   let scanTxt = `iban:${icapAddress}?amount=${amount}&token=${token}`;
   return scanTxt;
 };
-
-
-/**
- * 获取 Erc20 TOKEN 余额
- * 传入 TOKEN地址, 钱包地址
- * 返回余额
- */
-export const getErc20Balance = (address, providerName) => {
-  let provider = ethers.providers.getDefaultProvider(providerName);
-  let balanceList = [];
-  for (let i = 1, len = currencyList.length - 1; i < len; i++) {
-    let balanceItem = {};
-    let token = currencyList[i].contract;
-    let contract = new ethers.Contract(token, abi, provider);
-    contract.balanceOf(address).then(function (balance) {
-      balanceItem.token = currencyList[i].token;
-      balanceItem.balance = balance;
-      balanceList.push(balanceItem);
-    })
-  }
-  return balanceList;
-};
-
 
 /**
  * 传入地址补0

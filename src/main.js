@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
   }
   next();
 })
-
+Vue.prototype.provider = "rinkeby";
 Vue.config.productionTip = false;
 Vue.prototype.bip39 = bip39;
 Vue.prototype.ethers = ethers;

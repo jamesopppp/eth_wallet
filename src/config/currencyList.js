@@ -1,7 +1,4 @@
 const currencyList = [{
-  token: 'ETH',
-  contract: '0x'
-}, {
   token: 'GTK',
   contract: '0x78A413Dc24E7e8cb41f66D7f1e2CB400bE012dbc'
 }]
