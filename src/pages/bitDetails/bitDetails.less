@@ -1,0 +1,184 @@
+.bitDetails {
+    height: 100vh;
+    .bitDetails-header {
+        height: 266px;
+        background-color: #75b7ff;
+        background: -webkit-linear-gradient(#75b7ff, #469af5);
+        background: -o-linear-gradient(#75b7ff, #469af5);
+        background: -moz-linear-gradient(#75b7ff, #469af5);
+        background: linear-gradient(#75b7ff, #469af5);
+        padding-top: 136px;
+        .bit-message {
+            height: 130px;
+            line-height: 130px;
+            color: #fff;
+            padding: 0 30px;
+            span:nth-child(1) {
+                font-size: 40px;
+            }
+            span:nth-child(2) {
+                float: right;
+                font-size: 36px;
+            }
+        }
+    }
+    .bitDetails-view {
+        position: relative;
+        height: calc(~'100% - 266px');
+        overflow: hidden;
+        background-color: #fff;
+        padding-bottom: 100px;
+        .list-title {
+            padding: 0 30px;
+            height: 60px;
+            line-height: 60px;
+            font-size: 24px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+        .list-view {
+            padding: 0 30px;
+            overflow-y: auto;
+            height: calc(~'100% - 90px');
+            .list-item {
+                position: relative;
+                height: 150px;
+                img {
+                    position: absolute;
+                    width: 66px;
+                    border-radius: 50%;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                }
+                .content {
+                    height: 100%;
+                    position: relative;
+                    margin-left: 100px;
+                    margin-right: 200px;
+                    span:nth-child(1) {
+                        position: absolute;
+                        width: 100%;
+                        top: 20px;
+                        font-size: 26px;
+                        color: #666;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                    span:nth-child(2) {
+                        position: absolute;
+                        bottom: 20px;
+                        font-size: 24px;
+                        color: #666;
+                    }
+                }
+                .amount {
+                    position: absolute;
+                    top: 20px;
+                    right: 0;
+                    color: #499cf6;
+                    font-size: 26px;
+                }
+            }
+            .loadMore {
+                text-align: center;
+                font-size: 24px;
+                color: #666;
+                line-height: 100px;
+                margin-bottom: 0;
+            }
+            .list-item+.list-item {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    margin: auto;
+                    background: #eee;
+                    width: 100%;
+                    height: 1px;
+                    right: 0;
+                    left: 0;
+                    -webkit-transform: scaleY(0.5);
+                    transform: scaleY(0.5);
+                    -webkit-transform-origin: 0 0;
+                    transform-origin: 0 0;
+                }
+            }
+        }
+    }
+    .bottom-bar {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100px;
+        display: flex;
+        text-align: center;
+        line-height: 100px;
+        &>div {
+            flex: 1;
+            span {
+                font-size: 26px;
+                color: #fff;
+                margin-left: 10px;
+            }
+        }
+        div:nth-child(1) {
+            background-color: #7290db;
+            img {
+                width: 40px;
+                vertical-align: middle;
+            }
+        }
+        div:nth-child(2) {
+            background-color: #4d9ff6;
+            img {
+                width: 30px;
+                vertical-align: middle;
+            }
+        }
+    }
+    .scanView {
+        position: relative;
+        height: 830px;
+        background-color: #fff;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+        .top {
+            position: relative;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            &>span:nth-child(1) {
+                font-size: 30px;
+                letter-spacing: 0.1em;
+                color: #353535;
+            }
+            &>span:nth-child(2) {
+                position: absolute;
+                font-size: 26px;
+                color: #469af5;
+                right: 0px;
+                padding: 0 40px;
+            }
+        }
+        .qrcode {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            width: 440px;
+            height: 440px;
+        }
+        .tip {
+            position: absolute;
+            bottom: 100px;
+            font-size: 24px;
+            color: #999;
+            width: 100%;
+            text-align: center;
+        }
+    }
+}

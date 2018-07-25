@@ -116,6 +116,15 @@ const router = new Router({
     meta: {
       keepAlive: true
     }
+  }, {
+    path: '/bitDetails',
+    name: 'bitDetails',
+    component: function (resolve) {
+      require(['@/pages/bitDetails/bitDetails.vue'], resolve)
+    },
+    meta: {
+      keepAlive: true
+    }
   }]
 })
 

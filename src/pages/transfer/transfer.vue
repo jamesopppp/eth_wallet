@@ -31,7 +31,7 @@
                   <span>快</span>
               </div>
           </div>
-          <v-btn :disabled="loading" :loading="loading"  @click="submit" class="next">提交</v-btn>
+          <v-btn @click="submit" class="next">提交</v-btn>
       </div>
       <v-dialog content-class="transfer-success-pop" persistent max-width="220" v-model="submitPop">
           <img src="./logo.png">
@@ -45,10 +45,45 @@
           关闭
         </v-btn>
       </v-snackbar>
+      <popup hide-on-deactivated is-transparent v-model="readyPay" position="bottom">
+          <div class="readyPayView">
+            <div class="top">
+              <span>支付详情</span>
+              <span @click="readyPay=false">取消</span>
+            </div>
+            <div class="list">
+              <div class="item">
+                <span class="name">订单类型</span>
+                <span class="text">转账</span>
+              </div>
+              <div class="item">
+                <span class="name">转入地址</span>
+                <span class="address">{{address}}</span>
+              </div>
+              <div class="item">
+                <span class="name">付款钱包</span>
+                <span class="address">{{myAddress}}</span>
+              </div>
+              <div class="item">
+                <span class="name">矿工费</span>
+                <div class="payMoney">
+                  <p>{{computSliderVal}} ETH</p>
+                  <p>Gas(25200) * Gas Price({{sliderVal.toFixed(2)}} gwei)</p>
+                </div>
+              </div>
+              <div class="item">
+                <span class="name">金额</span>
+                <span class="money">{{amount}} {{token}}</span>
+              </div>
+            </div>
+            <v-btn :disabled="loading" :loading="loading" @click="confirmPay" class="confirm">确认</v-btn>
+          </div>
+      </popup>
   </div>
 </template>
 
 <script>
+import { Popup } from "vux";
 import { objIsNull, transferEth, generateData, getStore } from "@/config/utils";
 import { mapState } from "vuex";
 import abi from "@/config/abi";
@@ -62,6 +97,7 @@ export default {
       minVal: 1,
       sliderVal: 0,
       address: "",
+      myAddress: "",
       amount: 0,
       token: "ETH",
       submitPop: false,
@@ -71,21 +107,29 @@ export default {
       ercBalance: 0,
       contractAddress: "",
       computSliderVal: 0,
-      costPrice: 0
+      costPrice: 0,
+      readyPay: false,
+      willPay: 0,
+      balance: 0
     };
   },
   created() {
     let that = this;
     if (Object.keys(that.transfer).length != 0) {
-      that.address = that.transfer.address;
+      // that.address = that.transfer.address;
       that.amount = that.transfer.amount;
       that.token = that.transfer.token.toUpperCase();
+
+      that.address = "0x7fFB7F4061b826d458c5df187f8533c6E4c864bA";
     }
 
+    let walletList = JSON.parse(getStore("walletList"));
+    that.myAddress = walletList[0].wallet.address;
     if (that.token != "ETH") {
       that.getBalance();
     }
     that.getPrice();
+    that.getEthBalance();
   },
   beforeDestroy() {
     this.$store.commit("SET_TRANSFER", {});
@@ -94,10 +138,16 @@ export default {
     sliderVal(val) {
       this.computSliderVal = (val / Math.pow(10, 9) * 25200).toFixed(8);
       this.costPrice = this.ethers.utils.bigNumberify(val * Math.pow(10, 9));
-      console.log(val * Math.pow(10, 9));
     }
   },
   methods: {
+    getEthBalance() {
+      let that = this;
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      provider.getBalance(that.myAddress).then(function(balance) {
+        that.balance = balance;
+      });
+    },
     getBalance() {
       let that = this;
       for (let i = 0, len = currencyList.length; i < len; i++) {
@@ -107,17 +157,16 @@ export default {
         }
       }
 
-      let walletList = JSON.parse(getStore("walletList"));
-      let address = walletList[0].wallet.address;
       let provider = that.ethers.providers.getDefaultProvider(that.provider);
       let contract = new that.ethers.Contract(
         that.contractAddress,
         abi,
         provider
       );
-      contract.balanceOf(address).then(function(balance) {
-        that.ercBalance = balance.toNumber() / 100000000;
-        console.log(that.token + "余额: " + that.ercBalance);
+      contract.balanceOf(that.myAddress).then(function(balance) {
+        let power = that.ethers.utils.bigNumberify(Math.pow(10, 10));
+        that.ercBalance = balance.mul(power);
+        console.log(that.token + "余额: " + balance.toNumber() / 100000000);
       });
     },
     getPrice() {
@@ -125,13 +174,101 @@ export default {
       that.sliderVal = 5.68;
       that.costPrice = that.ethers.utils.formatEther(5.68 * Math.pow(10, 9));
 
-      let provider = that.ethers.providers.getDefaultProvider();
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
       provider.getGasPrice().then(function(gasPrice) {
         // gasPrice is a BigNumber; convert it to a decimal string
         let gasPriceString = gasPrice.toString();
 
         console.log("Current gas price: " + gasPriceString);
       });
+    },
+    confirmPay() {
+      let that = this;
+      let walletList = JSON.parse(getStore("walletList"));
+      let privateKey = walletList[0].wallet.privateKey;
+      let wallet = new that.ethers.Wallet(privateKey);
+      let trData, transaction;
+      wallet.provider = that.ethers.providers.getDefaultProvider(that.provider);
+      if (that.token == "ETH") {
+        console.log("ETH交易");
+        transaction = {
+          // gasLimit: 200000,
+          to: that.address,
+          data: "0x",
+          gasPrice: that.costPrice,
+          value: that.ethers.utils.parseEther(that.amount)
+        };
+        that.loading = true;
+        wallet.estimateGas(transaction).then(function(gasEstimate) {
+          transaction.gasLimit = gasEstimate;
+          that.willPay = gasEstimate.mul(that.costPrice);
+          let willAmount = that.ethers.utils.parseUnits(that.amount);
+          if (that.balance.sub(that.willPay).lt(willAmount)) {
+            console.log("不够余额发起支付");
+            that.loading = false;
+            that.readyPay = false;
+            that.text = "ETH 余额不足";
+            that.toast = true;
+            return;
+          } else {
+            wallet.sendTransaction(transaction).then(function(transactionHash) {
+              console.log("交易成功");
+              console.log(
+                "交易gasLimit: " + transactionHash.gasLimit.toNumber()
+              );
+              console.log(
+                "交易gasPrice: " + transactionHash.gasPrice.toNumber()
+              );
+              that.readyPay = false;
+              that.loading = false;
+              that.submitPop = true;
+            });
+          }
+        });
+      } else {
+        console.log(that.token + "交易");
+        trData = generateData(that.address, that.amount);
+        transaction = {
+          data: trData,
+          to: that.contractAddress,
+          gasPrice: that.costPrice
+        };
+        that.loading = true;
+        let willAmount = that.ethers.utils.parseUnits(that.amount);
+        if (that.ercBalance.lt(willAmount)) {
+          console.log("不够余额发起支付");
+          that.loading = false;
+          that.readyPay = false;
+          that.text = that.token + " 余额不足";
+          that.toast = true;
+          return;
+        }
+        wallet.estimateGas(transaction).then(function(gasEstimate) {
+          transaction.gasLimit = gasEstimate;
+          that.willPay = gasEstimate.mul(that.costPrice);
+          if (that.balance.lt(that.willPay)) {
+            console.log("不够余额发起支付");
+            that.loading = false;
+            that.readyPay = false;
+            that.text = "ETH 余额不足";
+            that.toast = true;
+            return;
+          } else {
+            wallet.sendTransaction(transaction).then(function(transactionHash) {
+              console.log("交易成功");
+              console.log(
+                "交易gasLimit: " + transactionHash.gasLimit.toNumber()
+              );
+              console.log(
+                "交易gasPrice: " + transactionHash.gasPrice.toNumber()
+              );
+              that.readyPay = false;
+              that.loading = false;
+              that.submitPop = true;
+            });
+          }
+        });
+      }
     },
     submit() {
       let that = this;
@@ -145,70 +282,15 @@ export default {
         that.toast = true;
         return;
       }
-      let walletList = JSON.parse(getStore("walletList"));
-      let privateKey = walletList[0].wallet.privateKey;
-      let address = walletList[0].wallet.address;
-      if (that.token == "ETH") {
-        if (that.amount > that.balance) {
-          that.text = "ETH余额不足";
-          that.toast = true;
-          return;
-        } else {
-          let wallet = new ethers.Wallet(privateKey);
-          wallet.provider = ethers.providers.getDefaultProvider(that.provider);
-          let transaction = {
-            gasLimit: 25200,
-            to: that.address,
-            data: "0x",
-            gasPrice: that.costPrice,
-            value: ethers.utils.parseEther(amount)
-          };
-          that.loading = true;
-          wallet.sendTransaction(transaction).then(function(transactionHash) {
-            console.log("交易成功");
-            console.log("交易gasLimit: " + transactionHash.gasLimit.toNumber());
-            console.log("交易gasPrice: " + transactionHash.gasPrice.toNumber());
-            that.loading = false;
-            that.submitPop = true;
-          });
-        }
-      } else {
-        if (that.amount > that.ercBalance) {
-          that.text = that.token + " 余额不足";
-          that.toast = true;
-          return;
-        } else {
-          var wallet = new that.ethers.Wallet(privateKey);
-          wallet.provider = that.ethers.providers.getDefaultProvider(
-            that.provider
-          );
-          let trData = generateData(that.address, that.amount);
-          var transaction = {
-            data: trData,
-            to: that.contractAddress,
-            gasLimit: 25200,
-            gasPrice: that.costPrice
-          };
-          that.loading = true;
-
-          var sendTransactionPromise = wallet.sendTransaction(transaction);
-
-          sendTransactionPromise.then(function(transactionHash) {
-            console.log("交易成功");
-            console.log("交易gasLimit: " + transactionHash.gasLimit.toNumber());
-            console.log("交易gasPrice: " + transactionHash.gasPrice.toNumber());
-            that.loading = false;
-            that.submitPop = true;
-          });
-        }
-      }
+      that.readyPay = true;
     }
   },
   components: {
-    vHeader
+    vHeader,
+    Popup
   },
   computed: {
-    ...mapState(["transfer", "balance"])
+    ...mapState(["transfer"])
   },
   props: {}
 };

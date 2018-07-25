@@ -2,6 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import Vuetify from 'vuetify';
+import axios from 'axios';
 import store from './store/store';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'animate.css';
@@ -37,6 +38,9 @@ router.beforeEach((to, from, next) => {
   }
   next();
 })
+
+Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
+Vue.prototype.$axios = axios;
 Vue.prototype.provider = "rinkeby";
 Vue.config.productionTip = false;
 Vue.prototype.bip39 = bip39;

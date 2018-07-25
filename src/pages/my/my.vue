@@ -25,7 +25,7 @@
           <span>联系人</span>
           <i class="iconfont icon-xiangzuojiantou backArrow"></i>
         </div>
-        <div class="option-item" v-ripple>
+        <!-- <div class="option-item" v-ripple>
           <img class="option-icon" src="../../assets/images/my-setting.svg">
           <span>系统设置</span>
           <i class="iconfont icon-xiangzuojiantou backArrow"></i>
@@ -39,7 +39,7 @@
           <img class="option-icon" src="../../assets/images/my-help.svg">
           <span>帮助中心</span>
           <i class="iconfont icon-xiangzuojiantou backArrow"></i>
-        </div>
+        </div> -->
         <div class="option-item" v-ripple @click="goAbout">
           <img class="option-icon" src="../../assets/images/my-about.svg">
           <span>关于我们</span>

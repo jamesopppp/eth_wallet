@@ -29,7 +29,7 @@
                   <p>收款</p>
                 </swipeout-button>
               </div>
-              <div class="list-item2 item" v-ripple slot="content">
+              <div @click="goDetails('ETH')" class="list-item2 item" v-ripple slot="content">
                 <p class="name">ETH</p>
                 <div class="logo">
                   <img src="../../assets/images/logo.png">
@@ -50,7 +50,7 @@
                   <p>收款</p>
                 </swipeout-button>
               </div>
-              <div class="list-item2 item" v-ripple slot="content">
+              <div @click="goDetails(item.token)" class="list-item2 item" v-ripple slot="content">
                 <p class="name">{{item.token}}</p>
                 <div class="logo">
                   <img src="../../assets/images/logo.png">
@@ -103,14 +103,7 @@
 </template>
 
 <script>
-import {
-  Swiper,
-  SwiperItem,
-  Swipeout,
-  SwipeoutItem,
-  SwipeoutButton,
-  Popup
-} from "vux";
+import { Swipeout, SwipeoutItem, SwipeoutButton, Popup } from "vux";
 import { mapState } from "vuex";
 import { getStore, generateQRtxt, setStore, objIsNull } from "@/config/utils";
 import abi from "@/config/abi";
@@ -145,6 +138,15 @@ export default {
     setStore("walletList", that.bitList);
   },
   methods: {
+    goDetails(token) {
+      let reToken = token.toUpperCase();
+      this.$router.push({
+        path: "bitDetails",
+        query: {
+          token: reToken
+        }
+      });
+    },
     onButtonClick() {
       this.scanShow = true;
     },
@@ -241,8 +243,6 @@ export default {
     ...mapState(["balance"])
   },
   components: {
-    Swiper,
-    SwiperItem,
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
