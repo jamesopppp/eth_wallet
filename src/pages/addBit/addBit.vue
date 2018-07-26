@@ -2,7 +2,7 @@
   <div class="addBit">
       <v-header title="添加新资产"></v-header>
       <div class="addBit-view">
-          <div class="item">
+          <div class="item fadeInUp animated">
               <img src="../../assets/images/default.png">
               <div class="content">
                   <span>ETH</span>
@@ -10,7 +10,7 @@
               </div>
               <v-switch class="item-switch" disabled v-model="eth"></v-switch>
           </div>
-          <div v-for="(item,index) in addList" :key="index" class="item">
+          <div v-for="(item,index) in addList" :key="index" class="item fadeInUp animated">
               <img src="../../assets/images/default.png">
               <div class="content">
                   <span>{{item.token}}</span>
@@ -40,11 +40,13 @@ export default {
     that.bitList = walletList[0].bitList;
     for (let i = 0, len = currencyList.length; i < len; i++) {
       let item = {};
+      let bitItem = {};
       item.token = currencyList[i].token;
       item.contract = currencyList[i].contract;
       if (objIsNull(that.bitList[i])) {
-        that.bitList[i].isOpen = false;
-        that.bitList[i].token = currencyList[i].token;
+        bitItem.isOpen = false;
+        bitItem.token = currencyList[i].token;
+        that.bitList.push(bitItem);
         item.isOpen = false;
       } else {
         item.isOpen = that.bitList[i].isOpen;

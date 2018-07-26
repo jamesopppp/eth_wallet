@@ -123,7 +123,7 @@
                     font-size: 32px;
                 }
             }
-            .add{
+            .add {
                 margin: 15px auto 0 auto;
                 text-align: center;
                 line-height: 60px;
@@ -139,6 +139,9 @@
         height: calc(~'100% - 464px'); // padding-bottom: 200px;
         animation-duration: 0.5s;
         overflow: auto;
+        .moveItem {
+            animation-duration: 0.8s;
+        }
         .transaction {
             outline: none;
             background-color: #81a8f6;
@@ -282,7 +285,7 @@
         }
     }
     .leftDrawer {
-        width: 520px !important;
+        width: 500px !important;
         padding: 0;
         .leftView {
             position: relative;
@@ -317,18 +320,24 @@
             .view-list {
                 // margin-top: 50px;
                 .view-item {
+                    position: relative;
                     height: 120px;
                     line-height: 120px;
                     padding-left: 100px;
                     span {
-                        margin-left: 50px;
+                        position: absolute;
+                        left: 170px;
                         font-size: 28px;
                         color: #666;
+                        letter-spacing: 0.05em;
+                    }
+                    img{
+                        vertical-align: sub;
                     }
                 }
                 .view-item:nth-child(1) {
                     img {
-                        width: 26px;
+                        width: 28px;
                     }
                 }
                 .view-item:nth-child(2) {
@@ -343,7 +352,17 @@
                 }
                 .view-item:nth-child(4) {
                     img {
-                        width: 32px;
+                        width: 30px;
+                    }
+                }
+                .view-item:nth-child(5) {
+                    img {
+                        width: 28px;
+                    }
+                }
+                .view-item:nth-child(6) {
+                    img {
+                        width: 36px;
                     }
                 }
             }

@@ -1,7 +1,7 @@
 <template>
   <div class="bitDetails">
       <v-header title="交易记录"></v-header>
-      <div class="bitDetails-header">
+      <div class="bitDetails-header fadeIn animated">
           <div class="bit-message">
               <span>{{token}}</span>
               <span>{{amount}}</span>
@@ -10,18 +10,21 @@
       <div class="bitDetails-view">
           <p class="list-title">交易记录</p>
           <div class="list-view">
-              <div class="list-item" :key="item.nonce" v-for="(item,index) in transformList">
+              <div @click="goDetails(item)" v-ripple class="list-item fadeInUp animated" :key="item.hash" v-for="item in transformList">
                   <img src="../../assets/images/default.png">
                   <div class="content">
-                      <span>0x8as898s8d8as8d77as7d77asasdasdasdasdd</span>
-                      <span>12日前</span>
+                      <span>{{item.hash}}</span>
+                      <span>{{getTime(item.timeStamp)}}</span>
                   </div>
-                  <span class="amount">+10.000 GTK</span>
+                  <span class="amount">{{getAmountStatus(item.from)}} {{getTransferAmount(item.value,item.input)}} {{token=='ETH'?'ether':token}}</span>
               </div>
-              <p class="loadMore">加载更多</p>
+              <p v-show="loadOver" class="loadMore">记录已加载完毕</p>
+              <p v-show="noRecord" class="loadMore">还没有交易记录哟~</p>
+              <p @click="loadMoreList" v-show="loadMore" class="loadMore">加载更多</p>
+              <v-progress-circular v-show="loading" class="circular" indeterminate></v-progress-circular>
           </div>
       </div>
-      <div class="bottom-bar">
+      <div class="bottom-bar fadeInUp animated">
           <div v-ripple @click="goTransfer">
               <img src="./transfer.png">
               <span>转账</span>
@@ -47,7 +50,13 @@
 <script>
 import { mapState } from "vuex";
 import { Popup } from "vux";
-import { getStore, generateQRtxt, objIsNull } from "@/config/utils";
+import {
+  getStore,
+  generateQRtxt,
+  objIsNull,
+  formartTimeStamp,
+  formartTranstionData
+} from "@/config/utils";
 import vHeader from "@/components/common/header-bar/header-bar";
 import currencyList from "@/config/currencyList";
 import abi from "@/config/abi";
@@ -61,12 +70,23 @@ export default {
       contractAddress: "0x",
       myAddress: "",
       pageNumber: 1,
-      pageSize: 19,
-      transformList: {}
+      pageSize: 8,
+      transformList: [],
+      loading: false,
+      loadMore: false,
+      noRecord: false,
+      loadOver: false,
+      netAddress: ""
     };
   },
   created() {
     let that = this;
+    if (that.provider.toString() === "homestead") {
+      that.netAddress = "http://api.etherscan.io/api";
+    }
+    if (this.provider.toString() === "rinkeby") {
+      that.netAddress = "http://api-rinkeby.etherscan.io/api";
+    }
     let walletList = JSON.parse(getStore("walletList"));
     that.myAddress = walletList[0].wallet.address;
     if (!objIsNull(that.$route.query.token)) {
@@ -78,6 +98,7 @@ export default {
       that.getErcRecord();
     } else {
       that.amount = that.balance;
+      that.getAllRecord();
     }
   },
   mounted() {},
@@ -104,6 +125,17 @@ export default {
         console.log(that.token + "余额: " + ercBalance);
       });
     },
+    getTime(timeStamp) {
+      let date = formartTimeStamp(timeStamp);
+      return date;
+    },
+    loadMoreList() {
+      if (this.token == "ETH") {
+        this.getAllRecord();
+      } else {
+        this.getErcRecord();
+      }
+    },
     cancelShow() {
       this.scanShow = false;
     },
@@ -120,29 +152,125 @@ export default {
       this.$store.commit("SET_TRANSFER", transfer);
       this.$router.push({ name: "transfer" });
     },
-    getErcRecord() {
+    getAllRecord() {
       let that = this;
+      that.loadMore = false;
+      that.loading = true;
+      that.pageSize = 20;
       that.$axios
-        .get("http://api-rinkeby.etherscan.io/api", {
+        .get(that.netAddress, {
           params: {
             module: "account",
-            action: "tokentx",
-            contractaddress: that.contractAddress,
+            action: "txlist",
+            address: that.myAddress,
+            startblock: 0,
+            endblock: "latest",
             page: that.pageNumber,
             offset: that.pageSize,
-            sort: "des",
+            sort: "desc",
             apikey: that.ApiKeyToken
           }
         })
         .then(function(res) {
-          console.log(res);
-          if (res.status == 200) {
-            that.transformList = res.data.result;
-          }
+          console.log("ETH交易请求成功,当前pageNumber: " + that.pageNumber);
+          console.log("交易result: ", res);
+          setTimeout(() => {
+            if (res.status == 200) {
+              let data = res.data.result;
+              let totalList = [];
+              if (data.length != 0) {
+                for (let i = 0, len = data.length; i < len; i++) {
+                  if (data[i].value != 0) {
+                    totalList.push(data[i]);
+                  }
+                }
+                that.transformList = that.transformList.concat(totalList);
+                that.loading = false;
+                that.loadMore = true;
+              } else {
+                that.loading = false;
+                if (that.transformList.length === 0) {
+                  that.noRecord = true;
+                } else {
+                  that.loadOver = true;
+                }
+              }
+              that.pageNumber++;
+              console.log("筛选后result: ", totalList);
+            }
+          }, 1000);
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    getErcRecord() {
+      let that = this;
+      that.pageSize = 10;
+      that.loadMore = false;
+      that.loading = true;
+      that.$axios
+        .get(that.netAddress, {
+          params: {
+            module: "account",
+            action: "tokentx",
+            contractaddress: that.contractAddress,
+            address: that.myAddress,
+            page: that.pageNumber,
+            offset: that.pageSize,
+            sort: "desc",
+            apikey: that.ApiKeyToken
+          }
+        })
+        .then(function(res) {
+          console.log("erc20交易请求成功,当前pageNumber: " + that.pageNumber);
+          console.log("交易result: ", res);
+          setTimeout(() => {
+            if (res.status == 200) {
+              let data = res.data.result;
+              let totalList = [];
+              if (data.length != 0) {
+                that.transformList = that.transformList.concat(data);
+                that.loading = false;
+                that.loadMore = true;
+              } else {
+                that.loading = false;
+                if (that.transformList.length === 0) {
+                  that.noRecord = true;
+                } else {
+                  that.loadOver = true;
+                }
+              }
+              that.pageNumber++;
+              console.log("筛选后result: ", data);
+            }
+          }, 1000);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    getTransferAmount(value, input) {
+      let amount = 0;
+      if (input.toString() === "0x") {
+        amount = parseFloat(this.ethers.utils.formatUnits(value)).toFixed(3);
+      } else {
+        amount = formartTranstionData(input);
+      }
+      return amount;
+    },
+    getAmountStatus(address) {
+      let status = "+";
+      if (
+        address.toString().toLowerCase() ===
+        this.myAddress.toString().toLowerCase()
+      ) {
+        status = "-";
+      }
+      return status;
+    },
+    goDetails(item) {
+      this.$router.push({ path: "orderDetails", query: { data: item } });
     }
   },
   components: {

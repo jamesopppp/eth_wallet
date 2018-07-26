@@ -125,6 +125,15 @@ const router = new Router({
     meta: {
       keepAlive: true
     }
+  }, {
+    path: '/orderDetails',
+    name: 'orderDetails',
+    component: function (resolve) {
+      require(['@/pages/orderDetails/orderDetails.vue'], resolve)
+    },
+    meta: {
+      keepAlive: true
+    }
   }]
 })
 

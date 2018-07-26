@@ -198,3 +198,36 @@ export const getBitBalance = (token, address, providerName) => {
   }
   return balance;
 };
+
+/**
+ * 时间戳转换
+ * 传入时间戳
+ * 返回 yyyy-mm-dd HH-mm-ss
+ */
+export const formartTimeStamp = (timestamp) => {
+  let date = new Date(timestamp * 1000); //如果date为13位不需要乘1000
+  let Y = date.getFullYear() + '-';
+  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+  let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+  let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+  let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+  let s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+  return Y + M + D + h + m + s;
+};
+
+/**
+ * 交易data计算金额
+ * 传入data(input)串
+ * 返回 交易金额
+ */
+export const formartTranstionData = (data) => {
+  let type = data.substr(0, 10);
+  let amount;
+  let amountData = parseInt(data.substr(74), 16);
+  if (type.toString() !== '0xa9059cbb') {
+    amount = 0;
+  } else {
+    amount = (amountData / Math.pow(10, 8)).toFixed(3);
+  }
+  return amount;
+};

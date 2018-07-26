@@ -3,7 +3,7 @@
         <div class="wavesBox fadeInDown animated">
             <div class="box-bg">
             </div>
-            <div class="view">
+            <div v-ripple class="view">
               <img @click="openMenu" src="./more.png" class="menu">
               <img @click="goScan" src="./scan.png" class="scan">
               <img class="logo" src="../../assets/images/default.png">
@@ -18,7 +18,7 @@
         </div>
         <div class="bitList fadeInUp animated">
           <swipeout>
-            <swipeout-item transition-mode="follow">
+            <swipeout-item class="moveItem flipInX animated" transition-mode="follow">
               <div slot="right-menu">
                 <swipeout-button class="transaction" @click.native="transfer('ETH')">
                   <img src="./transaction.png">
@@ -35,11 +35,11 @@
                   <img src="../../assets/images/logo.png">
                 </div>
                 <div class="money">
-                  <p>{{balance_eth}} eth</p>
+                  <p>&asymp; {{balance_eth}} eth</p>
                 </div>
               </div>
             </swipeout-item>
-            <swipeout-item :key="index" v-for="(item,index) in erc20BalanceList" transition-mode="follow">
+            <swipeout-item class="moveItem flipInX animated" :key="index" v-for="(item,index) in erc20BalanceList" transition-mode="follow">
               <div slot="right-menu">
                 <swipeout-button class="transaction" @click.native="transfer(item.token)">
                   <img src="./transaction.png">
@@ -56,7 +56,7 @@
                   <img src="../../assets/images/logo.png">
                 </div>
                 <div class="money">
-                  <p>{{item.balance}} {{item.token?item.token.toLowerCase():''}}</p>
+                  <p>&asymp; {{item.balance}} {{item.token?item.token.toLowerCase():''}}</p>
                 </div>
               </div>
             </swipeout-item>
@@ -74,7 +74,7 @@
         </popup>
         <v-navigation-drawer class="leftDrawer" v-model="leftDrawer" fixed temporary>
           <div class="leftView">
-            <div class="head">
+            <div v-ripple class="head">
               <img class="avatar" src="../../assets/images/default.png"> 
               <p>{{name}}</p>
               <p>{{address}}</p>
@@ -95,6 +95,14 @@
               <div class="view-item" v-ripple>
                 <img src="./keystore.png">
                 <span>导出KeyStore</span>
+              </div>
+              <div class="view-item" v-ripple>
+                <img src="./sign.png">
+                <span>通证发行</span>
+              </div>
+              <div class="view-item" v-ripple>
+                <img src="./buyeth.png">
+                <span>ETH购买</span>
               </div>
             </div>
           </div>
@@ -120,15 +128,16 @@ export default {
       balance_eth: 0,
       erc20BalanceList: [],
       token: "ETH",
-      bitList: []
+      bitList: [],
+      loadingStaus: false
     };
   },
   mounted() {
     let that = this;
     that.$store.commit("SET_TAB", 0);
-    let walletList = JSON.parse(getStore("walletList"));
-    that.address = walletList[0].wallet.address;
-    that.name = walletList[0].details.walletName;
+    that.bitList = JSON.parse(getStore("walletList"));
+    that.address = that.bitList[0].wallet.address;
+    that.name = that.bitList[0].details.walletName;
     that.getEthBalance(that.provider);
     that.getErcBalance(that.provider);
   },
@@ -190,7 +199,6 @@ export default {
     },
     getErcBalance(providerName) {
       let that = this;
-      that.bitList = JSON.parse(getStore("walletList"));
       let provider = that.ethers.providers.getDefaultProvider(providerName);
       let isFirstIn = that.bitList[0].isFirstIn;
       let bitList = [];

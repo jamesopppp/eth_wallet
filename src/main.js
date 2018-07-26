@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
 Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
 Vue.prototype.$axios = axios;
 Vue.prototype.provider = "rinkeby";
+// Vue.prototype.provider = "homestead";
 Vue.config.productionTip = false;
 Vue.prototype.bip39 = bip39;
 Vue.prototype.ethers = ethers;

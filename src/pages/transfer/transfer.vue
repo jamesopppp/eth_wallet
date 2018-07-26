@@ -116,11 +116,9 @@ export default {
   created() {
     let that = this;
     if (Object.keys(that.transfer).length != 0) {
-      // that.address = that.transfer.address;
+      that.address = that.transfer.address;
       that.amount = that.transfer.amount;
       that.token = that.transfer.token.toUpperCase();
-
-      that.address = "0x7fFB7F4061b826d458c5df187f8533c6E4c864bA";
     }
 
     let walletList = JSON.parse(getStore("walletList"));

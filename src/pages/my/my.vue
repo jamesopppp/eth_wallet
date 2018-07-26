@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="option-list fadeInDown animated">
+      <div class="option-list fadeInUp animated">
         <div class="option-item" v-ripple>
           <img class="option-icon" src="../../assets/images/my-message.svg">
           <span>消息中心</span>

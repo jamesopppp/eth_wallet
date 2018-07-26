@@ -2,11 +2,13 @@
     height: 100vh;
     .bitDetails-header {
         height: 266px;
+        animation-duration: 1.2s;
         background-color: #75b7ff;
         background: -webkit-linear-gradient(#75b7ff, #469af5);
         background: -o-linear-gradient(#75b7ff, #469af5);
         background: -moz-linear-gradient(#75b7ff, #469af5);
         background: linear-gradient(#75b7ff, #469af5);
+        transition: all 2s;
         padding-top: 136px;
         .bit-message {
             height: 130px;
@@ -34,15 +36,19 @@
             line-height: 60px;
             font-size: 24px;
             color: #999;
-            margin-bottom: 30px;
+            margin-bottom: 0;
         }
         .list-view {
-            padding: 0 30px;
+            padding: 0 0 40px 0;
             overflow-y: auto;
-            height: calc(~'100% - 90px');
+            height: calc(~'100% - 60px');
+            text-align: center;
             .list-item {
+                padding: 0 30px;
+                text-align: left;
                 position: relative;
                 height: 150px;
+                animation-duration: 0.4s;
                 img {
                     position: absolute;
                     width: 66px;
@@ -76,7 +82,7 @@
                 .amount {
                     position: absolute;
                     top: 20px;
-                    right: 0;
+                    right: 30px;
                     color: #499cf6;
                     font-size: 26px;
                 }
@@ -88,14 +94,19 @@
                 line-height: 100px;
                 margin-bottom: 0;
             }
+            .circular {
+                margin: 50px auto 0 auto;
+                width: 34px !important;
+                height: 34px !important;
+                color: #499cf6;
+            }
             .list-item+.list-item {
                 &::before {
                     content: '';
                     position: absolute;
                     top: 0;
-                    margin: auto;
+                    margin: 0 30px;
                     background: #eee;
-                    width: 100%;
                     height: 1px;
                     right: 0;
                     left: 0;
@@ -115,6 +126,7 @@
         display: flex;
         text-align: center;
         line-height: 100px;
+        animation-duration: 0.6s;
         &>div {
             flex: 1;
             span {
