@@ -2,7 +2,7 @@
   <div class="addBit">
       <v-header title="添加新资产"></v-header>
       <div class="addBit-view">
-          <div class="item fadeInUp animated">
+          <div v-ripple class="item fadeInUp animated">
               <img src="../../assets/images/default.png">
               <div class="content">
                   <span>ETH</span>

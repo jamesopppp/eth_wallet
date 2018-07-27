@@ -4,6 +4,12 @@
       <router-view />
       <v-bottom-nav v-show="tab===0||tab===1||tab===2"/>
   </div>
+  <v-snackbar class="backButton" v-model="backButton" color="info" :timeout="1200">
+      再点击一次退出App
+      <v-btn dark flat @click="backButton = false">
+        关闭
+      </v-btn>
+  </v-snackbar>
   </v-app>
 </template>
 
@@ -11,11 +17,15 @@
 import { getStore, setStore, objIsNull, createWallet } from "@/config/utils";
 import { mapState } from "vuex";
 import vBottomNav from "./components/common/bottom-nav/bottom-nav";
+import { EALREADY } from "constants";
 export default {
   name: "App",
   data() {
     return {
-      bottomNav: "recent"
+      backButton: false,
+      beginDate: 0,
+      endDate: 0,
+      isToast: false
     };
   },
   watch: {
@@ -23,10 +33,34 @@ export default {
       if (to.name != "home" && to.name != "transaction" && to.name != "my") {
         this.$store.commit("SET_TAB", 3);
       }
+      if (
+        to.name == "home" ||
+        to.name == "transaction" ||
+        to.name == "my" ||
+        to.name == "open-home"
+      ) {
+        document.addEventListener("backbutton", this.onBackKeyDown, false);
+      } else {
+        document.removeEventListener("backbutton", this.onBackKeyDown, false);
+      }
     }
   },
   created() {},
-  methods: {},
+  mounted() {},
+  methods: {
+    onBackKeyDown() {
+      this.endDate = new Date().getTime();
+      if (this.isToast && this.endDate - this.beginDate < 2000) {
+        this.beginDate = this.endDate;
+        this.isToast = false;
+        navigator.app.exitApp();
+      } else {
+        this.backButton = true;
+        this.beginDate = new Date().getTime();
+        this.isToast = true;
+      }
+    },
+  },
   computed: {
     ...mapState(["tab"])
   },
@@ -46,5 +80,17 @@ body {
 #app {
   color: #353535;
   font-family: normal, "Microsoft YaHei", Arial, Helvetica, sans-serif, "宋体";
+}
+.backButton {
+  font-size: 24px;
+  height: 90px;
+  border-radius: 5px;
+  line-height: 90px;
+  width: 60%;
+  margin: 0 auto 5px auto;
+  overflow: hidden;
+  .v-btn__content{
+    font-size: 24px;
+  }
 }
 </style>

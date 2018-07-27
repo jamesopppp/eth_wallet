@@ -1,7 +1,7 @@
 <template>
   <div id="open-confirm">
       <v-header title="备份助记词"></v-header>
-      <div class="view">
+      <div class="view fadeInUp animated">
           <p class="confirm-title">确认你的钱包助记词</p>
           <p class="confirm-content">
               请按顺序点击助记词,以确认你的备份助记词正确。

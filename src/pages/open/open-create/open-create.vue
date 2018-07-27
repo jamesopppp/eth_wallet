@@ -1,7 +1,7 @@
 <template>
   <div id="open-create">
       <v-header title="创建钱包"></v-header>
-      <div class="view">
+      <div class="view fadeInUp animated">
           <p class="titile">钱包名称：</p>
           <input v-model="name" type="text" placeholder="请输入钱包名称">
           <p class="titile">密码：</p>
@@ -17,7 +17,7 @@
               <span>我已经仔细阅读并同意</span><span>《服务及隐私条款》</span>
           </div>
           <v-btn :disabled="createDialog" :loading="createDialog" @click="goNext" :class="!checkbox?'noSelect':''" class="create">确认创建</v-btn>
-          <span class="import">我有钱包,直接导入</span>
+          <span class="import fadeIn animated">我有钱包,直接导入</span>
           <v-snackbar :timeout="1500" auto-height color="info" bottom v-model="toast">
             {{ text }}
             <v-btn dark flat @click="toast = false">

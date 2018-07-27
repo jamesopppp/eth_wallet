@@ -12,6 +12,7 @@
   "dependencies": {
     "@xkeshi/vue-qrcode": "^1.0.0",
     "animate.css": "^3.6.1",
+    "better-scroll": "^1.12.5",
     "bip39": "^2.5.0",
     "cssnano": "^4.0.1",
     "ethers": "^3.0.25",

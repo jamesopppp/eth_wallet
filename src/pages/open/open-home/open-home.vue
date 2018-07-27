@@ -1,6 +1,7 @@
 <template>
   <div id="open-home">
-    <img class="logo" src="./logo.png">
+    <img class="bg" src="./bg.png">
+    <img class="logo fadeInDown animated" src="./logo.png">
     <v-btn @click="goNext" class="create">创建钱包</v-btn>
   </div>
 </template>
