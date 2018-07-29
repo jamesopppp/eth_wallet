@@ -3,6 +3,9 @@ import App from './App';
 import router from './router';
 import Vuetify from 'vuetify';
 import axios from 'axios';
+// import {
+//   Loadmore
+// } from 'mint-ui'
 import store from './store/store';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'animate.css';
@@ -49,6 +52,7 @@ Vue.prototype.ethers = ethers;
 Vue.use(Vuetify);
 Vue.use(VueClipboard);
 Vue.component('qrcode', VueQrcode);
+// Vue.component('v-loadmore', Loadmore);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

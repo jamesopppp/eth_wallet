@@ -91,7 +91,9 @@ export default {
     that.myAddress = walletList[0].wallet.address;
     if (!objIsNull(that.$route.query.token)) {
       that.token = that.$route.query.token;
+      that.contractAddress = that.$route.query.contract;
       console.log("当前token: ", that.token);
+      console.log("当前contract: ", that.contractAddress);
     }
     if (that.token != "ETH") {
       that.getBalance();
@@ -105,12 +107,6 @@ export default {
   methods: {
     getBalance() {
       let that = this;
-      for (let i = 0, len = currencyList.length; i < len; i++) {
-        if (that.token == currencyList[i].token) {
-          that.contractAddress = currencyList[i].contract;
-          break;
-        }
-      }
       let walletList = JSON.parse(getStore("walletList"));
       let address = walletList[0].wallet.address;
       let provider = that.ethers.providers.getDefaultProvider(that.provider);

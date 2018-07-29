@@ -1,16 +1,21 @@
 <template>
-<v-app>
   <div id="app">
-      <router-view />
+    <v-app>
+      <keep-alive >
+        <router-view v-if="$route.meta.keepAlive"/>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <!-- <router-view></router-view> -->
       <v-bottom-nav v-show="tab===0||tab===1||tab===2"/>
+      <v-snackbar class="backButton" v-model="backButton" color="info" :timeout="1200">
+        再点击一次退出App
+        <v-btn dark flat @click="backButton = false">
+          关闭
+        </v-btn>
+      </v-snackbar>
+    </v-app>
+    <!-- <div class="leftMask"></div> -->
   </div>
-  <v-snackbar class="backButton" v-model="backButton" color="info" :timeout="1200">
-      再点击一次退出App
-      <v-btn dark flat @click="backButton = false">
-        关闭
-      </v-btn>
-  </v-snackbar>
-  </v-app>
 </template>
 
 <script>
@@ -59,7 +64,7 @@ export default {
         this.beginDate = new Date().getTime();
         this.isToast = true;
       }
-    },
+    }
   },
   computed: {
     ...mapState(["tab"])
@@ -78,6 +83,7 @@ body {
   background: transparent !important;
 }
 #app {
+  position: relative;
   color: #353535;
   font-family: normal, "Microsoft YaHei", Arial, Helvetica, sans-serif, "宋体";
 }
@@ -89,7 +95,7 @@ body {
   width: 60%;
   margin: 0 auto 5px auto;
   overflow: hidden;
-  .v-btn__content{
+  .v-btn__content {
     font-size: 24px;
   }
 }

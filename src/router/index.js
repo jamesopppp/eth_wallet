@@ -15,7 +15,6 @@ const router = new Router({
     },
     meta: {
       keepAlive: true,
-      requireWallet: true
     }
   }, {
     path: '/transaction',
@@ -24,7 +23,6 @@ const router = new Router({
       require(['@/pages/transaction/transaction.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/my',
@@ -33,7 +31,6 @@ const router = new Router({
       require(['@/pages/my/my.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/about',
@@ -42,7 +39,6 @@ const router = new Router({
       require(['@/pages/about/about.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/scan',
@@ -51,7 +47,6 @@ const router = new Router({
       require(['@/pages/scan/scan.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/open-home',
@@ -60,7 +55,6 @@ const router = new Router({
       require(['@/pages/open/open-home/open-home.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/open-create',
@@ -69,7 +63,6 @@ const router = new Router({
       require(['@/pages/open/open-create/open-create.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/open-backup',
@@ -78,7 +71,6 @@ const router = new Router({
       require(['@/pages/open/open-backup/open-backup.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/open-mnemonic',
@@ -87,7 +79,6 @@ const router = new Router({
       require(['@/pages/open/open-mnemonic/open-mnemonic.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/open-confirm',
@@ -96,7 +87,6 @@ const router = new Router({
       require(['@/pages/open/open-confirm/open-confirm.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/transfer',
@@ -105,7 +95,6 @@ const router = new Router({
       require(['@/pages/transfer/transfer.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/addBit',
@@ -114,7 +103,6 @@ const router = new Router({
       require(['@/pages/addBit/addBit.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/bitDetails',
@@ -123,7 +111,6 @@ const router = new Router({
       require(['@/pages/bitDetails/bitDetails.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }, {
     path: '/orderDetails',
@@ -132,7 +119,6 @@ const router = new Router({
       require(['@/pages/orderDetails/orderDetails.vue'], resolve)
     },
     meta: {
-      keepAlive: true
     }
   }]
 })
