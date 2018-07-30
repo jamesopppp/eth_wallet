@@ -1,7 +1,7 @@
 <template>
   <div class="my">
       <div class="head-block">
-        <div v-ripple>
+        <!-- <div v-ripple>
           <div class="content">
             <img src="../../assets/images/my-wallet.svg">
             <div>管理钱包</div>
@@ -12,7 +12,8 @@
             <img src="../../assets/images/my-record.svg">
             <div>交易记录</div>
           </div>
-        </div>
+        </div> -->
+        <img src="../../assets/images/my-top.png">
       </div>
       <div class="option-list fadeInUp animated">
         <div class="option-item" v-ripple>

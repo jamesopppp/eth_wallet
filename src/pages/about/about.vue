@@ -3,7 +3,7 @@
       <v-header title="关于我们"></v-header>
       <div class="about-view">
           <div class="about-head" v-ripple>
-              <img src="../../assets/images/default.png">
+              <img src="../../assets/images/logo-blue.png">
               <p>当前版本: v1.0.0</p>
           </div>
           <div class="about-list">

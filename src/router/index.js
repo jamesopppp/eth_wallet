@@ -22,104 +22,98 @@ const router = new Router({
     component: function (resolve) {
       require(['@/pages/transaction/transaction.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/my',
     name: 'my',
     component: function (resolve) {
       require(['@/pages/my/my.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/about',
     name: 'about',
     component: function (resolve) {
       require(['@/pages/about/about.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/scan',
     name: 'scan',
     component: function (resolve) {
       require(['@/pages/scan/scan.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/open-home',
     name: 'open-home',
     component: function (resolve) {
       require(['@/pages/open/open-home/open-home.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/open-create',
     name: 'open-create',
     component: function (resolve) {
       require(['@/pages/open/open-create/open-create.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/open-backup',
     name: 'open-backup',
     component: function (resolve) {
       require(['@/pages/open/open-backup/open-backup.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/open-mnemonic',
     name: 'open-mnemonic',
     component: function (resolve) {
       require(['@/pages/open/open-mnemonic/open-mnemonic.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/open-confirm',
     name: 'open-confirm',
     component: function (resolve) {
       require(['@/pages/open/open-confirm/open-confirm.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/transfer',
     name: 'transfer',
     component: function (resolve) {
       require(['@/pages/transfer/transfer.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/addBit',
     name: 'addBit',
     component: function (resolve) {
       require(['@/pages/addBit/addBit.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/bitDetails',
     name: 'bitDetails',
     component: function (resolve) {
       require(['@/pages/bitDetails/bitDetails.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
   }, {
     path: '/orderDetails',
     name: 'orderDetails',
     component: function (resolve) {
       require(['@/pages/orderDetails/orderDetails.vue'], resolve)
     },
-    meta: {
-    }
+    meta: {}
+  }, {
+    path: '/importWallet',
+    name: 'importWallet',
+    component: function (resolve) {
+      require(['@/pages/importWallet/importWallet.vue'], resolve)
+    },
+    meta: {}
   }]
 })
 

@@ -84,7 +84,7 @@ export default {
     if (that.provider.toString() === "homestead") {
       that.netAddress = "http://api.etherscan.io/api";
     }
-    if (this.provider.toString() === "rinkeby") {
+    if (that.provider.toString() === "rinkeby") {
       that.netAddress = "http://api-rinkeby.etherscan.io/api";
     }
     let walletList = JSON.parse(getStore("walletList"));

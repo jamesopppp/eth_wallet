@@ -1,7 +1,7 @@
 <template>
   <div class="transaction" data-app="true">
       <div class="qr-view fadeInUp animated">
-        <img class="avatars bounceIn animated" src="../../assets/images/default.png">
+        <img class="avatars bounceIn animated" src="../../assets/images/logo-white.png">
         <qrcode class="qrcode" :value="address" tag="img" :options="{ size: 200 }"></qrcode>
         <p class="ethCode">{{showAddress}}</p>
         <v-btn class="copy" v-clipboard:copy="showAddress"

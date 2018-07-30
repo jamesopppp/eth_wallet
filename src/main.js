@@ -21,14 +21,17 @@ import {
 // import Vconsole from 'vconsole'
 
 // const vConsole = new Vconsole();
-const whiteList = ['/open-home', '/open-create', '/open-backup', '/open-mnemonic', '/open-confirm'];
+const whiteList = ['/open-home', '/open-create', '/open-backup', '/open-mnemonic', '/open-confirm', '/importWallet'];
 
 router.beforeEach((to, from, next) => {
   if (whiteList.indexOf(to.path) !== -1) {
     if (from.path == '/home') {
-      router.push({
-        name: "home"
-      })
+      console.log('backHome');
+      next('/transaction');
+    } else {
+      if (isOwnAccount()) {
+        next('/home');
+      }
     }
   } else {
     if (isOwnAccount()) {
@@ -43,6 +46,8 @@ router.beforeEach((to, from, next) => {
 })
 
 Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
+// Vue.prototype.Api = '/api';
+Vue.prototype.Api = 'http://geewer.com';
 Vue.prototype.$axios = axios;
 Vue.prototype.provider = "rinkeby";
 // Vue.prototype.provider = "homestead";

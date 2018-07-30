@@ -59,7 +59,7 @@ export const createWallet = () => {
   let words = bip39.generateMnemonic(
     128,
     null,
-    bip39.wordlists.chinese_simplified
+    bip39.wordlists.english
   );
   let seed = bip39.mnemonicToSeed(words);
   let root = ethers.HDNode.fromSeed(seed);

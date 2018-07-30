@@ -8,7 +8,7 @@
             <div v-ripple class="view">
               <img @click="openMenu" src="./more.png" class="menu">
               <img @click="goScan" src="./scan.png" class="scan">
-              <img class="logo" src="../../assets/images/default.png">
+              <img class="logo" src="../../assets/images/logo.png">
               <p class="name">{{name}}</p>
               <p class="code">{{address}}</p>
               <img class="qc" @click="goTab" src="../../assets/images/qc.svg">
@@ -26,7 +26,7 @@
         <div class="bitList fadeInUp animated">
           <div class="box" ref="bitList">
               <swipeout>
-                <swipeout-item class="moveItem flipInX animated" :key="item.token" v-for="item in homeList" transition-mode="follow">
+                <swipeout-item class="moveItem fadeInUp animated" :key="item.token" v-for="item in homeList" transition-mode="follow">
                   <div slot="right-menu">
                     <swipeout-button class="transaction" @click.native="transfer(item.token)">
                       <img src="./transaction.png">
@@ -66,7 +66,7 @@
             <div v-ripple class="head">
               <img src="./left-header.png" class="left-bg">
               <div class="left-box">
-                  <img class="avatar" src="../../assets/images/default.png"> 
+                  <img class="avatar" src="../../assets/images/logo.png"> 
                   <p>{{name}}</p>
                   <p>{{address}}</p>
               </div>
@@ -80,7 +80,7 @@
                 <img src="./password.png">
                 <span>钱包密码修改</span>
               </div>
-              <div class="view-item" v-ripple>
+              <div class="view-item" @click="confirmPassword" v-ripple>
                 <img src="./export.png">
                 <span>导出私钥</span>
               </div>
@@ -99,7 +99,28 @@
             </div>
           </div>
         </v-navigation-drawer>
-        <div v-show="leftDrawer" class="leftMask"></div>
+        <v-dialog content-class="export-privateKey-pop" persistent max-width="400" v-model="exportPrivateKeyPop">
+            <div class="export-privateKey-title">导出私钥<i @click="exportPrivateKeyPop=false" class="iconfont icon-quxiao"></i></div>
+            <div class="export-privateKey-safeTip">
+              安全警告: 私钥未经加密,导出存在风险,建议使用助记词和Keystore进行备份。
+            </div>
+            <div class="export-privateKey-privateKey">
+              {{privateKey}}
+            </div>
+            <v-btn :disabled="copying" :loading="copying" @click="doCopy" class="export-privateKey-copy">复制</v-btn>
+        </v-dialog>
+        <v-dialog content-class="password-confirm-pop" persistent max-width="400" v-model="passwordConfirmPop">
+            <div class="password-confirm-title">安全验证<i @click="passwordConfirmPop=false" class="iconfont icon-quxiao"></i></div>
+            <input v-model="walletPassword" class="password-confirm-input" type="password" placeholder="钱包密码"> 
+            <v-btn @click="passwordConfirm" class="password-confirm-sure">确定</v-btn>
+        </v-dialog>
+        <v-snackbar class="backButton" v-model="snackBar" color="info" :timeout="1500">
+            {{snackBarText}}
+          <v-btn dark flat @click="snackBar = false">
+            关闭
+          </v-btn>
+        </v-snackbar>
+        <div v-show="leftDrawer||passwordConfirmPop||exportPrivateKeyPop" class="leftMask"></div>
   </div>
 </template>
 
@@ -109,8 +130,6 @@ import { mapState } from "vuex";
 import BScroll from "better-scroll";
 import { getStore, generateQRtxt, setStore, objIsNull } from "@/config/utils";
 import abi from "@/config/abi";
-import currencyList from "@/config/currencyList";
-import { resolve } from "url";
 export default {
   name: "home",
   data() {
@@ -125,7 +144,14 @@ export default {
       bitList: [],
       homeList: [],
       tokenData: [],
-      loadingTop: false
+      loadingTop: false,
+      exportPrivateKeyPop: false,
+      privateKey: "",
+      copying: false,
+      snackBar: false,
+      snackBarText: "",
+      passwordConfirmPop: false,
+      walletPassword: ""
     };
   },
   // mounted() {
@@ -149,6 +175,7 @@ export default {
     that.address = that.bitList[0].wallet.address;
     that.name = that.bitList[0].details.walletName;
     that.getBitList();
+    // that.testPlace();
   },
   deactivated() {
     let that = this;
@@ -156,6 +183,46 @@ export default {
     setStore("walletList", that.bitList);
   },
   methods: {
+    passwordConfirm() {
+      let that = this;
+      let password = that.bitList[0].details.walletPassword;
+      that.privateKey = that.bitList[0].wallet.privateKey.substr(2);
+      if (objIsNull(that.walletPassword)) {
+        that.snackBarText = "请输入钱包密码";
+        that.snackBar = true;
+        return;
+      }
+      if (that.walletPassword.toString() !== password.toString()) {
+        that.walletPassword = "";
+        that.snackBarText = "钱包密码密码不正确";
+        that.snackBar = true;
+        return;
+      } else {
+        that.walletPassword = "";
+        that.passwordConfirmPop = false;
+        that.exportPrivateKeyPop = true;
+      }
+    },
+    doCopy() {
+      let that = this;
+      that.copying = true;
+      setTimeout(() => {
+        that.$copyText(that.privateKey).then(
+          function(e) {
+            setTimeout(() => {
+              that.copying = false;
+              that.exportPrivateKeyPop = false;
+              that.snackBarText = "私钥已复制";
+              that.snackBar = true;
+            }, 500);
+          },
+          function(e) {
+            that.copying = false;
+            console.log(e);
+          }
+        );
+      }, 1000);
+    },
     goDetails(token, contract) {
       let reToken = token.toUpperCase();
       this.$router.push({
@@ -258,28 +325,32 @@ export default {
               localList.push(localItem);
             }
           }
-          // if (currencyLen < localLen) {
-          //   let moreLen = localLen - currencyLen;
-          //   for (let i = 0; i < moreLen; i++) {
-          //     let localItem = {};
-          //     localItem.token = tokenList[localLen + i].token;
-          //     localItem.isOpen = false;
-          //     localList.push(localItem);
-          //   }
-          // }
+          if (currencyLen < localLen) {
+            let localList = [];
+            for (let i = 0, len = tokenList.length; i < len; i++) {
+              let localItem = {};
+              localItem.isOpen = false;
+              localItem.token = tokenList[i].token;
+              localList.push(localItem);
+            }
+            that.bitList[0].bitList = localList;
+          }
         }
         for (let i = 0, len = tokenList.length; i < len; i++) {
-          if (localList[i].token == tokenList[i].token) {
-            if (localList[i].isOpen) {
-              let homeItem = {};
-              let balance = await that.getErcBalance(tokenList[i].contract);
-              homeItem.token = tokenList[i].token;
-              homeItem.name = tokenList[i].name;
-              homeItem.sort = tokenList[i].sort;
-              homeItem.contract = tokenList[i].contract;
-              homeItem.balance = balance;
-              homeItem.icon = tokenList[i].icon;
-              homeList.push(homeItem);
+          if (localList[i].isOpen) {
+            for (let j = 0, len = tokenList.length; j < len; j++) {
+              if (tokenList[i].token == localList[i].token) {
+                let homeItem = {};
+                let balance = await that.getErcBalance(tokenList[i].contract);
+                homeItem.token = tokenList[i].token;
+                homeItem.name = tokenList[i].name;
+                homeItem.sort = tokenList[i].sort;
+                homeItem.contract = tokenList[i].contract;
+                homeItem.balance = balance;
+                homeItem.icon = tokenList[i].icon;
+                homeList.push(homeItem);
+                break;
+              }
             }
           }
         }
@@ -312,7 +383,7 @@ export default {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get("/api/geewer.json", {})
+          .get(that.Api + "/geewer.json", {})
           .then(function(res) {
             resolve(res.data);
           })
@@ -327,6 +398,25 @@ export default {
         let value2 = obj2[property];
         return value1 - value2; // 升序
       };
+    },
+    confirmPassword() {
+      let that = this;
+      that.leftDrawer = false;
+      that.passwordConfirmPop = true;
+    },
+    testPlace() {
+      let that = this;
+      let privateKey = that.bitList[0].wallet.privateKey;
+      let provider = that.ethers.providers.getDefaultProvider();
+      let wallet = new that.ethers.Wallet(privateKey, provider);
+      var password = "password123";
+      function callback(percent) {
+        console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
+      }
+      var encryptPromise = wallet.encrypt(password, callback);
+      encryptPromise.then(function(json) {
+        console.log(json);
+      });
     }
   },
   computed: {

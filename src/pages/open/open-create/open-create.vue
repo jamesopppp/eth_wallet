@@ -5,9 +5,9 @@
           <p class="titile">钱包名称：</p>
           <input v-model="name" type="text" placeholder="请输入钱包名称">
           <p class="titile">密码：</p>
-          <input v-model="password" class="passwordView" type="text" placeholder="请输入密码">
+          <input v-model="password" class="passwordView" type="password" placeholder="请输入密码">
           <p class="titile">确认密码：</p>
-          <input v-model="passwordAgain" class="passwordView" type="text" placeholder="请重复输入密码">
+          <input v-model="passwordAgain" class="passwordView" type="password" placeholder="请重复输入密码">
           <p class="titile">密码提示：</p>
           <input type="text" v-model="passwordMessage" placeholder="请输入密码提示信息(选填)">
           <div class="rulse">
@@ -17,7 +17,7 @@
               <span>我已经仔细阅读并同意</span><span>《服务及隐私条款》</span>
           </div>
           <v-btn :disabled="createDialog" :loading="createDialog" @click="goNext" :class="!checkbox?'noSelect':''" class="create">确认创建</v-btn>
-          <span class="import fadeIn animated">我有钱包,直接导入</span>
+          <span @click="goImport" class="import fadeIn animated">我有钱包,直接导入</span>
           <v-snackbar :timeout="1500" auto-height color="info" bottom v-model="toast">
             {{ text }}
             <v-btn dark flat @click="toast = false">
@@ -110,6 +110,9 @@ export default {
           }, 2000);
         }
       }, 500);
+    },
+    goImport() {
+      this.$router.push({ name: "importWallet" });
     }
   },
   components: {

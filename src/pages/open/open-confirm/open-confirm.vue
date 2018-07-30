@@ -54,9 +54,6 @@ export default {
     }
   },
   methods: {
-    goNext() {
-      this.$router.push({ name: "open-confirm" });
-    },
     addWord(index) {
       let word = this.wordsList.splice(index, 1);
       this.selectList.push(word[0]);
@@ -80,7 +77,6 @@ export default {
       }
       removeStore("mnemonic");
       removeStore("walletItem");
-      console.log(JSON.parse(getStore("walletList")));
       this.$router.replace({ name: "home" });
     },
     checkWordList() {

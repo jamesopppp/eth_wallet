@@ -28,9 +28,11 @@ export default {
   },
   mounted() {
     let that = this;
-    let walletList = JSON.parse(getStore("walletList"));
-    that.bitList = walletList[0].bitList;
-    that.getAddList();
+    that.$nextTick(() => {
+      let walletList = JSON.parse(getStore("walletList"));
+      that.bitList = walletList[0].bitList;
+      that.getAddList();
+    });
   },
   methods: {
     valChange(item, index) {
@@ -45,7 +47,6 @@ export default {
       let that = this;
       let tokenData = await that.getCurrencyList();
       let addList = [];
-      console.log(tokenData);
       let tokenList = tokenData.tokenList;
       let ethItem = {};
       ethItem.isOpen = true;
@@ -64,24 +65,30 @@ export default {
         item.sort = tokenList[i].sort;
         item.contract = tokenList[i].contract;
         item.icon = tokenList[i].icon;
+
         if (objIsNull(that.bitList[i])) {
           bitItem.isOpen = false;
           bitItem.token = tokenList[i].token;
           that.bitList.push(bitItem);
           item.isOpen = false;
         } else {
-          item.isOpen = that.bitList[i].isOpen;
+          for (let j = 0, len = tokenList.length; j < len; j++) {
+            if (tokenList[i].token == that.bitList[j].token) {
+              item.isOpen = that.bitList[j].isOpen;
+              break;
+            }
+          }
         }
+
         addList.push(item);
       }
       that.addList = addList.sort(that.sortTokenList("sort"));
-      console.log(that.addList);
     },
     getCurrencyList() {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get("/api/geewer.json", {})
+          .get(that.Api + "/geewer.json", {})
           .then(function(res) {
             resolve(res.data);
           })

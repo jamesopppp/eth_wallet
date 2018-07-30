@@ -87,7 +87,6 @@ import { Popup } from "vux";
 import { objIsNull, transferEth, generateData, getStore } from "@/config/utils";
 import { mapState } from "vuex";
 import abi from "@/config/abi";
-import currencyList from "@/config/currencyList";
 import vHeader from "@/components/common/header-bar/header-bar";
 import { createECDH } from "crypto";
 export default {
@@ -110,7 +109,8 @@ export default {
       costPrice: 0,
       readyPay: false,
       willPay: 0,
-      balance: 0
+      balance: 0,
+      tokenList: []
     };
   },
   created() {
@@ -120,7 +120,6 @@ export default {
       that.amount = that.transfer.amount;
       that.token = that.transfer.token.toUpperCase();
     }
-
     let walletList = JSON.parse(getStore("walletList"));
     that.myAddress = walletList[0].wallet.address;
     if (that.token != "ETH") {
@@ -139,6 +138,19 @@ export default {
     }
   },
   methods: {
+    getCurrencyList() {
+      let that = this;
+      return new Promise((resolve, reject) => {
+        that.$axios
+          .get(that.Api + "/geewer.json", {})
+          .then(function(res) {
+            resolve(res.data);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      });
+    },
     getEthBalance() {
       let that = this;
       let provider = that.ethers.providers.getDefaultProvider(that.provider);
@@ -146,11 +158,13 @@ export default {
         that.balance = balance;
       });
     },
-    getBalance() {
+    async getBalance() {
       let that = this;
-      for (let i = 0, len = currencyList.length; i < len; i++) {
-        if (that.token == currencyList[i].token) {
-          that.contractAddress = currencyList[i].contract;
+      let tokenData = await that.getCurrencyList();
+      that.tokenList = tokenData.tokenList;
+      for (let i = 0, len = that.tokenList.length; i < len; i++) {
+        if (that.token == that.tokenList[i].token) {
+          that.contractAddress = that.tokenList[i].contract;
           break;
         }
       }
