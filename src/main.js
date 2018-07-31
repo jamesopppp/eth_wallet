@@ -3,15 +3,9 @@ import App from './App';
 import router from './router';
 import Vuetify from 'vuetify';
 import axios from 'axios';
-// import {
-//   Loadmore
-// } from 'mint-ui'
+// import {   Loadmore } from 'mint-ui'
 import store from './store/store';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
-import {
-  CitySelect
-} from 'vue-ydui/dist/lib.rem/cityselect';
-import 'vue-ydui/dist/ydui.base.css';
 import 'animate.css';
 import VueQrcode from '@xkeshi/vue-qrcode';
 import bip39 from 'bip39';
@@ -19,13 +13,16 @@ import ethers from 'ethers';
 import VueClipboard from 'vue-clipboard2';
 import '../static/fontclass/iconfont.css';
 import './assets/styles/base.css'
-import {
-  isOwnAccount
-} from './config/utils';
-// import Vconsole from 'vconsole'
-
-// const vConsole = new Vconsole();
-const whiteList = ['/open-home', '/open-create', '/open-backup', '/open-mnemonic', '/open-confirm', '/importWallet'];
+import {isOwnAccount} from './config/utils';
+// import Vconsole from 'vconsole' const vConsole = new Vconsole();
+const whiteList = [
+  '/open-home',
+  '/open-create',
+  '/open-backup',
+  '/open-mnemonic',
+  '/open-confirm',
+  '/importWallet'
+];
 
 router.beforeEach((to, from, next) => {
   if (whiteList.indexOf(to.path) !== -1) {
@@ -41,9 +38,7 @@ router.beforeEach((to, from, next) => {
     if (isOwnAccount()) {
       next();
     } else {
-      next({
-        path: "/open-home"
-      });
+      next({path: "/open-home"});
     }
   }
   next();
@@ -51,9 +46,9 @@ router.beforeEach((to, from, next) => {
 
 // dev
 Vue.prototype.provider = "rinkeby";
-// Vue.prototype.Api = '/api';
+// Vue.prototype.Api = '/api'; 
 
-// build
+//build 
 // Vue.prototype.provider = "homestead";
 Vue.prototype.Api = 'http://geewer.com';
 
@@ -65,8 +60,8 @@ Vue.prototype.ethers = ethers;
 Vue.use(Vuetify);
 Vue.use(VueClipboard);
 Vue.component('qrcode', VueQrcode);
-Vue.component('v-cityselect', CitySelect);
-// Vue.component('v-loadmore', Loadmore);
+// Vue.component('v-cityselect', CitySelect); Vue.component('v-loadmore',
+// Loadmore);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
