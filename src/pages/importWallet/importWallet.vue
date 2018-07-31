@@ -6,7 +6,7 @@
               <div @click="selectTab(0)" :class="tab==0?'select':''">助记词</div>
               <div @click="selectTab(1)" :class="tab==1?'select':''">官方钱包</div>
               <div @click="selectTab(2)" :class="tab==2?'select':''">私钥</div>
-              <div :class="{'tab1':tab===1,'tab2':tab===1,'tab3':tab===2}" class="selectBlock"></div>
+              <div :class="{'tab1':tab===0,'tab2':tab===1,'tab3':tab===2}" class="selectBlock"></div>
           </div>
           <div v-show="tab===0">
             <textarea v-model="mnemonic" placeholder="助记词,按空格分隔" class="mnemonicInput"></textarea>

@@ -8,6 +8,10 @@ import axios from 'axios';
 // } from 'mint-ui'
 import store from './store/store';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import {
+  CitySelect
+} from 'vue-ydui/dist/lib.rem/cityselect';
+import 'vue-ydui/dist/ydui.base.css';
 import 'animate.css';
 import VueQrcode from '@xkeshi/vue-qrcode';
 import bip39 from 'bip39';
@@ -45,18 +49,23 @@ router.beforeEach((to, from, next) => {
   next();
 })
 
-Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
-// Vue.prototype.Api = '/api';
-Vue.prototype.Api = 'http://geewer.com';
-Vue.prototype.$axios = axios;
+// dev
 Vue.prototype.provider = "rinkeby";
+// Vue.prototype.Api = '/api';
+
+// build
 // Vue.prototype.provider = "homestead";
+Vue.prototype.Api = 'http://geewer.com';
+
+Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
+Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 Vue.prototype.bip39 = bip39;
 Vue.prototype.ethers = ethers;
 Vue.use(Vuetify);
 Vue.use(VueClipboard);
 Vue.component('qrcode', VueQrcode);
+Vue.component('v-cityselect', CitySelect);
 // Vue.component('v-loadmore', Loadmore);
 /* eslint-disable no-new */
 new Vue({

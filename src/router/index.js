@@ -114,6 +114,20 @@ const router = new Router({
       require(['@/pages/importWallet/importWallet.vue'], resolve)
     },
     meta: {}
+  }, {
+    path: '/exportKeystore',
+    name: 'exportKeystore',
+    component: function (resolve) {
+      require(['@/pages/exportKeystore/exportKeystore.vue'], resolve)
+    },
+    meta: {}
+  }, {
+    path: '/tokenIssue',
+    name: 'tokenIssue',
+    component: function (resolve) {
+      require(['@/pages/tokenIssue/tokenIssue.vue'], resolve)
+    },
+    meta: {}
   }]
 })
 

@@ -80,15 +80,15 @@
                 <img src="./password.png">
                 <span>钱包密码修改</span>
               </div>
-              <div class="view-item" @click="confirmPassword" v-ripple>
+              <div class="view-item" @click="confirmPassword(0)" v-ripple>
                 <img src="./export.png">
                 <span>导出私钥</span>
               </div>
-              <div class="view-item" v-ripple>
+              <div class="view-item" @click="confirmPassword(1)" v-ripple>
                 <img src="./keystore.png">
                 <span>导出KeyStore</span>
               </div>
-              <div class="view-item" v-ripple>
+              <div class="view-item" @click="goTokenIssue" v-ripple>
                 <img src="./sign.png">
                 <span>通证发行(内测)</span>
               </div>
@@ -151,7 +151,8 @@ export default {
       snackBar: false,
       snackBarText: "",
       passwordConfirmPop: false,
-      walletPassword: ""
+      walletPassword: "",
+      isFromWhere: 0
     };
   },
   // mounted() {
@@ -175,7 +176,6 @@ export default {
     that.address = that.bitList[0].wallet.address;
     that.name = that.bitList[0].details.walletName;
     that.getBitList();
-    // that.testPlace();
   },
   deactivated() {
     let that = this;
@@ -183,7 +183,10 @@ export default {
     setStore("walletList", that.bitList);
   },
   methods: {
-    passwordConfirm() {
+    goTokenIssue() {
+      this.$router.push({ name: "tokenIssue" });
+    },
+    passwordConfirm(from) {
       let that = this;
       let password = that.bitList[0].details.walletPassword;
       that.privateKey = that.bitList[0].wallet.privateKey.substr(2);
@@ -200,7 +203,11 @@ export default {
       } else {
         that.walletPassword = "";
         that.passwordConfirmPop = false;
-        that.exportPrivateKeyPop = true;
+        if (that.isFromWhere === 0) {
+          that.exportPrivateKeyPop = true;
+        } else {
+          that.$router.push({ name: "exportKeystore" });
+        }
       }
     },
     doCopy() {
@@ -399,10 +406,19 @@ export default {
         return value1 - value2; // 升序
       };
     },
-    confirmPassword() {
+    confirmPassword(from) {
       let that = this;
       that.leftDrawer = false;
       that.passwordConfirmPop = true;
+      if (from === 0) {
+        if (that.isFromWhere !== 0) {
+          that.isFromWhere = 0;
+        }
+      } else if (from === 1) {
+        if (that.isFromWhere !== 1) {
+          that.isFromWhere = 1;
+        }
+      }
     },
     testPlace() {
       let that = this;

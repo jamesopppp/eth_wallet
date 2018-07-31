@@ -294,3 +294,39 @@
   margin: 40px 0 0 0;
   background-color: #469af5 !important;
 }
+
+/* ydui  地址选择图标 */
+
+.yd-cityselect-item-active:after {
+  content: ""
+}
+
+.yd-cityselect-nav-active {
+  color: #469af5 !important;
+}
+
+.yd-cityselect-nav-active:after {
+  background-color: #469af5;
+}
+
+.yd-cityselect-item-active {
+  color: #469af5 !important;
+}
+
+.yd-cityselect-title {
+  font-size: 28px;
+  background-color: #469af5;
+  color: #fff;
+}
+
+.yd-cityselect-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
+}
+
+.yd-cityselect {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
+}
