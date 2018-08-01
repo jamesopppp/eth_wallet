@@ -1,13 +1,11 @@
 <template>
   <div class="home">
-        <div class="wavesBox fadeInDown animated" v-touch="{
-      down: () => swipe('down'),
-    }">
+        <div class="wavesBox fadeInDown animated" v-touch="{down: () => swipe('down')}">
             <div class="box-bg">
             </div>
             <div v-ripple class="view">
               <img @click="openMenu" src="./more.png" class="menu">
-              <img @click="goScan" src="./scan.png" class="scan">
+              <img ref="scan" @click="goScan" src="./scan.png" class="scan">
               <img class="logo" src="../../assets/images/logo.png">
               <p class="name">{{name}}</p>
               <p class="code">{{address}}</p>
@@ -181,6 +179,7 @@ export default {
     let that = this;
     that.bitList[0].isFirstIn = false;
     setStore("walletList", that.bitList);
+    that.$refs.scan.classList.remove("scanClick");
   },
   methods: {
     goTokenIssue() {

@@ -98,8 +98,7 @@ const router = new Router({
     name: 'bitDetails',
     component: function (resolve) {
       require(['@/pages/bitDetails/bitDetails.vue'], resolve)
-    },
-    meta: {}
+    }
   }, {
     path: '/orderDetails',
     name: 'orderDetails',
@@ -126,6 +125,20 @@ const router = new Router({
     name: 'tokenIssue',
     component: function (resolve) {
       require(['@/pages/tokenIssue/tokenIssue.vue'], resolve)
+    },
+    meta: {}
+  }, {
+    path: '/contact',
+    name: 'contact',
+    component: function (resolve) {
+      require(['@/pages/contact/contact.vue'], resolve)
+    },
+    meta: {}
+  }, {
+    path: '/addContact',
+    name: 'addContact',
+    component: function (resolve) {
+      require(['@/pages/AddContact/AddContact.vue'], resolve)
     },
     meta: {}
   }]

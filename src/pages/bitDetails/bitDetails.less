@@ -1,6 +1,7 @@
 .bitDetails {
     height: 100vh;
     .bitDetails-header {
+        position: relative;
         height: 266px;
         animation-duration: 1.2s;
         background-color: #75b7ff;
@@ -23,6 +24,15 @@
                 font-size: 36px;
             }
         }
+        .circular {
+            position: absolute;
+            top: 75px;
+            right: 30px;
+            width: 32px !important;
+            height: 32px !important;
+            color: #fff;
+            z-index: 5;
+        }
     }
     .bitDetails-view {
         position: relative;
@@ -39,6 +49,7 @@
             margin-bottom: 0;
         }
         .list-view {
+            position: relative;
             padding: 0 0 40px 0;
             overflow-y: auto;
             height: calc(~'100% - 60px');
@@ -60,13 +71,12 @@
                 .content {
                     height: 100%;
                     position: relative;
-                    margin-left: 100px;
-                    margin-right: 200px;
+                    margin-left: 100px; // margin-right: 50px;
                     span:nth-child(1) {
                         position: absolute;
                         width: 100%;
                         top: 20px;
-                        font-size: 26px;
+                        font-size: 24px;
                         color: #666;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -76,12 +86,12 @@
                         position: absolute;
                         bottom: 20px;
                         font-size: 24px;
-                        color: #666;
+                        color: #999;
                     }
                 }
                 .amount {
                     position: absolute;
-                    top: 20px;
+                    bottom: 20px;
                     right: 30px;
                     color: #499cf6;
                     font-size: 26px;
@@ -93,12 +103,7 @@
                 color: #666;
                 line-height: 100px;
                 margin-bottom: 0;
-            }
-            .circular {
-                margin: 50px auto 0 auto;
-                width: 34px !important;
-                height: 34px !important;
-                color: #499cf6;
+                animation-duration: 0.4s;
             }
             .list-item+.list-item {
                 &::before {

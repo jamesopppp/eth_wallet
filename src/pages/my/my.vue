@@ -21,7 +21,7 @@
           <span>消息中心</span>
           <i class="iconfont icon-xiangzuojiantou backArrow"></i>
         </div>
-        <div class="option-item" v-ripple>
+        <div @click="goContact" class="option-item" v-ripple>
           <img class="option-icon" src="../../assets/images/my-contact.svg">
           <span>联系人</span>
           <i class="iconfont icon-xiangzuojiantou backArrow"></i>
@@ -62,6 +62,9 @@ export default {
   methods: {
     goAbout() {
       this.$router.push({ name: "about" });
+    },
+    goContact() {
+      this.$router.push({ name: "contact" });
     }
   }
 };

@@ -18,7 +18,7 @@
           <div class="keystoreView">
               <transition name="move">
                  <div class="loadingView" v-show="loadingKeystore">
-                    <p>{{percent}} %</p>
+                    <p>Keystore导出中 {{percent}} %</p>
                     <v-progress-circular class="circular" indeterminate></v-progress-circular>
                  </div>
               </transition>
@@ -54,14 +54,13 @@ export default {
     let password = walletItem.details.walletPassword;
     let privateKey = walletItem.wallet.privateKey;
     let wallet = new that.ethers.Wallet(privateKey);
-    console.log(password, privateKey);
     function callback(percent) {
       //   console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
       that.percent = parseInt(percent * 100);
     }
 
     wallet.encrypt(password, callback).then(function(json) {
-      console.log(json);
+      // console.log(json);
       that.keystore = JSON.parse(
         JSON.stringify(json).replace(/Crypto/g, "crypto")
       );

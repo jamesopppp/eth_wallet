@@ -284,6 +284,7 @@ export default {
     },
     submit() {
       let that = this;
+      let re = /^\d+(\.\d+)?$/;
       if (objIsNull(that.address)) {
         that.text = "请输入钱包地址";
         that.toast = true;
@@ -294,7 +295,28 @@ export default {
         that.toast = true;
         return;
       }
+      if (!re.test(that.amount)) {
+        that.text = "转账金额格式不正确";
+        that.toast = true;
+        return;
+      }
+      if (that.isOverNumber(that.amount)) {
+        that.text = "转账金额不得小于8位小数";
+        that.toast = true;
+        return;
+      }
       that.readyPay = true;
+    },
+    isOverNumber(num) {
+      let len = 0,
+        flag = false;
+      if (num.indexOf(".") !== -1) {
+        len = num.split(".")[1].length;
+      }
+      if (len > 8) {
+        flag = true;
+      }
+      return flag;
     }
   },
   components: {

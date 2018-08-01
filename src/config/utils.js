@@ -114,9 +114,11 @@ export const moneyPadZero = (amount) => {
 export const generateData = (address, amount) => {
   let dataAddress = address.substr(2);
   let zeroAddress = dataAddress.padStart(64, '0');
+  let val = Math.pow(10, 8);
 
-  let dataAmount = amount * Math.pow(10, 8);
+  let dataAmount = accMul(amount, val);
   let amount1 = ethers.utils.bigNumberify(dataAmount);
+
   let amount2 = amount1.toHexString().substr(2);
   let zeroAmount = amount2.padStart(64, '0');
 
@@ -124,6 +126,27 @@ export const generateData = (address, amount) => {
   return data;
 };
 
+
+/**
+ * 数值相乘
+ * 解决精度丢失问题
+ */
+export const accMul = (arg1, arg2) => {
+  let m = 0,
+    s1 = arg1.toString(),
+    s2 = arg2.toString();
+  try {
+    m += s1.split(".")[1].length;
+  } catch (e) {}
+  try {
+    m += s2.split(".")[1].length;
+  } catch (e) {}
+  return (
+    Number(s1.replace(".", "")) *
+    Number(s2.replace(".", "")) /
+    Math.pow(10, m)
+  );
+}
 
 /**
  * 交易eth以太坊币
@@ -162,41 +185,6 @@ export const isOwnAccount = () => {
     }
   }
   return flag;
-};
-
-
-/**
- * 查询钱包币种余额
- * 
- * 返回 余额
- */
-export const getBitBalance = (token, address, providerName) => {
-  let name = token.toUpperCase();
-  let balance = 0;
-  let provider;
-  if (objIsNull(providerName)) {
-    provider = ethers.providers.getDefaultProvider();
-  } else {
-    provider = ethers.providers.getDefaultProvider(providerName);
-  }
-  if (name == 'ETH') {
-    provider.getBalance(address).then(function (balance) {
-      let etherString = ethers.utils.formatEther(balance);
-      balance = etherString;
-      console.log('b', balance)
-    });
-  } else {
-    let contractAddress;
-    for (let i = 0, len = currencyList.length; i < len; i++) {
-      if (currencyList[i].token == name) {
-        contractAddress = currencyList[i].contract;
-        break;
-      }
-    }
-    let contract = new ethers.Contract(contractAddress, abi, provider);
-    balance = contract.balanceOf(address);
-  }
-  return balance;
 };
 
 /**

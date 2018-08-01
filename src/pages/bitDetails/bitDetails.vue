@@ -1,15 +1,18 @@
 <template>
-  <div class="bitDetails">
+  <div class="bitDetails" v-touch="{down: () => swipe('down')}">
       <v-header title="交易记录"></v-header>
       <div class="bitDetails-header fadeIn animated">
           <div class="bit-message">
               <span>{{token}}</span>
               <span>{{amount}}</span>
           </div>
+          <transition name="swipe">
+            <v-progress-circular v-show="loadingTop" class="circular" indeterminate></v-progress-circular>
+          </transition>
       </div>
       <div class="bitDetails-view">
           <p class="list-title">交易记录</p>
-          <div class="list-view">
+          <div class="list-view" ref="itemView">
               <div @click="goDetails(item)" v-ripple class="list-item fadeInUp animated" :key="item.hash" v-for="item in transformList">
                   <img src="../../assets/images/default.png">
                   <div class="content">
@@ -18,10 +21,9 @@
                   </div>
                   <span class="amount">{{getAmountStatus(item.from)}} {{getTransferAmount(item.value,item.input)}} {{token=='ETH'?'ether':token}}</span>
               </div>
-              <p v-show="loadOver" class="loadMore">记录已加载完毕</p>
-              <p v-show="noRecord" class="loadMore">还没有交易记录哟~</p>
-              <p @click="loadMoreList" v-show="loadMore" class="loadMore">加载更多</p>
-              <v-progress-circular v-show="loading" class="circular" indeterminate></v-progress-circular>
+              <p v-show="loadOver" class="loadMore fadeInUp animated">记录已加载完毕</p>
+              <p v-show="noRecord" class="loadMore fadeInUp animated">还没有交易记录哟~</p>
+              <p @click="loadMoreList" v-show="loadMore" class="loadMore fadeInUp animated">加载更多</p>
           </div>
       </div>
       <div class="bottom-bar fadeInUp animated">
@@ -72,11 +74,11 @@ export default {
       pageNumber: 1,
       pageSize: 8,
       transformList: [],
-      loading: false,
       loadMore: false,
       noRecord: false,
       loadOver: false,
-      netAddress: ""
+      netAddress: "",
+      loadingTop: false
     };
   },
   created() {
@@ -105,6 +107,26 @@ export default {
   },
   mounted() {},
   methods: {
+    swipe() {
+      let that = this;
+      let val = that.$refs.itemView.scrollTop;
+      if (val === 0) {
+        if (!that.loadingTop) {
+          that.pageNumber = 1;
+          that.transformList = [];
+          that.loadMore = false;
+          that.noRecord = false;
+          that.loadOver = false;
+          if (that.token != "ETH") {
+            that.getBalance();
+            that.getErcRecord();
+          } else {
+            that.amount = that.balance;
+            that.getAllRecord();
+          }
+        }
+      }
+    },
     getBalance() {
       let that = this;
       let walletList = JSON.parse(getStore("walletList"));
@@ -151,7 +173,7 @@ export default {
     getAllRecord() {
       let that = this;
       that.loadMore = false;
-      that.loading = true;
+      that.loadingTop = true;
       that.pageSize = 20;
       that.$axios
         .get(that.netAddress, {
@@ -174,6 +196,7 @@ export default {
             if (res.status == 200) {
               let data = res.data.result;
               let totalList = [];
+              that.pageNumber++;
               if (data.length != 0) {
                 for (let i = 0, len = data.length; i < len; i++) {
                   if (data[i].value != 0) {
@@ -181,19 +204,20 @@ export default {
                   }
                 }
                 that.transformList = that.transformList.concat(totalList);
-                that.loading = false;
                 that.loadMore = true;
+                if (that.transformList.length < 8) {
+                  that.getAllRecord();
+                }
               } else {
-                that.loading = false;
                 if (that.transformList.length === 0) {
                   that.noRecord = true;
                 } else {
                   that.loadOver = true;
                 }
               }
-              that.pageNumber++;
               console.log("筛选后result: ", totalList);
             }
+            that.loadingTop = false;
           }, 1000);
         })
         .catch(function(error) {
@@ -204,7 +228,7 @@ export default {
       let that = this;
       that.pageSize = 10;
       that.loadMore = false;
-      that.loading = true;
+      that.loadingTop = true;
       that.$axios
         .get(that.netAddress, {
           params: {
@@ -225,21 +249,23 @@ export default {
             if (res.status == 200) {
               let data = res.data.result;
               let totalList = [];
+              that.pageNumber++;
               if (data.length != 0) {
                 that.transformList = that.transformList.concat(data);
-                that.loading = false;
                 that.loadMore = true;
+                if (data.length < 8) {
+                  that.getErcRecord();
+                }
               } else {
-                that.loading = false;
                 if (that.transformList.length === 0) {
                   that.noRecord = true;
                 } else {
                   that.loadOver = true;
                 }
               }
-              that.pageNumber++;
               console.log("筛选后result: ", data);
             }
+            that.loadingTop = false;
           }, 1000);
         })
         .catch(function(error) {
@@ -281,4 +307,11 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "./bitDetails.less";
+.swipe-enter-active,
+.swipe-leave-active {
+  transition: opacity 0.5s;
+}
+.swipe-enter, .swipe-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

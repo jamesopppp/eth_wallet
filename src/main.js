@@ -46,11 +46,11 @@ router.beforeEach((to, from, next) => {
 
 // dev
 Vue.prototype.provider = "rinkeby";
-// Vue.prototype.Api = '/api'; 
+Vue.prototype.Api = '/api'; 
 
 //build 
 // Vue.prototype.provider = "homestead";
-Vue.prototype.Api = 'http://geewer.com';
+// Vue.prototype.Api = 'http://geewer.com';
 
 Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
 Vue.prototype.$axios = axios;

@@ -3,6 +3,7 @@
       <i @click="goBack" class="iconfont icon-xiangzuojiantou backArrow"></i>
       <span class="bar-title">{{title}}</span>
       <img v-show="scan" @click="goScan" class="scan" src="./scan.png">
+      <i @click="goAddContact" v-show="add" class="iconfont icon-zengjia-01 add"></i>
   </div>
 </template>
 
@@ -18,11 +19,15 @@ export default {
     },
     goScan() {
       this.$router.push({ name: "scan" });
+    },
+    goAddContact() {
+      this.$router.push({ name: "addContact" });
     }
   },
   props: {
     title: String,
-    scan: Boolean
+    scan: Boolean,
+    add: Boolean
   }
 };
 </script>
