@@ -13,7 +13,7 @@
       <div class="bitDetails-view">
           <p class="list-title">交易记录</p>
           <div class="list-view" ref="itemView">
-              <div @click="goDetails(item)" v-ripple class="list-item fadeInUp animated" :key="item.hash" v-for="item in transformList">
+              <div @click="goDetails(item)" v-ripple class="list-item fadeInUp animated" :key="'geewer'+index+item.hash" v-for="(item,index) in transformList">
                   <img src="../../assets/images/default.png">
                   <div class="content">
                       <span>{{item.hash}}</span>

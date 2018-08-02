@@ -18,10 +18,10 @@ export default {
       this.$router.go(-1);
     },
     goScan() {
-      this.$router.push({ name: "scan" });
+      this.$router.replace({ name: "scan" });
     },
     goAddContact() {
-      this.$router.push({ name: "addContact" });
+      this.$router.push({ path: "addContact", query: { isAdd: 1 } });
     }
   },
   props: {

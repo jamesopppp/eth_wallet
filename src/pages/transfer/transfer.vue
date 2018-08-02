@@ -24,7 +24,7 @@
                   <span>矿工费用</span>
                   <img src="./help.png">
               </div>
-              <v-slider :min="minVal" :max="maxVal" inverse-label v-model="sliderVal"></v-slider>
+              <v-slider height="60" :min="minVal" :max="maxVal" inverse-label v-model="sliderVal"></v-slider>
               <div class="slider-tip">
                   <span>慢</span>
                   <span>{{computSliderVal}} ether</span>
@@ -287,6 +287,21 @@ export default {
       let re = /^\d+(\.\d+)?$/;
       if (objIsNull(that.address)) {
         that.text = "请输入钱包地址";
+        that.toast = true;
+        return;
+      }
+      try {
+        that.address = that.ethers.utils.getAddress(that.address);
+      } catch (e) {
+        that.text = "钱包地址输入错误";
+        that.toast = true;
+        return;
+      }
+      if (
+        that.address.toLowerCase().toString() ===
+        that.myAddress.toLowerCase().toString()
+      ) {
+        that.text = "收款人钱包地址不能是本人";
         that.toast = true;
         return;
       }

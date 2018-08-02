@@ -2,6 +2,12 @@
   user-select: none;
 }
 
+/* 交易的滑块大小 */
+.v-slider__thumb{
+  width: 54px;
+  height: 54px;
+}
+
 /* 转入弹框 */
 
 .copy-view {
@@ -295,38 +301,50 @@
   background-color: #469af5 !important;
 }
 
-/* ydui  地址选择图标 */
-
-.yd-cityselect-item-active:after {
-  content: ""
+/* 删除联系人弹框 */
+.delect-contact-pop {
+  background-color: #fff;
+  text-align: center;
+  padding: 50px 0 0 0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.yd-cityselect-nav-active {
-  color: #469af5 !important;
+.delect-contact-pop img {
+  width: 120px;
+  margin: 0 auto;
 }
 
-.yd-cityselect-nav-active:after {
-  background-color: #469af5;
-}
-
-.yd-cityselect-item-active {
-  color: #469af5 !important;
-}
-
-.yd-cityselect-title {
+.delect-contact-title {
   font-size: 28px;
-  background-color: #469af5;
-  color: #fff;
+  color: #353535;
+  margin: 30px auto 24px auto;
 }
 
-.yd-cityselect-header {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  overflow: hidden;
+.delect-contact-content {
+  padding: 0 20px;
+  font-size: 22px;
+  color: #999;
 }
 
-.yd-cityselect {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  overflow: hidden;
+.delect-contact-confirm {
+  box-shadow: none;
+  float: left;
+  width: 50%;
+  height: 80px;
+  font-size: 24px;
+  color: #fff !important;
+  margin: 40px 0 0 0;
+  background-color: #469af5 !important;
+}
+
+.delect-contact-cancel {
+  box-shadow: none;
+  float: left;
+  width: 50%;
+  height: 80px;
+  font-size: 24px;
+  color: #fff !important;
+  margin: 40px 0 0 0;
+  background-color: rgba(70, 154, 245, 0.4) !important;
 }
