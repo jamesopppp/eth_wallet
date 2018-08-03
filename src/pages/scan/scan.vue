@@ -18,11 +18,14 @@ import vHeader from "@/components/common/header-bar/header-bar";
 export default {
   data() {
     return {
-      status: false
+      status: false,
+      way: 0,
+      contactAddress: ""
     };
   },
   created() {
     let that = this;
+    that.way = that.$route.query.way;
     QRScanner.prepare(onDone); // show the prompt
     function onDone(err, status) {
       if (err) {
@@ -43,7 +46,17 @@ export default {
             QRScanner.hide();
             QRScanner.cancelScan();
             QRScanner.destroy();
-            that.$router.replace({ name: "transfer" });
+            if (that.way === 0) {
+              that.$router.replace({ name: "transfer" });
+            } else if (that.way === 1) {
+              that.$router.go(-1);
+            } else if (that.way === 2) {
+              that.$store.commit(
+                "SET_CONTACT_WALLETADDRESS",
+                that.contactAddress
+              );
+              that.$router.go(-1);
+            }
           }
         }
       } else if (status.denied) {
@@ -73,6 +86,7 @@ export default {
       let amount, token;
       let initalAddress = txt.split("?")[0].substr(5);
       let address = this.ethers.utils.getAddress(initalAddress);
+      this.contactAddress = address;
       let valList = txt.split("?")[1].split("&");
       for (let i = 0, len = valList.length; i < len; i++) {
         let name = valList[i].split("=")[0];

@@ -1,11 +1,11 @@
 <template>
   <div class="transfer">
-      <v-header :title="token+'转账'" scan></v-header>
+      <v-header :title="token+'转账'" @goScan="goScan" :way="1" scan></v-header>
       <div class="transfer-view">
           <div class="transfer-from">
               <div class="one-line">
                   <span>收款人钱包地址</span>
-                  <img src="./people.png">
+                  <img @click="goContact" src="./people.png">
               </div>
               <div class="address">
                 <input v-model="address" type="text" placeholder="钱包地址">
@@ -115,10 +115,12 @@ export default {
   },
   created() {
     let that = this;
-    if (Object.keys(that.transfer).length != 0) {
+    if (Object.keys(that.transfer).length > 1) {
       that.address = that.transfer.address;
       that.amount = that.transfer.amount;
       that.token = that.transfer.token.toUpperCase();
+    } else if (Object.keys(that.transfer).length === 1) {
+      that.address = that.transfer.address;
     }
     let walletList = JSON.parse(getStore("walletList"));
     that.myAddress = walletList[0].wallet.address;
@@ -138,6 +140,12 @@ export default {
     }
   },
   methods: {
+    goContact() {
+      this.$router.push({ path: "contact", query: { select: 1 } });
+    },
+    goScan(way) {
+      this.$router.push({ path: "scan", query: { way: way } });
+    },
     getCurrencyList() {
       let that = this;
       return new Promise((resolve, reject) => {

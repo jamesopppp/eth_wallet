@@ -18,7 +18,7 @@ export default {
       this.$router.go(-1);
     },
     goScan() {
-      this.$router.replace({ name: "scan" });
+      this.$emit("goScan", this.way);
     },
     goAddContact() {
       this.$router.push({ path: "addContact", query: { isAdd: 1 } });
@@ -27,7 +27,8 @@ export default {
   props: {
     title: String,
     scan: Boolean,
-    add: Boolean
+    add: Boolean,
+    way: Number
   }
 };
 </script>

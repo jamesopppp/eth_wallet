@@ -12,7 +12,7 @@
           <div class="addContact-item">
               <p class="item-title">钱包地址</p>
               <input v-model="address" type="text" placeholder="请输入钱包地址">
-              <img src="./scan.png"> 
+              <img v-show="canScan" @click="goScan" src="./scan.png"> 
           </div>
           <div class="addContact-item">
               <p class="item-title">手机号码</p>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getStore, objIsNull, setStore } from "@/config/utils";
 import vHeader from "@/components/common/header-bar/header-bar";
 export default {
@@ -50,28 +51,38 @@ export default {
       addContact: true,
       headerText: "新建联系人",
       editItem: {},
-      editIndex: 0
+      editIndex: 0,
+      canScan: true
     };
   },
   created() {
     let that = this;
     that.ownAddress = JSON.parse(getStore("walletList"))[0].wallet.address;
     let isAdd = that.$route.query.isAdd;
-    if (isAdd === 0) {
+    if (isAdd == 0) {
+      that.canScan = false;
       that.editIndex = that.$route.query.index;
       that.addContact = false;
       that.headerText = "编辑联系人";
-      that.editItem = JSON.parse(getStore("walletList"))[0].contacts[
-        that.editIndex
-      ];
+      that.editItem = that.$route.query.item;
       that.name = that.editItem.name;
       that.address = that.editItem.address;
       that.tel = that.editItem.phone;
       that.email = that.editItem.email;
     }
+    if (!objIsNull(that.contact_walletAddress)) {
+      that.address = that.contact_walletAddress;
+    }
   },
   mounted() {},
+  beforeDestroy() {
+    this.$store.commit("SET_CONTACT_WALLETADDRESS", "");
+  },
   methods: {
+    goScan() {
+      let that = this;
+      that.$router.push({ path: "scan", query: { way: 2 } });
+    },
     saveContact() {
       let that = this;
       let re = /^1\d{10}$/;
@@ -175,6 +186,9 @@ export default {
         that.$router.go(-1);
       }, 1000);
     }
+  },
+  computed: {
+    ...mapState(["contact_walletAddress"])
   },
   components: {
     vHeader

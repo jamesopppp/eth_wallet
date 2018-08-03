@@ -1,27 +1,27 @@
 <template>
   <div class="contact">
-      <v-header add title="联系人"></v-header>
-      <div class="contact-view fadeInUp animated">
+      <v-header add :title="header"></v-header>
+      <div class="contact-view">
           <div v-show="noContact">
             <div class="noContact">
                 <img src="../../assets/images/logo-white.png">
             </div>
             <span class="noText">暂无联系人</span>
           </div>
-          <div class="contact-list">
+          <div class="contact-list fadeInUp animated">
               <swipeout>
-                <swipeout-item :key="item.address" v-for="(item,index) in contactList" @on-close="closeMenu" @on-open="openMenu" v-ripple transition-mode="follow">
+                <swipeout-item  :key="item.address" v-for="(item,index) in contactList" @on-close="closeMenu" @on-open="openMenu" v-ripple transition-mode="follow">
                   <div slot="right-menu">
                     <swipeout-button @click.native="delect(index)" class="delect">
                       <img src="./delect.png">
                       <p>删除</p>
                     </swipeout-button>
-                    <swipeout-button @click.native="edit(index)" class="edit" >
+                    <swipeout-button @click.native="edit(index,item)" class="edit" >
                       <img src="./edit.png">
                       <p>编辑</p>
                     </swipeout-button>
                   </div>
-                  <div v-ripple slot="content">
+                  <div @click="selectContact(item.address)" v-ripple slot="content">
                     <div class="contact-item">
                         <img class="content-logo" src="../../assets/images/logo-white.png">
                         <div class="content">
@@ -60,7 +60,9 @@ export default {
       noContact: false,
       contactList: [],
       dialog: false,
-      delectIndex: 0
+      delectIndex: 0,
+      select: false,
+      header: "联系人"
     };
   },
   created() {
@@ -75,32 +77,45 @@ export default {
     } else {
       that.noContact = true;
     }
+    let select = that.$route.query.select;
+    if (!objIsNull(select)) {
+      if (select === 1) {
+        that.select = true;
+        that.header = "选择联系人";
+      }
+    }
   },
   mounted() {},
   methods: {
-    openMenu() {
-      let target = event.currentTarget;
-      if (target.className == "vux-swipeout-item") {
-        let block = target.querySelector(".openStatus");
-        block.classList.add("open");
+    selectContact(address) {
+      if (this.select) {
+        this.$store.commit("SET_TRANSFER_ADDRESS", address);
+        this.$router.go(-1);
       }
     },
+    openMenu() {
+      // let target = event.currentTarget;
+      // if (target.className == "vux-swipeout-item") {
+      //   let block = target.querySelector(".openStatus");
+      //   block.classList.add("open");
+      // }
+    },
     closeMenu() {
-      console.log("close");
-      let target = event.currentTarget;
-      if (target.className.indexOf("vux-swipeout-content") !== -1) {
-        let block = target.querySelector(".openStatus");
-        block.classList.remove("open");
-      }
-      if (
-        target.className.indexOf("delect") !== -1 ||
-        target.className.indexOf("edit") !== -1
-      ) {
-        let block = target.parentNode.parentNode.parentNode.querySelector(
-          ".openStatus"
-        );
-        block.classList.remove("open");
-      }
+      // console.log("close");
+      // let target = event.currentTarget;
+      // if (target.className.indexOf("vux-swipeout-content") !== -1) {
+      //   let block = target.querySelector(".openStatus");
+      //   block.classList.remove("open");
+      // }
+      // if (
+      //   target.className.indexOf("delect") !== -1 ||
+      //   target.className.indexOf("edit") !== -1
+      // ) {
+      //   let block = target.parentNode.parentNode.parentNode.querySelector(
+      //     ".openStatus"
+      //   );
+      //   block.classList.remove("open");
+      // }
     },
     delect(index) {
       let that = this;
@@ -121,11 +136,11 @@ export default {
       }
       console.log(that.contactList);
     },
-    edit(index) {
+    edit(index, item) {
       let that = this;
       that.$router.push({
         path: "addContact",
-        query: { isAdd: 0, index: index }
+        query: { isAdd: 0, index: index, item: item }
       });
     }
   },

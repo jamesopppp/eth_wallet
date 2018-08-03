@@ -104,6 +104,7 @@ export default {
       that.amount = that.balance;
       that.getAllRecord();
     }
+    that.getMinted();
   },
   mounted() {},
   methods: {
@@ -219,6 +220,27 @@ export default {
             }
             that.loadingTop = false;
           }, 1000);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    getMinted() {
+      let that = this;
+      that.$axios
+        .get(that.netAddress, {
+          params: {
+            module: "account",
+            action: "txlistinternal",
+            address: that.myAddress,
+            startblock: 0,
+            endblock: "latest",
+            sort: "desc",
+            apikey: that.ApiKeyToken
+          }
+        })
+        .then(function(res) {
+          console.log("minted", res);
         })
         .catch(function(error) {
           console.log(error);

@@ -257,7 +257,7 @@ export default {
       let target = event.currentTarget;
       target.classList.add("scanClick");
       setTimeout(() => {
-        this.$router.push({ name: "scan" });
+        this.$router.push({ path: "scan", query: { way: 0 } });
       }, 200);
     },
     openMenu() {
