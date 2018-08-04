@@ -113,14 +113,15 @@
             <v-btn @click="passwordConfirm" class="password-confirm-sure">确定</v-btn>
         </v-dialog>
         <v-dialog content-class="change-name-pop" persistent max-width="400" v-model="changeNamePop">
-            <div class="change-name-title">修改钱包名称<i @click="changeNamePop=false" class="iconfont icon-quxiao"></i></div>
+            <div class="change-name-title">修改钱包名称<i @click="closeChangeNamePop" class="iconfont icon-quxiao"></i></div>
             <input autofocus v-model="walletName" type="text" maxlength="15" class="change-name-input" :placeholder="name"> 
             <v-btn :disabled="changing" :loading="changing" @click="changeNameConfirm" class="change-name-sure">确定修改</v-btn>
         </v-dialog>
         <v-dialog content-class="change-password-pop" persistent max-width="400" v-model="changePasswordPop">
-            <div class="change-password-title">修改钱包密码<i @click="changePasswordPop=false" class="iconfont icon-quxiao"></i></div>
-            <input v-model="changePssword1" type="password" maxlength="15" class="change-password-input1" placeholder="请输入钱包密码">
-            <input v-model="changePssword2" type="password" maxlength="15" class="change-password-input2" placeholder="重复密码">  
+            <div class="change-password-title">修改钱包密码<i @click="closeChangePasswordPop" class="iconfont icon-quxiao"></i></div>
+            <input v-model="changePssword1" type="password" maxlength="15" class="change-password-input1" placeholder="请输入旧钱包密码">
+            <input v-model="changePssword2" type="password" maxlength="15" class="change-password-input2" placeholder="请输入新密码">  
+            <input v-model="changePssword3" type="password" maxlength="15" class="change-password-input3" placeholder="重复新密码">  
             <v-btn :disabled="changing" :loading="changing" @click="changePasswordConfirm" class="change-password-sure">确定修改</v-btn>
         </v-dialog>
         <v-snackbar class="backButton" v-model="snackBar" color="info" :timeout="1500">
@@ -167,6 +168,7 @@ export default {
       changing: false,
       changePssword1: "",
       changePssword2: "",
+      changePssword3: "",
       changePasswordPop: false
     };
   },
@@ -199,19 +201,39 @@ export default {
     that.$refs.scan.classList.remove("scanClick");
   },
   methods: {
+    closeChangeNamePop() {
+      this.walletName = "";
+      this.changeNamePop = false;
+    },
+    closeChangePasswordPop() {
+      this.changePssword1 = "";
+      this.changePssword2 = "";
+      this.changePssword3 = "";
+      this.changePasswordPop = false;
+    },
     changePassword() {
       this.leftDrawer = false;
       this.changePasswordPop = true;
     },
     changePasswordConfirm() {
       let that = this;
-      if (objIsNull(that.changePssword1) || objIsNull(that.changePssword2)) {
+      let password = that.bitList[0].details.walletPassword;
+      if (
+        objIsNull(that.changePssword1) ||
+        objIsNull(that.changePssword2) ||
+        objIsNull(that.changePssword3)
+      ) {
         that.snackBarText = "钱包密码不能为空";
         that.snackBar = true;
         return;
       }
-      if (that.changePssword1 !== that.changePssword2) {
+      if (that.changePssword2 !== that.changePssword3) {
         that.snackBarText = "输入钱包密码不相同";
+        that.snackBar = true;
+        return;
+      }
+      if (that.changePssword1 !== password) {
+        that.snackBarText = "钱包旧密码输入错误";
         that.snackBar = true;
         return;
       }
@@ -219,9 +241,10 @@ export default {
       setTimeout(() => {
         that.changing = false;
         that.changePasswordPop = false;
-        that.bitList[0].details.walletPassword = that.changePssword1;
+        that.bitList[0].details.walletPassword = that.changePssword2;
         that.changePssword1 = "";
         that.changePssword2 = "";
+        that.changePssword3 = "";
         that.snackBarText = "钱包密码修改成功";
         that.snackBar = true;
       }, 1500);

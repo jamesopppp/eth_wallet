@@ -1,10 +1,11 @@
 <template>
   <div class="tokenIssue">
       <v-header title="通证发行"></v-header>
-      <div class="tokenIssue-view fadeInUp animated">
+      <div class="tokenIssue-view">
           <div class="banner">
               <img src="./banner.png">
           </div>
+          <div class="list fadeInUp animated">
           <div class="tokenIssue-item">
               <span>通证名称(中文):</span>
               <input v-model="tokenName" maxlength="10" type="text" placeholder="如:积微通证">
@@ -35,6 +36,7 @@
               <img src="./bottom.png">
           </div> -->
           <v-btn @click="submit" :disabled="submiting" :loading="submiting" class="submit">提交审核</v-btn>
+          </div>
       </div>
       <v-dialog content-class="backup-success-pop" persistent max-width="240" v-model="successTip">
           <img src="./success.png">
