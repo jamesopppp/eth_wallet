@@ -4,7 +4,7 @@
       <div class="bitDetails-header fadeIn animated">
           <div class="bit-message">
               <span>{{token}}</span>
-              <span>{{amount}}</span>
+              <span>{{newAmount}}</span>
           </div>
           <transition name="swipe">
             <v-progress-circular v-show="loadingTop" class="circular" indeterminate></v-progress-circular>
@@ -78,8 +78,27 @@ export default {
       noRecord: false,
       loadOver: false,
       netAddress: "",
-      loadingTop: false
+      loadingTop: false,
+      newAmount: 0
     };
+  },
+  watch: {
+    amount: function(newValue, oldValue) {
+      var vm = this;
+      function animate() {
+        if (TWEEN.update()) {
+          requestAnimationFrame(animate);
+        }
+      }
+      new TWEEN.Tween({ tweeningNumber: oldValue })
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .to({ tweeningNumber: newValue }, 2000)
+        .onUpdate(function() {
+          vm.newAmount = this.tweeningNumber.toFixed(3);
+        })
+        .start();
+      animate();
+    }
   },
   created() {
     let that = this;

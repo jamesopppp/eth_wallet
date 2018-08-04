@@ -13,7 +13,9 @@ import ethers from 'ethers';
 import VueClipboard from 'vue-clipboard2';
 import '../static/fontclass/iconfont.css';
 import './assets/styles/base.css'
-import {isOwnAccount} from './config/utils';
+import {
+  isOwnAccount
+} from './config/utils';
 // import Vconsole from 'vconsole' const vConsole = new Vconsole();
 const whiteList = [
   '/open-home',
@@ -38,7 +40,9 @@ router.beforeEach((to, from, next) => {
     if (isOwnAccount()) {
       next();
     } else {
-      next({path: "/open-home"});
+      next({
+        path: "/open-home"
+      });
     }
   }
   next();
@@ -46,7 +50,7 @@ router.beforeEach((to, from, next) => {
 
 // dev
 Vue.prototype.provider = "rinkeby";
-Vue.prototype.Api = '/api'; 
+Vue.prototype.Api = '/api';
 
 //build 
 // Vue.prototype.provider = "homestead";

@@ -70,11 +70,11 @@
               </div>
             </div>
             <div class="view-list">
-              <div class="view-item" v-ripple>
+              <div @click="changeName" class="view-item" v-ripple>
                 <img src="./rename.png">
                 <span>编辑钱包名称</span>
               </div>
-              <div class="view-item" v-ripple>
+              <div @click="changePassword" class="view-item" v-ripple>
                 <img src="./password.png">
                 <span>钱包密码修改</span>
               </div>
@@ -90,7 +90,7 @@
                 <img src="./sign.png">
                 <span>通证发行(内测)</span>
               </div>
-              <div class="view-item" v-ripple>
+              <div @click="buyEth" slot="activator" class="view-item" v-ripple>
                 <img src="./buyeth.png">
                 <span>ETH购买(未开放)</span>
               </div>
@@ -112,13 +112,24 @@
             <input v-model="walletPassword" class="password-confirm-input" type="password" placeholder="钱包密码"> 
             <v-btn @click="passwordConfirm" class="password-confirm-sure">确定</v-btn>
         </v-dialog>
+        <v-dialog content-class="change-name-pop" persistent max-width="400" v-model="changeNamePop">
+            <div class="change-name-title">修改钱包名称<i @click="changeNamePop=false" class="iconfont icon-quxiao"></i></div>
+            <input autofocus v-model="walletName" type="text" maxlength="15" class="change-name-input" :placeholder="name"> 
+            <v-btn :disabled="changing" :loading="changing" @click="changeNameConfirm" class="change-name-sure">确定修改</v-btn>
+        </v-dialog>
+        <v-dialog content-class="change-password-pop" persistent max-width="400" v-model="changePasswordPop">
+            <div class="change-password-title">修改钱包密码<i @click="changePasswordPop=false" class="iconfont icon-quxiao"></i></div>
+            <input v-model="changePssword1" type="password" maxlength="15" class="change-password-input1" placeholder="请输入钱包密码">
+            <input v-model="changePssword2" type="password" maxlength="15" class="change-password-input2" placeholder="重复密码">  
+            <v-btn :disabled="changing" :loading="changing" @click="changePasswordConfirm" class="change-password-sure">确定修改</v-btn>
+        </v-dialog>
         <v-snackbar class="backButton" v-model="snackBar" color="info" :timeout="1500">
             {{snackBarText}}
           <v-btn dark flat @click="snackBar = false">
             关闭
           </v-btn>
         </v-snackbar>
-        <div v-show="leftDrawer||passwordConfirmPop||exportPrivateKeyPop" class="leftMask"></div>
+        <div v-show="leftDrawer||passwordConfirmPop||exportPrivateKeyPop||changeNamePop||changePasswordPop" class="leftMask"></div>
   </div>
 </template>
 
@@ -150,7 +161,13 @@ export default {
       snackBarText: "",
       passwordConfirmPop: false,
       walletPassword: "",
-      isFromWhere: 0
+      isFromWhere: 0,
+      changeNamePop: false,
+      walletName: "",
+      changing: false,
+      changePssword1: "",
+      changePssword2: "",
+      changePasswordPop: false
     };
   },
   // mounted() {
@@ -182,6 +199,59 @@ export default {
     that.$refs.scan.classList.remove("scanClick");
   },
   methods: {
+    changePassword() {
+      this.leftDrawer = false;
+      this.changePasswordPop = true;
+    },
+    changePasswordConfirm() {
+      let that = this;
+      if (objIsNull(that.changePssword1) || objIsNull(that.changePssword2)) {
+        that.snackBarText = "钱包密码不能为空";
+        that.snackBar = true;
+        return;
+      }
+      if (that.changePssword1 !== that.changePssword2) {
+        that.snackBarText = "输入钱包密码不相同";
+        that.snackBar = true;
+        return;
+      }
+      that.changing = true;
+      setTimeout(() => {
+        that.changing = false;
+        that.changePasswordPop = false;
+        that.bitList[0].details.walletPassword = that.changePssword1;
+        that.changePssword1 = "";
+        that.changePssword2 = "";
+        that.snackBarText = "钱包密码修改成功";
+        that.snackBar = true;
+      }, 1500);
+    },
+    changeNameConfirm() {
+      let that = this;
+      if (objIsNull(that.walletName)) {
+        that.snackBarText = "钱包名称不能为空";
+        that.snackBar = true;
+        return;
+      }
+      that.changing = true;
+      setTimeout(() => {
+        that.changing = false;
+        that.changeNamePop = false;
+        that.bitList[0].details.walletName = that.walletName;
+        that.name = that.walletName;
+        that.walletName = "";
+        that.snackBarText = "钱包名称修改成功";
+        that.snackBar = true;
+      }, 1500);
+    },
+    changeName() {
+      this.leftDrawer = false;
+      this.changeNamePop = true;
+    },
+    buyEth() {
+      this.snackBarText = "功能暂未开放";
+      this.snackBar = true;
+    },
     goTokenIssue() {
       this.$router.push({ name: "tokenIssue" });
     },
