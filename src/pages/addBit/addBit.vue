@@ -17,7 +17,6 @@
 <script>
 import { getStore, setStore, objIsNull } from "@/config/utils";
 import vHeader from "@/components/common/header-bar/header-bar";
-import currencyList from "@/config/currencyList";
 export default {
   data() {
     return {
@@ -88,9 +87,10 @@ export default {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get(that.Api + "/geewer.json", {})
+          .get(that.Api + that.currencyList, {})
           .then(function(res) {
             resolve(res.data);
+            console.log(res.data);
           })
           .catch(function(error) {
             console.log(error);

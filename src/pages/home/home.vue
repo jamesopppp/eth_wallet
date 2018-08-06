@@ -140,6 +140,7 @@ import { mapState } from "vuex";
 import BScroll from "better-scroll";
 import { getStore, generateQRtxt, setStore, objIsNull } from "@/config/utils";
 import abi from "@/config/abi";
+import { resolve } from "url";
 export default {
   name: "home",
   data() {
@@ -411,36 +412,34 @@ export default {
         }
         that.bitList[0].bitList = localList;
       } else {
-        let localList = that.bitList[0].bitList;
-        let localLen = localList.length;
+        let list = that.bitList[0].bitList;
         let currencyLen = tokenList.length;
-        if (localLen != currencyLen) {
-          if (currencyLen > localLen) {
-            let moreLen = currencyLen - localLen;
-            for (let i = 0; i < moreLen; i++) {
-              let localItem = {};
-              localItem.token = tokenList[localLen + i].token;
-              localItem.isOpen = false;
-              localList.push(localItem);
+        let localList = [];
+        for (let i = 0; i < currencyLen; i++) {
+          let localItem = {};
+          localItem.isOpen = false;
+          for (let j = 0; j < list.length; j++) {
+            if (list[j].token == tokenList[i].token) {
+              localItem.isOpen = list[j].isOpen;
+              break;
             }
           }
-          if (currencyLen < localLen) {
-            let localList = [];
-            for (let i = 0, len = tokenList.length; i < len; i++) {
-              let localItem = {};
-              localItem.isOpen = false;
-              localItem.token = tokenList[i].token;
-              localList.push(localItem);
-            }
-            that.bitList[0].bitList = localList;
-          }
+          localItem.token = tokenList[i].token;
+          localList.push(localItem);
         }
+        that.bitList[0].bitList = localList;
+
         for (let i = 0, len = tokenList.length; i < len; i++) {
           if (localList[i].isOpen) {
             for (let j = 0, len = tokenList.length; j < len; j++) {
               if (tokenList[i].token == localList[i].token) {
                 let homeItem = {};
-                let balance = await that.getErcBalance(tokenList[i].contract);
+                let decimals = await that.getErcDecimals(tokenList[i].contract);
+                let oldBalance = await that.getErcBalance(
+                  tokenList[i].contract
+                );
+                let val = Math.pow(10, decimals);
+                let balance = (oldBalance / val).toFixed(3);
                 homeItem.token = tokenList[i].token;
                 homeItem.name = tokenList[i].name;
                 homeItem.sort = tokenList[i].sort;
@@ -464,13 +463,24 @@ export default {
         that.loadingTop = false;
       }
     },
+    getErcDecimals(contractAddress) {
+      let that = this;
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      let contract = new that.ethers.Contract(contractAddress, abi, provider);
+      return new Promise((resolve, reject) => {
+        contract.decimals().then(function(decimals) {
+          let val = decimals;
+          resolve(val);
+        });
+      });
+    },
     getErcBalance(contractAddress) {
       let that = this;
       let provider = that.ethers.providers.getDefaultProvider(that.provider);
       let contract = new that.ethers.Contract(contractAddress, abi, provider);
       return new Promise((resolve, reject) => {
         contract.balanceOf(that.address).then(function(balance) {
-          let bal = (balance.toNumber() / 100000000).toFixed(3);
+          let bal = balance.toNumber();
           resolve(bal);
         });
       });
@@ -482,7 +492,7 @@ export default {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get(that.Api + "/geewer.json", {})
+          .get(that.Api + that.currencyList, {})
           .then(function(res) {
             resolve(res.data);
           })

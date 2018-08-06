@@ -48,13 +48,33 @@ router.beforeEach((to, from, next) => {
   next();
 })
 
-// dev
-Vue.prototype.provider = "rinkeby";
-Vue.prototype.Api = '/api';
+//  dev: 0  开发环境
+//  build: 1  上线环境
+const env = 1;
 
-//build 
-// Vue.prototype.provider = "homestead";
-// Vue.prototype.Api = 'http://geewer.com';
+// 0 以太坊主服务器  1 rinkeby
+const server = 1;
+
+if (env === 0) {
+  Vue.prototype.Api = '/api';
+  if (server === 0) {
+    Vue.prototype.provider = "homestead";
+    Vue.prototype.currencyList = "/currencyList/currencyList.json"
+  } else if (server === 1) {
+    Vue.prototype.provider = "rinkeby";
+    Vue.prototype.currencyList = "/currencyList/currencyList-test.json"
+  }
+} else if (env === 1) {
+  Vue.prototype.Api = 'http://geewer.com';
+  if (server === 0) {
+    Vue.prototype.provider = "homestead";
+    Vue.prototype.currencyList = "/currencyList/currencyList.json"
+  } else if (server === 1) {
+    Vue.prototype.provider = "rinkeby";
+    Vue.prototype.currencyList = "/currencyList/currencyList-test.json"
+  }
+}
+
 
 Vue.prototype.ApiKeyToken = '6CW7IKUWC5CZXV4H177CCVCQM1B6GYF8XC';
 Vue.prototype.$axios = axios;

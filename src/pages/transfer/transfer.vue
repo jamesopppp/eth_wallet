@@ -130,9 +130,9 @@ export default {
     that.getPrice();
     that.getEthBalance();
   },
-  beforeDestroy() {
-    this.$store.commit("SET_TRANSFER", {});
-  },
+  // beforeDestroy() {
+  //   this.$store.commit("SET_TRANSFER", {});
+  // },
   watch: {
     sliderVal(val) {
       this.computSliderVal = (val / Math.pow(10, 9) * 25200).toFixed(8);
@@ -150,7 +150,7 @@ export default {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get(that.Api + "/geewer.json", {})
+          .get(that.Api + that.currencyList, {})
           .then(function(res) {
             resolve(res.data);
           })

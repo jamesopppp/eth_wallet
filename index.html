@@ -17,12 +17,29 @@
   <script type="text/javascript" src="./static/js/tween.js"></script>
   <script>
     window.onload = function () {
+      var app = {
+        initialize: function () {
+          this.bindEvents();
+        },
+        bindEvents: function () {
+          document.addEventListener('deviceready', this.onDeviceReady, false);
+        },
+        onDeviceReady: function () {
+          app.receivedEvent('deviceready');
 
-      document.addEventListener("deviceready", onDeviceReady, false);
+          StatusBar.overlaysWebView(true);
 
-      function onDeviceReady() {
-        StatusBar.overlaysWebView(true);
-      }
+          JAnalytics.init();
+          JAnalytics.setDebugMode({
+            enable: true
+          });
+
+        },
+        receivedEvent: function (id) {
+          console.log('Received Event: ' + id);
+        }
+      };
+      app.initialize();
 
       window.viewportUnitsBuggyfill.init({
         hacks: window.viewportUnitsBuggyfillHacks

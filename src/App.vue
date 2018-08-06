@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { login } from "@/utils/janalytics";
 import { getStore, setStore, objIsNull, createWallet } from "@/config/utils";
 import { mapState } from "vuex";
 import vBottomNav from "./components/common/bottom-nav/bottom-nav";
@@ -51,7 +52,9 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    login();
+  },
   methods: {
     onBackKeyDown() {
       this.endDate = new Date().getTime();

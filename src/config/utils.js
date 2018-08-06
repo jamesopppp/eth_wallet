@@ -1,7 +1,6 @@
 import bip39 from 'bip39';
 import ethers from 'ethers';
 import abi from './abi';
-import currencyList from './currencyList';
 /**
  * 存储localStorage
  */

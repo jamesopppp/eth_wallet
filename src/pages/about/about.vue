@@ -7,11 +7,11 @@
               <p>当前版本: v1.0.0 beta</p>
           </div>
           <div class="about-list">
-              <div class="about-item" v-ripple>使用协议</div>
-              <div class="about-item" v-ripple>隐私条例</div>
-              <div class="about-item" v-ripple>版本日志</div>
+              <div @click="goServiceAgreement" class="about-item" v-ripple>服务协议</div>
+              <div @click="goPrivacyAgreement" class="about-item" v-ripple>隐私条例</div>
+              <!-- <div class="about-item" v-ripple>版本日志</div>
               <div class="about-item" v-ripple>产品向导</div>
-              <div class="about-item" v-ripple>检测新版本</div>
+              <div class="about-item" v-ripple>检测新版本</div> -->
           </div>
           <div class="about-company">
               <p>Copyright© 2018 Geewer all right reserved</p>
@@ -28,7 +28,14 @@ export default {
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    goServiceAgreement() {
+      this.$router.push({ name: "serviceAgreement" });
+    },
+    goPrivacyAgreement() {
+      this.$router.push({ name: "privacyAgreement" });
+    }
+  },
   components: {
     vHeader
   },

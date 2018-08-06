@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { register } from "@/utils/janalytics";
 import { getStore, setStore, removeStore, objIsNull } from "@/config/utils";
 import vHeader from "@/components/common/header-bar/header-bar";
 export default {
@@ -77,16 +78,15 @@ export default {
       }
       removeStore("mnemonic");
       removeStore("walletItem");
+      register();
       this.$router.replace({ name: "home" });
     },
     checkWordList() {
-      console.log(this.initialList);
-      this.successTip = true;
-      // if (this.selectList.toString() === this.initialList.toString()) {
-      //   this.successTip = true;
-      // } else {
-      //   this.failTip = true;
-      // }
+      if (this.selectList.toString() === this.initialList.toString()) {
+        this.successTip = true;
+      } else {
+        this.failTip = true;
+      }
     },
     shuffle(arr) {
       let length = arr.length,

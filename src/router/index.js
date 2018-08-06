@@ -141,6 +141,20 @@ const router = new Router({
       require(['@/pages/AddContact/AddContact.vue'], resolve)
     },
     meta: {}
+  }, {
+    path: '/serviceAgreement',
+    name: 'serviceAgreement',
+    component: function (resolve) {
+      require(['@/pages/serviceAgreement/serviceAgreement.vue'], resolve)
+    },
+    meta: {}
+  }, {
+    path: '/privacyAgreement',
+    name: 'privacyAgreement',
+    component: function (resolve) {
+      require(['@/pages/privacyAgreement/privacyAgreement.vue'], resolve)
+    },
+    meta: {}
   }]
 })
 
