@@ -23,7 +23,8 @@ const whiteList = [
   '/open-backup',
   '/open-mnemonic',
   '/open-confirm',
-  '/importWallet'
+  '/importWallet',
+  '/serviceAgreement'
 ];
 
 router.beforeEach((to, from, next) => {
@@ -53,7 +54,7 @@ router.beforeEach((to, from, next) => {
 const env = 1;
 
 // 0 以太坊主服务器  1 rinkeby
-const server = 1;
+const server = 0;
 
 if (env === 0) {
   Vue.prototype.Api = '/api';

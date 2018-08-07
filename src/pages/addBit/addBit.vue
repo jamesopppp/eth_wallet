@@ -90,7 +90,6 @@ export default {
           .get(that.Api + that.currencyList, {})
           .then(function(res) {
             resolve(res.data);
-            console.log(res.data);
           })
           .catch(function(error) {
             console.log(error);

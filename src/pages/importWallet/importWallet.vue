@@ -1,7 +1,7 @@
 <template>
   <div class="importWallet">
       <v-header title="导入钱包"></v-header>
-      <div class="importWallet-view zoomIn animated">
+      <div class="importWallet-view fadeInRight animated">
           <div class="selectView">
               <div @click="selectTab(0)" :class="tab==0?'select':''">助记词</div>
               <div @click="selectTab(1)" :class="tab==1?'select':''">官方钱包</div>
@@ -18,7 +18,7 @@
                 <div @click="checkbox=!checkbox" :class="!checkbox?'space':''" class="block" v-ripple>
                     <i class="iconfont icon-queren"></i>
                 </div>
-                <span>我已经仔细阅读并同意</span><span>《服务及隐私条款》</span>
+                <span>我已经仔细阅读并同意</span><span @click="goServiceAgreement">《服务及隐私条款》</span>
             </div>
             <v-btn @click="mnemonicImport" :disabled="isCreate" :loading="isCreate" :class="!checkbox?'noSelect':''" class="create">开始导入</v-btn>
            </div>
@@ -30,7 +30,7 @@
                 <div @click="checkbox1=!checkbox1" :class="!checkbox1?'space':''" class="block" v-ripple>
                     <i class="iconfont icon-queren"></i>
                 </div>
-                <span>我已经仔细阅读并同意</span><span>《服务及隐私条款》</span>
+                <span>我已经仔细阅读并同意</span><span @click="goServiceAgreement">《服务及隐私条款》</span>
             </div>
             <v-btn @click="keystoreImport" :disabled="isCreate" :loading="isCreate" :class="!checkbox1?'noSelect':''" class="create">开始导入</v-btn>
            </div>
@@ -43,7 +43,7 @@
                 <div @click="checkbox2=!checkbox2" :class="!checkbox2?'space':''" class="block" v-ripple>
                     <i class="iconfont icon-queren"></i>
                 </div>
-                <span>我已经仔细阅读并同意</span><span>《服务及隐私条款》</span>
+                <span>我已经仔细阅读并同意</span><span @click="goServiceAgreement">《服务及隐私条款》</span>
             </div>
             <v-btn @click="privateKeyImport" :disabled="isCreate" :loading="isCreate" :class="!checkbox2?'noSelect':''" class="create">开始导入</v-btn>
            </div>
@@ -97,6 +97,9 @@ export default {
   },
   mounted() {},
   methods: {
+    goServiceAgreement() {
+      this.$router.push({ name: "serviceAgreement" });
+    },
     mnemonicImport() {
       let that = this;
       if (!that.checkbox) {

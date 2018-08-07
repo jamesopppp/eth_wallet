@@ -78,7 +78,8 @@ export default {
       loadOver: false,
       netAddress: "",
       loadingTop: false,
-      newAmount: 0
+      newAmount: 0,
+      decimals: 8
     };
   },
   watch: {
@@ -116,8 +117,17 @@ export default {
       console.log("当前contract: ", that.contractAddress);
     }
     if (that.token != "ETH") {
-      that.getBalance();
-      that.getErcRecord();
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      let contract = new that.ethers.Contract(
+        that.contractAddress,
+        abi,
+        provider
+      );
+      contract.decimals().then(function(decimals) {
+        that.decimals = decimals;
+        that.getBalance();
+        that.getErcRecord();
+      });
     } else {
       that.amount = that.balance;
       that.getAllRecord();
@@ -145,7 +155,7 @@ export default {
         }
       }
     },
-    getBalance() {
+    async getBalance() {
       let that = this;
       let walletList = JSON.parse(getStore("walletList"));
       let address = walletList[0].wallet.address;
@@ -156,9 +166,20 @@ export default {
         provider
       );
       contract.balanceOf(address).then(function(balance) {
-        let ercBalance = balance.toNumber() / 100000000;
+        let ercBalance = balance.toString() / Math.pow(10, that.decimals);
         that.amount = ercBalance.toFixed(3);
         console.log(that.token + "余额: " + ercBalance);
+      });
+    },
+    getErcDecimals(contractAddress) {
+      let that = this;
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      let contract = new that.ethers.Contract(contractAddress, abi, provider);
+      return new Promise((resolve, reject) => {
+        contract.decimals().then(function(decimals) {
+          let val = decimals;
+          resolve(val);
+        });
       });
     },
     getTime(timeStamp) {
@@ -295,7 +316,7 @@ export default {
       if (input.toString() === "0x") {
         amount = parseFloat(this.ethers.utils.formatUnits(value)).toFixed(3);
       } else {
-        amount = formartTranstionData(input);
+        amount = formartTranstionData(input, this.decimals);
       }
       return amount;
     },
@@ -310,7 +331,10 @@ export default {
       return status;
     },
     goDetails(item) {
-      this.$router.push({ path: "orderDetails", query: { data: item } });
+      this.$router.push({
+        path: "orderDetails",
+        query: { data: item, decimals: this.decimals }
+      });
     }
   },
   components: {

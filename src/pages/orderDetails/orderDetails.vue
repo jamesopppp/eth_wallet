@@ -57,12 +57,14 @@ export default {
       gasAmount: 0,
       orderNumber: "",
       blockNumber: 0,
-      transactionTime: ""
+      transactionTime: "",
+      decimals: 8
     };
   },
   created() {
     let that = this;
     that.dataDetails = that.$route.query.data;
+    that.decimals = that.$route.query.decimals;
     console.log(that.dataDetails);
     if (that.dataDetails.input.toString() === "0x") {
       console.log("ETH订单");
@@ -89,7 +91,7 @@ export default {
       if (input.toString() === "0x") {
         amount = parseFloat(this.ethers.utils.formatUnits(value));
       } else {
-        amount = formartTranstionData(input);
+        amount = formartTranstionData(input, this.decimals);
       }
       return amount;
     },

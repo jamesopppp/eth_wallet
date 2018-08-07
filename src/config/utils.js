@@ -110,12 +110,12 @@ export const moneyPadZero = (amount) => {
  * 传入转账地址,转账金额
  * 返回交易的data串
  */
-export const generateData = (address, amount) => {
+export const generateData = (address, amount, decimals) => {
   let dataAddress = address.substr(2);
   let zeroAddress = dataAddress.padStart(64, '0');
-  let val = Math.pow(10, 8);
+  let val = Math.pow(10, decimals);
 
-  let dataAmount = accMul(amount, val);
+  let dataAmount = String(accMul(amount, val));
   let amount1 = ethers.utils.bigNumberify(dataAmount);
 
   let amount2 = amount1.toHexString().substr(2);
@@ -207,14 +207,14 @@ export const formartTimeStamp = (timestamp) => {
  * 传入data(input)串
  * 返回 交易金额
  */
-export const formartTranstionData = (data) => {
+export const formartTranstionData = (data, decimals) => {
   let type = data.substr(0, 10);
   let amount;
   let amountData = parseInt(data.substr(74), 16);
-  if (type.toString() !== '0xa9059cbb') {
+  if (type.toLowerCase().toString() !== '0xa9059cbb') {
     amount = 0;
   } else {
-    amount = (amountData / Math.pow(10, 8)).toFixed(3);
+    amount = (amountData / Math.pow(10, decimals)).toFixed(3);
   }
   return amount;
 };

@@ -14,7 +14,7 @@
               <div @click="checkbox=!checkbox" :class="!checkbox?'space':''" class="block" v-ripple>
                   <i class="iconfont icon-queren"></i>
               </div>
-              <span>我已经仔细阅读并同意</span><span>《服务及隐私条款》</span>
+              <span>我已经仔细阅读并同意</span><span @click="goServiceAgreement">《服务及隐私条款》</span>
           </div>
           <v-btn :disabled="createDialog" :loading="createDialog" @click="goNext" :class="!checkbox?'noSelect':''" class="create">确认创建</v-btn>
           <span @click="goImport" class="import fadeIn animated">我有钱包,直接导入</span>
@@ -61,6 +61,9 @@ export default {
     removeStore("walletItem");
   },
   methods: {
+    goServiceAgreement() {
+      this.$router.push({ name: "serviceAgreement" });
+    },
     goNext() {
       if (!this.checkbox) {
         return;

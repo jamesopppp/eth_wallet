@@ -440,6 +440,7 @@ export default {
                 );
                 let val = Math.pow(10, decimals);
                 let balance = (oldBalance / val).toFixed(3);
+                console.log(oldBalance);
                 homeItem.token = tokenList[i].token;
                 homeItem.name = tokenList[i].name;
                 homeItem.sort = tokenList[i].sort;
@@ -480,7 +481,7 @@ export default {
       let contract = new that.ethers.Contract(contractAddress, abi, provider);
       return new Promise((resolve, reject) => {
         contract.balanceOf(that.address).then(function(balance) {
-          let bal = balance.toNumber();
+          let bal = balance.toString();
           resolve(bal);
         });
       });

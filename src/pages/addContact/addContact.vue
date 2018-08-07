@@ -178,7 +178,6 @@ export default {
         walletList[0].contacts[that.editIndex].email = that.email;
       }
       setStore("walletList", walletList);
-      console.log(walletList[0]);
       that.toastText = "保存成功";
       that.toast = true;
       setTimeout(() => {

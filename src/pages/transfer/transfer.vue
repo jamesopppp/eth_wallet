@@ -110,7 +110,8 @@ export default {
       readyPay: false,
       willPay: 0,
       balance: 0,
-      tokenList: []
+      tokenList: [],
+      decimals: 8
     };
   },
   created() {
@@ -183,10 +184,17 @@ export default {
         abi,
         provider
       );
-      contract.balanceOf(that.myAddress).then(function(balance) {
-        let power = that.ethers.utils.bigNumberify(Math.pow(10, 10));
-        that.ercBalance = balance.mul(power);
-        console.log(that.token + "余额: " + balance.toNumber() / 100000000);
+      contract.decimals().then(function(decimals) {
+        that.decimals = decimals;
+        contract.balanceOf(that.myAddress).then(function(balance) {
+          let power = that.ethers.utils.bigNumberify(Math.pow(10, 10));
+          that.ercBalance = balance.mul(power);
+          console.log(
+            that.token +
+              "余额: " +
+              balance.toString() / Math.pow(10, that.decimals)
+          );
+        });
       });
     },
     getPrice() {
@@ -247,7 +255,7 @@ export default {
         });
       } else {
         console.log(that.token + "交易");
-        trData = generateData(that.address, that.amount);
+        trData = generateData(that.address, that.amount, that.decimals);
         transaction = {
           data: trData,
           to: that.contractAddress,
@@ -324,7 +332,7 @@ export default {
         return;
       }
       if (that.isOverNumber(that.amount)) {
-        that.text = "转账金额不得小于8位小数";
+        that.text = "转账金额最多18位小数";
         that.toast = true;
         return;
       }
@@ -336,7 +344,7 @@ export default {
       if (num.indexOf(".") !== -1) {
         len = num.split(".")[1].length;
       }
-      if (len > 8) {
+      if (len > 18) {
         flag = true;
       }
       return flag;
