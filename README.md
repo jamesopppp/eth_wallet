@@ -1,6 +1,6 @@
 # eth_wallet
 
-> geewer wallet demo 试着制作一个eth钱包
+> eth wallet 从0开始实现一个基于以太坊系的交易钱包.Fighting!
 
 ## Build Setup
 
