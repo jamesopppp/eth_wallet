@@ -37,7 +37,7 @@
           <img src="./logo.png">
           <p class="transfer-success-title">提交成功</p>
           <p class="transfer-success-content">转账申请已提交,请留意账户变动</p>
-          <v-btn @click="submitPop=false" class="transfer-success-know">我知道了</v-btn>
+          <v-btn @click="submitTransfer" class="transfer-success-know">我知道了</v-btn>
       </v-dialog>
       <v-snackbar :timeout="1500" auto-height color="info" bottom v-model="toast">
         {{ text }}
@@ -141,6 +141,9 @@ export default {
     }
   },
   methods: {
+    submitTransfer() {
+      this.$router.push({ name: "home" });
+    },
     goContact() {
       this.$router.push({ path: "contact", query: { select: 1 } });
     },

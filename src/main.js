@@ -23,8 +23,7 @@ const whiteList = [
   '/open-backup',
   '/open-mnemonic',
   '/open-confirm',
-  '/importWallet',
-  '/serviceAgreement'
+  '/importWallet'
 ];
 
 router.beforeEach((to, from, next) => {
@@ -41,9 +40,11 @@ router.beforeEach((to, from, next) => {
     if (isOwnAccount()) {
       next();
     } else {
-      next({
-        path: "/open-home"
-      });
+      if (to.path.indexOf('serviceAgreement') === -1) {
+        next({
+          path: "/open-home"
+        });
+      }
     }
   }
   next();

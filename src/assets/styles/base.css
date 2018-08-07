@@ -242,6 +242,7 @@
   background-color: #eee;
   border-radius: 10px;
   word-break: break-all;
+  user-select: text;
 }
 
 .export-privateKey-copy {
