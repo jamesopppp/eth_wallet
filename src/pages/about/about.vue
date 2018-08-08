@@ -4,7 +4,7 @@
       <div class="about-view fadeInUp animated">
           <div class="about-head" v-ripple>
               <img class="jello animated" src="../../assets/images/logo-blue.png">
-              <p>当前版本: v1.0.0 beta</p>
+              <p>当前版本: v1.0.1 beta</p>
           </div>
           <div class="about-list">
               <div @click="goServiceAgreement" class="about-item" v-ripple>服务协议</div>

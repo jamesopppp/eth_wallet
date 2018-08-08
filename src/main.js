@@ -52,10 +52,10 @@ router.beforeEach((to, from, next) => {
 
 //  dev: 0  开发环境
 //  build: 1  上线环境
-const env = 1;
+const env = 0;
 
 // 0 以太坊主服务器  1 rinkeby
-const server = 0;
+const server = 1;
 
 if (env === 0) {
   Vue.prototype.Api = '/api';

@@ -140,7 +140,6 @@ import { mapState } from "vuex";
 import BScroll from "better-scroll";
 import { getStore, generateQRtxt, setStore, objIsNull } from "@/config/utils";
 import abi from "@/config/abi";
-import { resolve } from "url";
 export default {
   name: "home",
   data() {
@@ -194,6 +193,7 @@ export default {
     that.address = that.bitList[0].wallet.address;
     that.name = that.bitList[0].details.walletName;
     that.getBitList();
+    // that.testPlace();
   },
   deactivated() {
     let that = this;
@@ -406,7 +406,23 @@ export default {
         let localList = [];
         for (let i = 0, len = tokenList.length; i < len; i++) {
           let localItem = {};
-          localItem.isOpen = false;
+          if (tokenList[i].isOpen) {
+            localItem.isOpen = true;
+            let homeItem = {};
+            let decimals = await that.getErcDecimals(tokenList[i].contract);
+            let oldBalance = await that.getErcBalance(tokenList[i].contract);
+            let val = Math.pow(10, decimals);
+            let balance = (oldBalance / val).toFixed(3);
+            homeItem.token = tokenList[i].token;
+            homeItem.name = tokenList[i].name;
+            homeItem.sort = tokenList[i].sort;
+            homeItem.contract = tokenList[i].contract;
+            homeItem.balance = balance;
+            homeItem.icon = tokenList[i].icon;
+            homeList.push(homeItem);
+          } else {
+            localItem.isOpen = false;
+          }
           localItem.token = tokenList[i].token;
           localList.push(localItem);
         }
@@ -432,21 +448,20 @@ export default {
         for (let i = 0, len = tokenList.length; i < len; i++) {
           if (localList[i].isOpen) {
             for (let j = 0, len = tokenList.length; j < len; j++) {
-              if (tokenList[i].token == localList[i].token) {
+              if (tokenList[j].token == localList[i].token) {
                 let homeItem = {};
-                let decimals = await that.getErcDecimals(tokenList[i].contract);
+                let decimals = await that.getErcDecimals(tokenList[j].contract);
                 let oldBalance = await that.getErcBalance(
-                  tokenList[i].contract
+                  tokenList[j].contract
                 );
                 let val = Math.pow(10, decimals);
                 let balance = (oldBalance / val).toFixed(3);
-                console.log(oldBalance);
-                homeItem.token = tokenList[i].token;
-                homeItem.name = tokenList[i].name;
-                homeItem.sort = tokenList[i].sort;
-                homeItem.contract = tokenList[i].contract;
+                homeItem.token = tokenList[j].token;
+                homeItem.name = tokenList[j].name;
+                homeItem.sort = tokenList[j].sort;
+                homeItem.contract = tokenList[j].contract;
                 homeItem.balance = balance;
-                homeItem.icon = tokenList[i].icon;
+                homeItem.icon = tokenList[j].icon;
                 homeList.push(homeItem);
                 break;
               }
@@ -493,7 +508,11 @@ export default {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get(that.Api + that.currencyList, {})
+          .get(that.Api + that.currencyList, {
+            params: {
+              rand: new Date().getTime()
+            }
+          })
           .then(function(res) {
             resolve(res.data);
           })
@@ -525,17 +544,31 @@ export default {
     },
     testPlace() {
       let that = this;
-      let privateKey = that.bitList[0].wallet.privateKey;
-      let provider = that.ethers.providers.getDefaultProvider();
-      let wallet = new that.ethers.Wallet(privateKey, provider);
-      var password = "password123";
-      function callback(percent) {
-        console.log("Encrypting: " + parseInt(percent * 100) + "% complete");
-      }
-      var encryptPromise = wallet.encrypt(password, callback);
-      encryptPromise.then(function(json) {
-        console.log(json);
-      });
+      // let privateKey = that.bitList[0].wallet.privateKey;
+      // let provider = new that.ethers.providers.EtherscanProvider(that.provider);
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      // let wallet = new that.ethers.Wallet(privateKey, provider);
+      that.$axios
+        .get(that.netAddress, {
+          params: {
+            module: "account",
+            action: "txlist",
+            address: that.myAddress,
+            startblock: 0,
+            endblock: "pending",
+            page: that.pageNumber,
+            offset: that.pageSize,
+            sort: "desc",
+            apikey: that.ApiKeyToken
+          }
+        })
+        .then(function(res) {
+          
+
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   computed: {

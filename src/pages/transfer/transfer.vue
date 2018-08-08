@@ -88,7 +88,6 @@ import { objIsNull, transferEth, generateData, getStore } from "@/config/utils";
 import { mapState } from "vuex";
 import abi from "@/config/abi";
 import vHeader from "@/components/common/header-bar/header-bar";
-import { createECDH } from "crypto";
 export default {
   data() {
     return {
@@ -131,9 +130,6 @@ export default {
     that.getPrice();
     that.getEthBalance();
   },
-  // beforeDestroy() {
-  //   this.$store.commit("SET_TRANSFER", {});
-  // },
   watch: {
     sliderVal(val) {
       this.computSliderVal = (val / Math.pow(10, 9) * 25200).toFixed(8);
@@ -154,7 +150,11 @@ export default {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get(that.Api + that.currencyList, {})
+          .get(that.Api + that.currencyList, {
+            params: {
+              rand: new Date().getTime()
+            }
+          })
           .then(function(res) {
             resolve(res.data);
           })

@@ -11,8 +11,8 @@
           <div v-show="tab===0">
             <textarea v-model="mnemonic" placeholder="助记词,按空格分隔" class="mnemonicInput"></textarea>
             <div class="path">m/44/60/0/0/0</div>
-            <input v-model="pathPassword1" class="password" type="text" placeholder="密码">
-            <input v-model="pathPassword2" class="password" type="text" placeholder="重复密码">
+            <input v-model="pathPassword1" class="password" type="password" placeholder="密码">
+            <input v-model="pathPassword2" class="password" type="password" placeholder="重复密码">
             <input v-model="pathMessage" class="password" type="text" placeholder="密码提示信息(可不填)">
             <div class="rulse">
                 <div @click="checkbox=!checkbox" :class="!checkbox?'space':''" class="block" v-ripple>
@@ -25,7 +25,7 @@
           <div v-show="tab===1">
             <p class="keystoreTip">直接复制粘贴以太坊官方钱包keystore文件内容至输入框,或者通过生成keystore内容的二维码,扫描录入</p>
             <textarea v-model="keyStore" placeholder="Keystore文本内容" class="keystoreInput"></textarea>
-            <input v-model="keyStorePassword" class="password" type="text" placeholder="Keystore密码">
+            <input v-model="keyStorePassword" class="password" type="password" placeholder="Keystore密码">
             <div class="rulse">
                 <div @click="checkbox1=!checkbox1" :class="!checkbox1?'space':''" class="block" v-ripple>
                     <i class="iconfont icon-queren"></i>
@@ -36,8 +36,8 @@
            </div>
           <div v-show="tab===2">
             <textarea v-model="privateKey" placeholder="明文私钥" class="mnemonicInput"></textarea>
-            <input v-model="privateKeyPass1" class="password" type="text" placeholder="密码">
-            <input v-model="privateKeyPass2" class="password" type="text" placeholder="重复密码">
+            <input v-model="privateKeyPass1" class="password" type="password" placeholder="密码">
+            <input v-model="privateKeyPass2" class="password" type="password" placeholder="重复密码">
             <input v-model="privateKeyMessage" class="password" type="text" placeholder="密码提示信息(可不填)">
             <div class="rulse">
                 <div @click="checkbox2=!checkbox2" :class="!checkbox2?'space':''" class="block" v-ripple>

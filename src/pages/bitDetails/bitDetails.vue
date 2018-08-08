@@ -221,7 +221,7 @@ export default {
             action: "txlist",
             address: that.myAddress,
             startblock: 0,
-            endblock: "latest",
+            endblock: "pending",
             page: that.pageNumber,
             offset: that.pageSize,
             sort: "desc",

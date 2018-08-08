@@ -8,7 +8,7 @@
                   <span>{{item.token}}</span>
                   <p>{{item.contract}}</p>
               </div>
-              <v-switch :disabled="item.token=='ETH'" class="item-switch" @change="valChange(item,index)" v-model="item.isOpen"></v-switch>
+              <v-switch :disabled="item.token=='ETH'||item.isDisabled" class="item-switch" @change="valChange(item,index)" v-model="item.isOpen"></v-switch>
           </div>
       </div>
   </div>
@@ -70,10 +70,17 @@ export default {
           bitItem.token = tokenList[i].token;
           that.bitList.push(bitItem);
           item.isOpen = false;
+          item.isDisabled = false;
         } else {
           for (let j = 0, len = tokenList.length; j < len; j++) {
             if (tokenList[i].token == that.bitList[j].token) {
-              item.isOpen = that.bitList[j].isOpen;
+              if (tokenList[i].isDisabled) {
+                item.isOpen = tokenList[i].isOpen;
+                item.isDisabled = true;
+              } else {
+                item.isOpen = that.bitList[j].isOpen;
+                item.isDisabled = false;
+              }
               break;
             }
           }
@@ -82,12 +89,17 @@ export default {
         addList.push(item);
       }
       that.addList = addList.sort(that.sortTokenList("sort"));
+      console.log(that.addList);
     },
     getCurrencyList() {
       let that = this;
       return new Promise((resolve, reject) => {
         that.$axios
-          .get(that.Api + that.currencyList, {})
+          .get(that.Api + that.currencyList, {
+            params: {
+              rand: new Date().getTime()
+            }
+          })
           .then(function(res) {
             resolve(res.data);
           })
