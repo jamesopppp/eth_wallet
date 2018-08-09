@@ -287,12 +287,15 @@ export default {
           } else {
             wallet.sendTransaction(transaction).then(function(transactionHash) {
               console.log("交易成功");
-              console.log(
-                "交易gasLimit: " + transactionHash.gasLimit.toNumber()
+              console.log(transactionHash);
+              let provider = that.ethers.providers.getDefaultProvider(
+                that.provider
               );
-              console.log(
-                "交易gasPrice: " + transactionHash.gasPrice.toNumber()
-              );
+              provider
+                .getTransaction(transactionHash.hash)
+                .then(function(transaction) {
+                  console.log(transaction);
+                });
               that.readyPay = false;
               that.loading = false;
               that.submitPop = true;

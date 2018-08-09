@@ -544,30 +544,27 @@ export default {
     },
     testPlace() {
       let that = this;
-      // let privateKey = that.bitList[0].wallet.privateKey;
-      // let provider = new that.ethers.providers.EtherscanProvider(that.provider);
+      let privateKey = that.bitList[0].wallet.privateKey;
       let provider = that.ethers.providers.getDefaultProvider(that.provider);
-      // let wallet = new that.ethers.Wallet(privateKey, provider);
-      that.$axios
-        .get(that.netAddress, {
-          params: {
-            module: "account",
-            action: "txlist",
-            address: that.myAddress,
-            startblock: 0,
-            endblock: "pending",
-            page: that.pageNumber,
-            offset: that.pageSize,
-            sort: "desc",
-            apikey: that.ApiKeyToken
-          }
-        })
-        .then(function(res) {
-          
-
-        })
-        .catch(function(error) {
-          console.log(error);
+      // var cryptoKittiesContractAddress =
+      //   "0x4f2dca7460d74225240a1A83bB61FDA4551D05B4";
+      // var topic =
+      //   "0xf1ae9d6a2466602b8775d72c77a0cba95023831d1568f040022352df8edb96f5";
+      // // let provider = new that.ethers.providers.EtherscanProvider(that.provider);
+      // var filter = {
+      //   fromBlock: 0,
+      //   address: cryptoKittiesContractAddress,
+      //   topics: []
+      // };
+      // provider.getLogs(filter).then(function(result) {
+      //   console.log(result);
+      // });
+      provider
+        .getTransaction(
+          "0x3a0ebb11dadd16736ffc8595fa5096e716dc5b2f15c1821911c6f35f2c0644e9"
+        )
+        .then(function(transaction) {
+          console.log(transaction);
         });
     }
   },

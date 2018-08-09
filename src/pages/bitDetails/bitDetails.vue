@@ -221,7 +221,7 @@ export default {
             action: "txlist",
             address: that.myAddress,
             startblock: 0,
-            endblock: "pending",
+            endblock: "latest",
             page: that.pageNumber,
             offset: that.pageSize,
             sort: "desc",
@@ -335,7 +335,7 @@ export default {
         path: "orderDetails",
         query: { data: item, decimals: this.decimals }
       });
-    }
+    },
   },
   components: {
     vHeader,
