@@ -84,7 +84,13 @@
 
 <script>
 import { Popup } from "vux";
-import { objIsNull, transferEth, generateData, getStore } from "@/config/utils";
+import {
+  objIsNull,
+  transferEth,
+  generateData,
+  getStore,
+  setStore
+} from "@/config/utils";
 import { mapState } from "vuex";
 import abi from "@/config/abi";
 import vHeader from "@/components/common/header-bar/header-bar";
@@ -243,13 +249,17 @@ export default {
             return;
           } else {
             wallet.sendTransaction(transaction).then(function(transactionHash) {
-              console.log("交易成功");
-              console.log(
-                "交易gasLimit: " + transactionHash.gasLimit.toNumber()
-              );
-              console.log(
-                "交易gasPrice: " + transactionHash.gasPrice.toNumber()
-              );
+              console.log(transactionHash);
+              let hashItem = {
+                hash: transactionHash.hash,
+                contract: that.contractAddress
+              };
+              if (objIsNull(walletList[0].pendingList)) {
+                that.$set(walletList[0], "pendingList", [hashItem]);
+              } else {
+                walletList[0].pendingList.push(hashItem);
+              }
+              setStore("walletList", walletList);
               that.readyPay = false;
               that.loading = false;
               that.submitPop = true;
@@ -288,14 +298,16 @@ export default {
             wallet.sendTransaction(transaction).then(function(transactionHash) {
               console.log("交易成功");
               console.log(transactionHash);
-              let provider = that.ethers.providers.getDefaultProvider(
-                that.provider
-              );
-              provider
-                .getTransaction(transactionHash.hash)
-                .then(function(transaction) {
-                  console.log(transaction);
-                });
+              let hashItem = {
+                hash: transactionHash.hash,
+                contract: that.contractAddress
+              };
+              if (objIsNull(walletList[0].pendingList)) {
+                that.$set(walletList[0], "pendingList", [hashItem]);
+              } else {
+                walletList[0].pendingList.push(hashItem);
+              }
+              setStore("walletList", walletList);
               that.readyPay = false;
               that.loading = false;
               that.submitPop = true;

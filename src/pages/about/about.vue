@@ -7,6 +7,7 @@
               <p>当前版本: v1.0.1 beta</p>
           </div>
           <div class="about-list">
+              <div @click="goContactUs" class="about-item" v-ripple>联系我们</div>
               <div @click="goServiceAgreement" class="about-item" v-ripple>服务协议</div>
               <div @click="goPrivacyAgreement" class="about-item" v-ripple>隐私条例</div>
               <!-- <div class="about-item" v-ripple>版本日志</div>
@@ -29,6 +30,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    goContactUs() {
+      this.$router.push({ name: "contactUs" });
+    },
     goServiceAgreement() {
       this.$router.push({ name: "serviceAgreement" });
     },

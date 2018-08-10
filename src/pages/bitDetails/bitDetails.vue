@@ -116,6 +116,7 @@ export default {
       console.log("当前token: ", that.token);
       console.log("当前contract: ", that.contractAddress);
     }
+    // that.getPendingList();
     if (that.token != "ETH") {
       let provider = that.ethers.providers.getDefaultProvider(that.provider);
       let contract = new that.ethers.Contract(
@@ -155,7 +156,7 @@ export default {
         }
       }
     },
-    async getBalance() {
+    getBalance() {
       let that = this;
       let walletList = JSON.parse(getStore("walletList"));
       let address = walletList[0].wallet.address;
@@ -185,6 +186,45 @@ export default {
     getTime(timeStamp) {
       let date = formartTimeStamp(timeStamp);
       return date;
+    },
+    async getPendingList() {
+      let that = this;
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      let pendingList = JSON.parse(getStore("walletList"))[0].pendingList;
+      if (!objIsNull(pendingList) && pendingList.length > 0) {
+        for (let i = 0; i < pendingList.length; i++) {
+          if (
+            pendingList[i].contract.toLowerCase() ===
+            that.contractAddress.toLowerCase()
+          ) {
+            let transaction = await that.getTransactionReceipt(
+              pendingList[i].hash
+            );
+            console.log(transaction);
+            console.log("1");
+          }
+        }
+      }
+    },
+    getTransactionReceipt(hash) {
+      let that = this;
+      return new Promise((resolve, reject) => {
+        that.$axios
+          .get(that.netAddress, {
+            params: {
+              module: "transaction",
+              action: "getstatus",
+              txhash: hash,
+              apikey: that.ApiKeyToken
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      });
     },
     loadMoreList() {
       if (this.token == "ETH") {
@@ -302,7 +342,6 @@ export default {
                   that.loadOver = true;
                 }
               }
-              console.log("筛选后result: ", data);
             }
             that.loadingTop = false;
           }, 1000);
@@ -335,7 +374,7 @@ export default {
         path: "orderDetails",
         query: { data: item, decimals: this.decimals }
       });
-    },
+    }
   },
   components: {
     vHeader,

@@ -1,7 +1,7 @@
 <template>
   <div class="privacyAgreement">
       <v-header title="隐私协议"></v-header>
-      <div class="privacyAgreement-view fadeInUp animated">
+      <div class="privacyAgreement-view">
           <p class="privacyAgreement-title">《积微资产隐私政策》</p>
           <div class="content">
               <p>尊敬的用户：</p>

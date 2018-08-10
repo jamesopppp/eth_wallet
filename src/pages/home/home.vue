@@ -193,7 +193,7 @@ export default {
     that.address = that.bitList[0].wallet.address;
     that.name = that.bitList[0].details.walletName;
     that.getBitList();
-    // that.testPlace();
+    that.testPlace();
   },
   deactivated() {
     let that = this;
@@ -456,7 +456,9 @@ export default {
                 );
                 let val = Math.pow(10, decimals);
                 let balance = (oldBalance / val).toFixed(3);
-                homeItem.token = tokenList[j].token;
+                // homeItem.token = tokenList[j].token;
+                let symbol = await that.getErc20Symbol(tokenList[j].contract);
+                homeItem.token = symbol.toUpperCase();
                 homeItem.name = tokenList[j].name;
                 homeItem.sort = tokenList[j].sort;
                 homeItem.contract = tokenList[j].contract;
@@ -545,27 +547,24 @@ export default {
     testPlace() {
       let that = this;
       let privateKey = that.bitList[0].wallet.privateKey;
-      let provider = that.ethers.providers.getDefaultProvider(that.provider);
-      // var cryptoKittiesContractAddress =
-      //   "0x4f2dca7460d74225240a1A83bB61FDA4551D05B4";
-      // var topic =
-      //   "0xf1ae9d6a2466602b8775d72c77a0cba95023831d1568f040022352df8edb96f5";
-      // // let provider = new that.ethers.providers.EtherscanProvider(that.provider);
-      // var filter = {
-      //   fromBlock: 0,
-      //   address: cryptoKittiesContractAddress,
-      //   topics: []
-      // };
-      // provider.getLogs(filter).then(function(result) {
-      //   console.log(result);
+      // let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      // let contract = new that.ethers.Contract(contractAddress, abi, provider);
+      // return new Promise((resolve, reject) => {
+      //   contract.balanceOf(that.address).then(function(balance) {
+      //     let bal = balance.toString();
+      //     resolve(bal);
+      //   });
       // });
-      provider
-        .getTransaction(
-          "0x3a0ebb11dadd16736ffc8595fa5096e716dc5b2f15c1821911c6f35f2c0644e9"
-        )
-        .then(function(transaction) {
-          console.log(transaction);
+    },
+    getErc20Symbol(contractAddress) {
+      let that = this;
+      let provider = that.ethers.providers.getDefaultProvider(that.provider);
+      let contract = new that.ethers.Contract(contractAddress, abi, provider);
+      return new Promise((resolve, reject) => {
+        contract.symbol().then(function(symbol) {
+          resolve(symbol);
         });
+      });
     }
   },
   computed: {

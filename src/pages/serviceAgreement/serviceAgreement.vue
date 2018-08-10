@@ -1,7 +1,7 @@
 <template>
   <div class="serviceAgreement">
       <v-header title="服务协议"></v-header>
-      <div class="serviceAgreement-view fadeInUp animated">
+      <div class="serviceAgreement-view">
           <p class="serviceAgreement-title">《积微资产服务协议》</p>
           <p class="serviceAgreement-subtitle">最近更新于: 2018年7月26日</p>
           <div class="content">

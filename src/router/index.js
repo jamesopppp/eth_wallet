@@ -155,6 +155,13 @@ const router = new Router({
       require(['@/pages/privacyAgreement/privacyAgreement.vue'], resolve)
     },
     meta: {}
+  }, {
+    path: '/contactUs',
+    name: 'contactUs',
+    component: function (resolve) {
+      require(['@/pages/contactUs/contactUs.vue'], resolve)
+    },
+    meta: {}
   }]
 })
 
