@@ -98,7 +98,7 @@ export default {
   mounted() {},
   methods: {
     goServiceAgreement() {
-      this.$router.push({ name: "serviceAgreement" });
+      // this.$router.push({ name: "serviceAgreement" });
     },
     mnemonicImport() {
       let that = this;
@@ -143,7 +143,7 @@ export default {
           walletItem.wallet = wallet;
           walletItem.isFirstIn = true;
           let walletList = JSON.parse(getStore("walletList"));
-          let name = "GeeWer" + that.mathRand();
+          let name = "SuperWallet" + that.mathRand();
           let details = {
             walletName: name,
             walletPassword: that.pathPassword1,
@@ -195,7 +195,7 @@ export default {
           walletItem.wallet = wallet;
           walletItem.isFirstIn = true;
           let walletList = JSON.parse(getStore("walletList"));
-          let name = "GeeWer" + that.mathRand();
+          let name = "SuperWallet" + that.mathRand();
           let details = {
             walletName: name,
             walletPassword: that.keyStorePassword,
@@ -260,7 +260,7 @@ export default {
         walletItem.wallet = wallet;
         walletItem.isFirstIn = true;
         let walletList = JSON.parse(getStore("walletList"));
-        let name = "GeeWer" + that.mathRand();
+        let name = "SuperWallet" + that.mathRand();
         let details = {
           walletName: name,
           walletPassword: that.privateKeyPass1,

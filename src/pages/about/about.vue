@@ -10,9 +10,9 @@
               <div @click="goContactUs" class="about-item" v-ripple>联系我们</div>
               <div @click="goServiceAgreement" class="about-item" v-ripple>服务协议</div>
               <div @click="goPrivacyAgreement" class="about-item" v-ripple>隐私条例</div>
-              <!-- <div class="about-item" v-ripple>版本日志</div>
+              <div class="about-item" v-ripple>版本日志</div>
               <div class="about-item" v-ripple>产品向导</div>
-              <div class="about-item" v-ripple>检测新版本</div> -->
+              <div class="about-item" v-ripple>检测新版本</div>
           </div>
           <div class="about-company">
               <p>Copyright© 2018 Geewer all right reserved</p>
@@ -34,10 +34,10 @@ export default {
       this.$router.push({ name: "contactUs" });
     },
     goServiceAgreement() {
-      this.$router.push({ name: "serviceAgreement" });
+      // this.$router.push({ name: "serviceAgreement" });
     },
     goPrivacyAgreement() {
-      this.$router.push({ name: "privacyAgreement" });
+      // this.$router.push({ name: "privacyAgreement" });
     }
   },
   components: {

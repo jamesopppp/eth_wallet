@@ -50,7 +50,7 @@ export default {
       passwordAgain: "",
       passwordMessage: "",
       toast: false,
-      text: "Geewer",
+      text: "James",
       createDialog: false,
       proVal: 1
     };
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     goServiceAgreement() {
-      this.$router.push({ name: "serviceAgreement" });
+      // this.$router.push({ name: "serviceAgreement" });
     },
     goNext() {
       if (!this.checkbox) {

@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       scanShow: false,
-      QRval: "GeeWer",
+      QRval: "James",
       token: "ETH",
       amount: 0,
       contractAddress: "0x",

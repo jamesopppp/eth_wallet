@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       copying: false,
-      email: "UIgeeBug@163.com"
+      email: "jamessupermail@163.com"
     };
   },
   created() {},
@@ -33,7 +33,7 @@ export default {
             that.copying = false;
             that.email = "邮箱复制成功";
             setTimeout(() => {
-              that.email = "UIgeeBug@163.com";
+              that.email = "jamessupermail@163.com";
             }, 1000);
           }, 1000);
         },

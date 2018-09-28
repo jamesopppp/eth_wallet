@@ -147,7 +147,7 @@ export default {
       address: "",
       name: "",
       scanShow: false,
-      QRval: "GeeWer",
+      QRval: "James",
       leftDrawer: false,
       balance_eth: 0,
       token: "ETH",

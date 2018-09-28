@@ -14,39 +14,41 @@
         background: -moz-linear-gradient(#75b7ff, #469af5);
         background: linear-gradient(#75b7ff, #469af5);
         text-align: center;
-        img {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin: auto;
-            width: 136px;
-        } // &>div {
-        //     position: relative;
-        //     float: left;
-        //     height: 100%;
-        //     width: 50%;
-        //     .content{
-        //         position: absolute;
-        //         width: 100%;
-        //         top: 50%;
-        //         transform: translateY(-50%);
-        //     }
-        //     img {
-        //         width: 70px;
-        //     }
-        //     div {
-        //         margin-top: 10px;
-        //         font-size: 24px;
-        //         color: #fff;
-        //     }
+        // img {
+        //     position: absolute;
+        //     top: 0;
+        //     bottom: 0;
+        //     left: 0;
+        //     right: 0;
+        //     margin: auto;
+        //     width: 136px;
         // }
-        // div:nth-child(2) {
-        //     img {
-        //         width: 64px;
-        //     }
-        // }
+         &>div {
+             position: relative;
+             float: left;
+             height: 100%;
+             width: 50%;
+             .content {
+                 position: absolute;
+                 width: 100%;
+                 top: 50%;
+                 transform: translateY(-50%);
+             }
+             img {
+                 width: 70px;
+             }
+             div {
+                 margin-top: 10px;
+                 font-size: 24px;
+                 color: #fff;
+             }
+         }
+
+         div:nth-child(2) {
+             img {
+                 width: 64px;
+             }
+         }
     }
     .option-list {
         animation-duration: 0.5s;
